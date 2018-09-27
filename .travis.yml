@@ -10,4 +10,4 @@ before_install:
   - npm i -g yarn
 
 script:
-  - yarn run build
+  - yarn run build --prod
