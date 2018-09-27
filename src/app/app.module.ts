@@ -3,6 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
+
+import {
+  AuthManagerService,
+  CommandManagerService,
+  ServerProxyService
+} from './services';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -10,7 +17,11 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [
+    AuthManagerService,
+    CommandManagerService,
+    ServerProxyService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
