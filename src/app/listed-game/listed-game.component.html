@@ -1,0 +1,16 @@
+<div class="listed-game-container">
+  <div class="join-button">
+    <button (click)="joinGame()">Join</button>
+  </div>
+  <div class="title">
+    <h5>
+      {{game.name}}
+    </h5>
+    <p>
+      Host: {{game.host.name}}
+    </p>
+  </div>
+  <div class="spots-remaining">
+    <p>{{getRemaining()}} spots available</p>
+  </div>
+</div>
