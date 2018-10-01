@@ -9,10 +9,12 @@ import {
   CommandManagerService,
   ServerProxyService
 } from './services';
+import { LoginScreenComponent } from './login-screen/login-screen.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginScreenComponent
   ],
   imports: [
     BrowserModule

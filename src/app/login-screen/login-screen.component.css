@@ -1,0 +1,77 @@
+.provo-background {
+    background-image: url("../../assets/images/Downtown_Provo.jpg");
+    background-size: cover;
+    filter: blur(2px);
+    display: block;
+    height: 800px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: -1;
+}
+ .content {
+    background: rgba(255, 255, 255, 0.60);
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    top: 10px;
+    left: 0;
+    position: fixed;
+    margin: 10px 20px;
+    right: 0;
+    padding: 0 10px;
+    height: 93vh;
+}
+ .game-title {
+    font-family: 'Abril Fatface', cursive;
+    text-align: center;
+    padding-top: 10px;
+}
+ .page-title {
+    font-family: 'Hind Madurai', sans-serif;
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    padding: 8px;
+    line-height: 0;
+}
+ .create-game-container {
+    text-align: center;
+    font-size: 24px;
+    padding: 8px;
+    background-color: grey;
+    margin: 0px auto 24px;
+    width: 58%;
+    border-radius: 10px;
+    line-height: 0em;
+    height: 70px;
+    font-family: 'Hind Madurai', sans-serif;
+}
+
+.slider, .login-container {
+    margin: 0 auto;
+    width: 450px;
+    height: 350px;
+}
+
+.login-container {
+    margin-top: 100px;
+    background-color: black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+@keyframes slide-up {
+    from {margin-top: 0;}
+    to {margin-top: -348px;}
+}
+
+.animate-slide-up {
+    animation-name: slide-up;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.slider {
+    position: absolute;
+    /* margin-top: -340px; */
+}
