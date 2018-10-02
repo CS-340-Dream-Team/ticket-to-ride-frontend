@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Game } from '../types/game/Game';
-import { Player } from '../types/player/Player';
-import { GameListManagerService } from '../services/game-list-manager/game-list-manager.service';
+import { Game } from '../types';
+import { Player } from '../types';
+import { GameListManagerService } from '../services';
 
 @Component({
   selector: 'app-game-list',
@@ -13,16 +13,6 @@ export class GameListComponent implements OnInit {
   @Input() activeGames: Game[];
 
   constructor(private gameListManager: GameListManagerService) {
-    // FIXME This is dummy data and should be removed once polling works.
-    const player1 = new Player('Test Player 1');
-    const player2 = new Player('Test Player 2');
-    const game1 = new Game(player1, 'Test Game 1');
-    game1.addPlayer(player2);
-    const game2 = new Game(player2, 'Test Game 2');
-    game2.addPlayer(player1);
-
-    this.activeGames = [game1, game2];
-
   }
 
   createGameMenuOpen = false;

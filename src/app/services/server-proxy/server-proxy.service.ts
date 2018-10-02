@@ -3,8 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { environment } from '../../../environments/environment';
 
-import { CommandManagerService } from '../command-manager/command-manager.service';
-import { Game } from '../../types/game/Game';
+import { Game, Command } from '../../types';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +43,14 @@ export class ServerProxyService {
       .toPromise();
   }
 
-  public createGame(gameName: string) {
+  public getUpdatedGames(): Promise<Command[]> {
+    console.log('Polling');
+    return this.http.get(`${environment.BASE_URL}/games`, this.httpOptions)
+      .toPromise()
+      .then(res => res.json().commands).catch( /* FIXME fail gracefully */);
+  }
+
+  public createGame(gameName: string): Promise<Command[]> {
     console.log('Creating ' + gameName);
     const requestBody = {
       'name': gameName,
@@ -52,16 +58,14 @@ export class ServerProxyService {
     };
     return this.http.post(`${environment.BASE_URL}/games`, requestBody, this.httpOptions)
       .toPromise()
-      .then(res => res.json().commands)
-      .then(commands => { this.commandManagerService.executeCommands(commands); });
+      .then(res => res.json().commands).catch( /* FIXME fail gracefully */);
   }
 
-  public joinGame(game: Game) {
+  public joinGame(game: Game): Promise<Command[]> {
     console.log('Joining ' + game.name);
     const url = '/games/' + game.id + '/join';
     return this.http.post(`${environment.BASE_URL}/` + url, {}, this.httpOptions)
       .toPromise()
-      .then(res => res.json().commands)
-      .then(commands => { this.commandManagerService.executeCommands(commands); });
+      .then(res => res.json().commands).catch( /* FIXME fail gracefully */);
   }
 }

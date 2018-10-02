@@ -8,7 +8,6 @@ import { CreateGameDialogComponent } from './create-game-dialog/create-game-dial
 
 import {
   AuthManagerService,
-  CommandManagerService,
   GameListManagerService,
   ServerProxyService
 } from './services';
@@ -29,7 +28,6 @@ import { HttpModule } from '@angular/http';
   ],
   providers: [
     AuthManagerService,
-    CommandManagerService,
     GameListManagerService,
     ServerProxyService
   ],
