@@ -3,8 +3,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { environment } from '../../../environments/environment';
 
-import { CommandManagerService } from '../command-manager/command-manager.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,10 +19,9 @@ export class ServerProxyService {
       'Content-Type': 'application/json',
       'Authorization': this._authToken
     })
-  })
+  });
 
   constructor(
-    private commandManagerService: CommandManagerService,
     private http: Http
   ) {
 
@@ -36,8 +33,6 @@ export class ServerProxyService {
    */
   public login(credentials: { username: string, password: string }): Promise<any> {
     return this.http.post(`${environment.BASE_URL}/login`, credentials)
-      .toPromise()
-      .then(res => res.json().commands)
-      .then(commands => { this.commandManagerService.executeCommands(commands); });
+      .toPromise();
   }
 }
