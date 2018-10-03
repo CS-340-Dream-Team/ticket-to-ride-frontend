@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 
 import {
   AuthManagerService,
-  CommandManagerService,
   ServerProxyService
 } from './services';
 
@@ -19,7 +18,6 @@ import {
   ],
   providers: [
     AuthManagerService,
-    CommandManagerService,
     ServerProxyService
   ],
   bootstrap: [AppComponent]
