@@ -1,0 +1,57 @@
+.dimmer {
+    background: #000;
+	opacity: 0.9;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.dialog-container {
+    display: flex;
+    justify-content: center;
+}
+
+.dialog {
+    background-color: lightgray;
+    width: 400px;
+    height: 235px;
+    border-radius: 10px;
+    z-index:2;
+    margin-top: 115px;
+}
+
+.dialog-title {
+    font-size: 24px;
+    text-align: center;
+    font-family: 'Hind Madurai', sans-serif;
+}
+
+.name-input {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Hind Madurai', sans-serif;
+}
+
+.submit-button {
+    display: block;
+    margin: 10px auto;
+}
+
+.submit-button:hover {
+    cursor: pointer;
+}
+
+.close-button {
+    float: right;
+    padding-right: 13px;
+    line-height: 0em;
+}
+
+.close-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

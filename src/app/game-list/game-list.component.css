@@ -1,0 +1,78 @@
+.game-list-background {
+    background-image: url("../../assets/images/Downtown_Provo.jpg");
+    background-size: cover;
+    filter: blur(2px);
+    display: block;
+    height: 800px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: -1;
+}
+
+.game-list-content {
+    background: rgba(255, 255, 255, 0.60);
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    top: 10px;
+    left: 0;
+    position: fixed;
+    margin: 10px 20px;
+    right: 0;
+    padding: 0 10px;
+    height: 93vh;
+}
+
+.game-title {
+    font-family: 'Abril Fatface', cursive;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.page-title {
+    font-family: 'Hind Madurai', sans-serif;
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    padding: 8px;
+    line-height: 0;
+}
+
+.create-game-container {
+    text-align: center;
+    font-size: 24px;
+    padding: 8px;
+    background-color: grey;
+    margin: 0px auto 24px;
+    width: 58%;
+    border-radius: 10px;
+    line-height: 0em;
+    height: 70px;
+    font-family: 'Hind Madurai', sans-serif;
+}
+
+.create-game-container:hover {
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.game-list-container {
+    margin: 0 auto;
+    width: 70%;
+    height: 60%;
+    background-color: black;
+    border-radius: 10px;
+}
+
+.game-list-container > p {
+    font-family: 'Hind Madurai', sans-serif;
+    text-align: center;
+    color: white;
+}
+
+.list-item {
+    width: 80%;
+    margin: 5px auto;
+    border: 2px solid white;
+    border-radius: 3px;
+}

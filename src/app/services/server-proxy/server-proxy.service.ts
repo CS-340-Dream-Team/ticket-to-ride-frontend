@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { environment } from '../../../environments/environment';
 
-import { CommandManagerService } from '../command-manager/command-manager.service';
+import { Game, Command } from '../../types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,11 @@ import { CommandManagerService } from '../command-manager/command-manager.servic
 export class ServerProxyService {
 
   private _authToken: string = null;
+  private _currentUser: string = null;
+
+  public set currentUser(userName: string) {
+    this._currentUser = userName;
+  }
 
   public set authToken(token: string) {
     this._authToken = token;
@@ -21,10 +26,9 @@ export class ServerProxyService {
       'Content-Type': 'application/json',
       'Authorization': this._authToken
     })
-  })
+  });
 
   constructor(
-    private commandManagerService: CommandManagerService,
     private http: Http
   ) {
 
@@ -36,8 +40,32 @@ export class ServerProxyService {
    */
   public login(credentials: { username: string, password: string }): Promise<any> {
     return this.http.post(`${environment.BASE_URL}/login`, credentials)
+      .toPromise();
+  }
+
+  public getUpdatedGames(): Promise<Command[]> {
+    console.log('Polling');
+    return this.http.get(`${environment.BASE_URL}/games`, this.httpOptions)
       .toPromise()
-      .then(res => res.json().commands)
-      .then(commands => { this.commandManagerService.executeCommands(commands); });
+      .then(res => res.json().commands).catch( /* FIXME fail gracefully */);
+  }
+
+  public createGame(gameName: string): Promise<Command[]> {
+    console.log('Creating ' + gameName);
+    const requestBody = {
+      'name': gameName,
+      'host': this._currentUser
+    };
+    return this.http.post(`${environment.BASE_URL}/games`, requestBody, this.httpOptions)
+      .toPromise()
+      .then(res => res.json().commands).catch( /* FIXME fail gracefully */);
+  }
+
+  public joinGame(game: Game): Promise<Command[]> {
+    console.log('Joining ' + game.name);
+    const url = '/games/' + game.id + '/join';
+    return this.http.post(`${environment.BASE_URL}/` + url, {}, this.httpOptions)
+      .toPromise()
+      .then(res => res.json().commands).catch( /* FIXME fail gracefully */);
   }
 }

@@ -1,10 +1,15 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { GameListComponent } from './game-list/game-list.component';
+import { CreateGameDialogComponent } from './create-game-dialog/create-game-dialog.component';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        CreateGameDialogComponent,
+        GameListComponent
       ],
     }).compileComponents();
   }));
