@@ -15,4 +15,7 @@ export class AuthManagerService {
   public login(credentials: { username: string, password: string }) {
     return this.serverProxy.login(credentials);
   }
+  public register(credentials: { username: string, password: string }) {
+    return this.serverProxy.login(credentials);
+  }
 }
