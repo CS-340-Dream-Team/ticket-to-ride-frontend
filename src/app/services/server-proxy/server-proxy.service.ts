@@ -43,6 +43,12 @@ export class ServerProxyService {
       .toPromise();
   }
 
+  public register(credentials: { username: string, password: string }): Promise<any> {
+    console.log('Making register request with URL: ' + environment.BASE_URL);
+    return this.http.post(`${environment.BASE_URL}/register`, JSON.stringify(credentials))
+      .toPromise();
+  }
+
   public getUpdatedGames(): Promise<Command[]> {
     console.log('Polling');
     return this.http.get(`${environment.BASE_URL}/games`, this.httpOptions)
