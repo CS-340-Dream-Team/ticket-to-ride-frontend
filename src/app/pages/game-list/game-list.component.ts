@@ -9,7 +9,7 @@ import { GameListManagerService } from '../../services';
 })
 export class GameListComponent implements OnInit {
 
-  @Input() activeGames: Game[];
+  @Input() activeGames: Game[] = [];
 
   constructor(private gameListManager: GameListManagerService) {
   }
