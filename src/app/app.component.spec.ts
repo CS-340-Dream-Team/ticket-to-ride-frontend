@@ -2,6 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { AppComponent } from './app.component';
 import { GameListComponent } from './pages';
+<<<<<<< HEAD
 import { ListedGameComponent } from './pages/game-list/listed-game/listed-game.component';
 import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/create-game-dialog.component';
 import { LoginScreenComponent } from './pages';
@@ -18,6 +19,9 @@ const appRoutes: Routes = [
   },
   { path: '**', redirectTo: '/login' }
 ];
+=======
+import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/create-game-dialog.component';
+>>>>>>> Restructuring + Routing
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
