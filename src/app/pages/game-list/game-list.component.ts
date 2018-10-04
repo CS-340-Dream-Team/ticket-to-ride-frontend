@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Game } from '../types';
-import { Player } from '../types';
-import { GameListManagerService } from '../services';
+import { Game } from '../../types';
+import { GameListManagerService } from '../../services';
 
 @Component({
   selector: 'app-game-list',
@@ -10,7 +9,7 @@ import { GameListManagerService } from '../services';
 })
 export class GameListComponent implements OnInit {
 
-  @Input() activeGames: Game[];
+  @Input() activeGames: Game[] = [];
 
   constructor(private gameListManager: GameListManagerService) {
   }
