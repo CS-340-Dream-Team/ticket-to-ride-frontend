@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { GameListComponent } from './game-list/game-list.component';
-import { CreateGameDialogComponent } from './create-game-dialog/create-game-dialog.component';
+import { GameListComponent } from './pages';
+import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/create-game-dialog.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

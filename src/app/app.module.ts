@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { GameListComponent } from './game-list/game-list.component';
-import { CreateGameDialogComponent } from './create-game-dialog/create-game-dialog.component';
-
+import { GameListComponent, LoginScreenComponent } from './pages';
+import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/create-game-dialog.component';
+import { ListedGameComponent } from './pages/game-list/listed-game/listed-game.component';
 
 import {
   AuthManagerService,
@@ -13,9 +14,16 @@ import {
   ServerProxyService
 } from './services';
 
-import { LoginScreenComponent } from './login-screen/login-screen.component';
-import { ListedGameComponent } from './listed-game/listed-game.component';
-
+const appRoutes: Routes = [
+  { path: 'login', component: LoginScreenComponent },
+  { path: 'game-list', component: GameListComponent },
+  {
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  },
+  { path: '**', redirectTo: '/login' }
+];
 
 @NgModule({
   declarations: [
@@ -27,7 +35,11 @@ import { ListedGameComponent } from './listed-game/listed-game.component';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    )
   ],
   providers: [
     AuthManagerService,

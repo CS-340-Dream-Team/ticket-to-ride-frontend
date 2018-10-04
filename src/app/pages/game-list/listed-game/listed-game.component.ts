@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Game } from '../types';
-import { GameListManagerService } from '../services/game-list-manager/game-list-manager.service';
+import { Game } from '../../../types';
+import { GameListManagerService } from '../../../services';
 
 @Component({
   selector: 'app-listed-game',
