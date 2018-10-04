@@ -1,5 +1,5 @@
-.provo-background {
-    background-image: url("../../assets/images/Downtown_Provo.jpg");
+.game-list-background {
+    background-image: url("../../../assets/images/Downtown_Provo.jpg");
     background-size: cover;
     filter: blur(2px);
     display: block;
@@ -9,7 +9,8 @@
     right: 0;
     z-index: -1;
 }
- .content {
+
+.game-list-content {
     background: rgba(255, 255, 255, 0.60);
     border-radius: 3px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
@@ -21,12 +22,14 @@
     padding: 0 10px;
     height: 93vh;
 }
- .game-title {
+
+.game-title {
     font-family: 'Abril Fatface', cursive;
     text-align: center;
     padding-top: 10px;
 }
- .page-title {
+
+.page-title {
     font-family: 'Hind Madurai', sans-serif;
     text-align: center;
     color: white;
@@ -34,7 +37,8 @@
     padding: 8px;
     line-height: 0;
 }
- .create-game-container {
+
+.create-game-container {
     text-align: center;
     font-size: 24px;
     padding: 8px;
@@ -47,31 +51,28 @@
     font-family: 'Hind Madurai', sans-serif;
 }
 
-.slider, .login-container {
-    margin: 0 auto;
-    width: 450px;
-    height: 350px;
+.create-game-container:hover {
+    font-size: 28px;
+    cursor: pointer;
 }
 
-.login-container {
-    margin-top: 100px;
+.game-list-container {
+    margin: 0 auto;
+    width: 70%;
+    height: 60%;
     background-color: black;
     border-radius: 10px;
-    overflow: hidden;
 }
 
-@keyframes slide-up {
-    from {margin-top: 0;}
-    to {margin-top: -348px;}
+.game-list-container > p {
+    font-family: 'Hind Madurai', sans-serif;
+    text-align: center;
+    color: white;
 }
 
-.animate-slide-up {
-    animation-name: slide-up;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-}
-
-.slider {
-    position: absolute;
-    /* margin-top: -340px; */
+.list-item {
+    width: 80%;
+    margin: 5px auto;
+    border: 2px solid white;
+    border-radius: 3px;
 }
