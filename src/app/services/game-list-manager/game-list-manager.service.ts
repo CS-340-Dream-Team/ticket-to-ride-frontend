@@ -2,51 +2,57 @@ import { Injectable } from '@angular/core';
 import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command } from '../../types';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameListManagerService {
   constructor(private serverProxy: ServerProxyService) {
-    if (!GameListManagerService.polling) {
-      GameListManagerService.polling = true;
-      GameListManagerService.poll(serverProxy);
+    if (!this.polling) {
+      this.polling = true;
+      this.poll(serverProxy);
     }
   }
 
-  static games: Game[] = [];
-  static polling = false;
+  get gamesSubject() {
+    return this._gamesSubject;
+  }
 
-  private static poll(serverProxy: ServerProxyService) {
-    if (!GameListManagerService.polling) {
+  _gamesSubject = new Subject<Game[]>();
+  games: Game[] = [];
+  polling = false;
+
+  private poll(serverProxy: ServerProxyService) {
+    if (!this.polling) {
       return;
     }
     serverProxy.getUpdatedGames().then(commands => {
-      GameListManagerService.handleCommands(commands);
+      this.handleCommands(commands);
     });
     setTimeout(() => {
-      GameListManagerService.poll(serverProxy);
+      this.poll(serverProxy);
     }, 3000);
   }
 
-  private static handleCommands(commands: Command[]) {
+  private handleCommands(commands: Command[]) {
     commands.forEach(command => {
       if (command.type === 'updateGameList') {
         this.games = command.data.gameList;
-        // Update all subscribers here
+        this._gamesSubject.next(this.games);
       }
     });
   }
 
   createGame(gameName: string) {
     this.serverProxy.createGame(gameName).then(commands => {
-      GameListManagerService.handleCommands(commands);
+      this.handleCommands(commands);
     });
   }
 
   joinGame(game: Game) {
     this.serverProxy.joinGame(game).then(commands => {
-      GameListManagerService.handleCommands(commands);
+      this.handleCommands(commands);
     });
   }
 }
