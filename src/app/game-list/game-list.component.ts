@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Game } from '../types';
-import { Player } from '../types';
 import { GameListManagerService } from '../services';
 
 @Component({
@@ -13,6 +12,9 @@ export class GameListComponent implements OnInit {
   @Input() activeGames: Game[];
 
   constructor(private gameListManager: GameListManagerService) {
+    gameListManager.gamesSubject.subscribe({
+      next: (games) => this.activeGames = games
+    });
   }
 
   createGameMenuOpen = false;
@@ -38,7 +40,6 @@ export class GameListComponent implements OnInit {
   }
 
 }
-
 
 // tslint:disable-next-line:max-line-length
 // FIXME Give photographer cred. By Creator: Javin Weaver [CC BY-SA 3.0  (https://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], from Wikimedia Commons
