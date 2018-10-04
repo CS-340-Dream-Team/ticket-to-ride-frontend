@@ -7,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginScreenComponent implements OnInit {
 
-  constructor() { }
+  // UI Flag
+  public showRegister = false;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
