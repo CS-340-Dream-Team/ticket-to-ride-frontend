@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command } from '../../types';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

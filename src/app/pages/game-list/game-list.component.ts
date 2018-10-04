@@ -1,11 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-<<<<<<< HEAD:src/app/game-list/game-list.component.ts
-import { Game } from '../types';
-import { GameListManagerService } from '../services';
-=======
 import { Game } from '../../types';
 import { GameListManagerService } from '../../services';
->>>>>>> f7f147c... Restructuring + Routing:src/app/pages/game-list/game-list.component.ts
 
 @Component({
   selector: 'app-game-list',
@@ -14,7 +9,7 @@ import { GameListManagerService } from '../../services';
 })
 export class GameListComponent implements OnInit {
 
-  @Input() activeGames: Game[];
+  @Input() activeGames: Game[] = [];
 
   constructor(private gameListManager: GameListManagerService) {
     gameListManager.gamesSubject.subscribe({
