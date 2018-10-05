@@ -55,7 +55,7 @@ export class ServerProxyService {
   }): Promise<any> {
     console.log("Making register request with URL: " + environment.BASE_URL);
     return this.http
-      .post(`${environment.BASE_URL}/register`, JSON.stringify(credentials))
+      .post(`${environment.BASE_URL}/register`, credentials)
       .toPromise()
       .then((response: Response) => response.json())
       .then((response: { success: string; token: string }) => {
