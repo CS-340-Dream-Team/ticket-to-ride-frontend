@@ -12,7 +12,7 @@
         <div class="padding">
           <form name="login-form" (submit)="login(loginName.value, loginPassword.value); $event.preventDefault()">
             <input type="text" name="username" placeholder="User Name" #loginName>
-            <input type="text" name="password" placeholder="Password" #loginPassword>
+            <input type="password" name="password" placeholder="Password" #loginPassword>
             <input type="submit">
           </form>
           <p class="center-text">
@@ -28,7 +28,7 @@
         <div class="padding">
           <form name="login-form " (submit)="register(registerName.value, registerPassword.value); $event.preventDefault()">
             <input type="text" name="username" placeholder="User Name" #registerName>
-            <input type="text" name="password" placeholder="Password" #registerPassword>
+            <input type="password" name="password" placeholder="Password" #registerPassword>
             <input type="submit">
           </form>
           <p class="center-text">
