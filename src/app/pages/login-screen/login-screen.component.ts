@@ -11,8 +11,6 @@ export class LoginScreenComponent implements OnInit {
 
   // UI Flag
   public showRegister = false;
-  public name: string;
-  public password: string;
 
   constructor(private router: Router, private authManager: AuthManagerService) { }
 
@@ -26,8 +24,8 @@ export class LoginScreenComponent implements OnInit {
     });
   }
 
-  public register() {
-    this.authManager.register({'username': this.name, 'password': this.password}).then(response => {
+  public register(name: string, password: string) {
+    this.authManager.register({'username': name, 'password': password}).then(response => {
       this.router.navigateByUrl('/game-list');
     });
   }
