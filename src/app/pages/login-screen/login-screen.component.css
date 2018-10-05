@@ -58,6 +58,7 @@
     background-color: black;
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 }
 
 @keyframes slide-up {
