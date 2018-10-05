@@ -11,6 +11,8 @@ export class LoginScreenComponent implements OnInit {
 
   // UI Flag
   public showRegister = false;
+  public name: string;
+  public password: string;
 
   constructor(private router: Router, private authManager: AuthManagerService) { }
 
@@ -19,17 +21,13 @@ export class LoginScreenComponent implements OnInit {
 
   public login(name: string, password: string) {
     // TODO add auth call
-    console.log('Made login call from view');
-    console.log(name + ' ' + password);
-    this.authManager.login({'username': name, 'password': password}).then(response => {
+    this.authManager.login({'username': this.name, 'password': this.password}).then(response => {
       this.router.navigateByUrl('/game-list');
     });
   }
 
-  public register(name: string, password: string) {
-    console.log('Made register call from view');
-    console.log(name + ' ' + password);
-    this.authManager.register({'username': name, 'password': password}).then(response => {
+  public register() {
+    this.authManager.register({'username': this.name, 'password': this.password}).then(response => {
       this.router.navigateByUrl('/game-list');
     });
   }
