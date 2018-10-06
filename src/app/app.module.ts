@@ -13,6 +13,7 @@ import {
   GameListManagerService,
   ServerProxyService
 } from './services';
+import { LobbyComponent } from './lobby/lobby.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
     LoginScreenComponent,
     GameListComponent,
     CreateGameDialogComponent,
-    ListedGameComponent
+    ListedGameComponent,
+    LobbyComponent
   ],
   imports: [
     BrowserModule,
