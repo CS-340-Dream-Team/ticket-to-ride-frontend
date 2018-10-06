@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Game } from '../../../types';
 
 @Component({
   selector: 'app-lobby',
@@ -9,7 +10,9 @@ export class LobbyComponent implements OnInit {
 
   constructor() { }
 
+  game: Game = null;
+
   ngOnInit() {
   }
-
+  
 }

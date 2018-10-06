@@ -13,7 +13,7 @@ import {
   GameListManagerService,
   ServerProxyService
 } from './services';
-import { LobbyComponent } from './lobby/lobby.component';
+import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
