@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
-import { environment } from "../../../environments/environment";
+import { environment } from '../../../environments/environment';
 
-import { Game, Command } from "../../types";
+import { Game, Command } from '../../types';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class ServerProxyService {
   private _authToken: string = null;
@@ -23,7 +23,7 @@ export class ServerProxyService {
   private generateHttpOptions(): RequestOptions {
     return new RequestOptions({
       headers: new Headers({
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: this._authToken
       })
     });
@@ -53,7 +53,7 @@ export class ServerProxyService {
     username: string;
     password: string;
   }): Promise<any> {
-    console.log("Making register request with URL: " + environment.BASE_URL);
+    console.log('Making register request with URL: ' + environment.BASE_URL);
     return this.http
       .post(`${environment.BASE_URL}/register`, credentials)
       .toPromise()
@@ -65,16 +65,16 @@ export class ServerProxyService {
   }
 
   public getUpdatedGames(): Promise<Command[]> {
-    console.log("Polling");
+    console.log('Polling');
     return this.http
       .get(`${environment.BASE_URL}/games`, this.generateHttpOptions())
       .toPromise()
-      .then(res => res.json().commands)
+      .then(res => [res.json().command])
       .catch(/* FIXME fail gracefully */);
   }
 
   public createGame(gameName: string): Promise<Command[]> {
-    console.log("Creating " + gameName);
+    console.log('Creating ' + gameName);
     const requestBody = {
       name: gameName,
       host: this._currentUser
@@ -82,13 +82,13 @@ export class ServerProxyService {
     return this.http
       .post(`${environment.BASE_URL}/games`, requestBody, this.generateHttpOptions())
       .toPromise()
-      .then(res => res.json().commands)
+      .then(res => [res.json().command])
       .catch(/* FIXME fail gracefully */);
   }
 
   public joinGame(game: Game): Promise<Command[]> {
-    console.log("Joining " + game.name);
-    const url = "/games/" + game.id + "/join";
+    console.log('Joining ' + game.name);
+    const url = '/games/' + game.id + '/join';
     return this.http
       .post(`${environment.BASE_URL}/` + url, {}, this.generateHttpOptions())
       .toPromise()
