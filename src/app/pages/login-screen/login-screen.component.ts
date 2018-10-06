@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthManagerService } from '../../services';
 
 @Component({
   selector: 'app-login-screen',
@@ -11,14 +12,21 @@ export class LoginScreenComponent implements OnInit {
   // UI Flag
   public showRegister = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authManager: AuthManagerService) { }
 
   ngOnInit() {
   }
 
-  public login() {
+  public login(name: string, password: string) {
     // TODO add auth call
-    this.router.navigateByUrl('/game-list');
+    this.authManager.login({'username': name,  'password': password}).then(response => {
+      this.router.navigateByUrl('/game-list');
+    });
   }
 
+  public register(name: string, password: string) {
+    this.authManager.register({'username': name, 'password': password}).then(response => {
+      this.router.navigateByUrl('/game-list');
+    });
+  }
 }
