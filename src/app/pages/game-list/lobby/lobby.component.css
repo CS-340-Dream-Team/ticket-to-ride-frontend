@@ -1,3 +1,37 @@
 .title {
   font-family: "Abril Fatface", cursive;
+  text-align: center;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+  width: 100%;
+  background-color: black;
+  border-radius: 10px;
+  font-family: 'Hind Madurai', sans-serif;
+  text-align: center;
+  color: white;
+  padding: 8px 0;
+}
+
+.player + .player {
+  margin: 4px 0;
+}
+
+.player {
+  list-style: none;
+  width: 80%;
+  font-size: 1.2em;
+  margin: 5px auto;
+  border: 2px solid white;
+  border-radius: 3px;
+}
+
+.player.host {
+  background-color: white;
+  color: black;
 }
