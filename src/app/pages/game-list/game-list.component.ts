@@ -16,7 +16,7 @@ export class GameListComponent implements OnInit {
     gameListManager.gamesSubject.subscribe({
       next: (games) => this.activeGames = games
     });
-    gameListManager.activeGameSubject.subscribe({
+    gameListManager.currentGameSubject.subscribe({
       next: (game) => this.selectedGame = game
     });
   }
@@ -48,7 +48,7 @@ export class GameListComponent implements OnInit {
   }
 
   select(game: Game) {
-    this.gameListManager.setActiveGame(game);
+    this.gameListManager.setCurrentGame(game);
   }
 }
 
