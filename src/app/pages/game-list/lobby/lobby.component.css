@@ -35,3 +35,11 @@
   background-color: white;
   color: black;
 }
+
+.options {
+  list-style-type: none;
+}
+
+.options > button {
+  margin: 0 10px;
+}

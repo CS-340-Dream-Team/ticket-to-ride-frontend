@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Game } from '../../../types';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Game, Player } from '../../../types';
+import { GameListManagerService } from '../../../services';
 
 @Component({
   selector: 'app-lobby',
@@ -8,11 +9,35 @@ import { Game } from '../../../types';
 })
 export class LobbyComponent implements OnInit {
 
-  constructor() { }
+  constructor(private gameListManager: GameListManagerService) { }
 
-  game: Game = null;
+  @Input() game: Game = null;
+  @Output() closeEvent: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit() {
   }
-  
+
+  getNonHostPlayers(): Player[] {
+    const players = [];
+    this.game.playersJoined.forEach(player => {
+      if (player.name !== this.game.host.name) {
+        players.push(player);
+      }
+    });
+    return players;
+  }
+
+  closeLobby() {
+    this.closeEvent.emit();
+  }
+
+  joinGame() {
+    this.gameListManager.joinGame(this.game);
+  }
+
+  gameFull() {
+    if (this.game.playersJoined.length >= 5) {
+      return true;
+    }
+  }
 }

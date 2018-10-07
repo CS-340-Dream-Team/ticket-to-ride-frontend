@@ -2,10 +2,14 @@
   <h1 class="title">Great Game</h1>
   <ul class="players">
     <li class="player host">
-      Charles
+      {{game.host.name}} (Host)
     </li> 
-    <li class="player">Bobbert</li>
-    <li class="player">Chesney</li>
-    <li class="player">Dopert</li>
+    <li class="player" *ngFor="let player of getNonHostPlayers()">{{player.name}}</li>
+    <li class="options">
+      <button (click)="closeLobby()">Close</button>
+      <button (click)="joinGame()" [disabled]="gameFull()">Join Game</button>
+    </li>
   </ul>
+  
+  
 </div>

@@ -50,6 +50,10 @@ export class GameListComponent implements OnInit {
   select(game: Game) {
     this.gameListManager.setCurrentGame(game);
   }
+
+  deselectGame() {
+    this.select(null);
+  }
 }
 
 // tslint:disable-next-line:max-line-length

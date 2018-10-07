@@ -22,8 +22,7 @@ export class ListedGameComponent implements OnInit {
     return 5 - this.game.numPlayers;
   }
 
-  joinGame() {
-    // this.gameListManager.joinGame(this.game);
+  selectGame() {
     this.selectEvent.emit();
   }
 

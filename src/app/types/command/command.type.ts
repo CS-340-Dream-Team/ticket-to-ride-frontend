@@ -1,4 +1,4 @@
 export interface Command {
-    type: 'login' | 'updateGameList';
+    type: 'login' | 'updateGameList' | 'updatePlayerList';
     data: any;
 }

@@ -89,11 +89,11 @@ export class ServerProxyService {
 
   public joinGame(game: Game): Promise<Command[]> {
     console.log('Joining ' + game.name);
-    const url = '/games/' + game.id + '/join';
+    const url = 'games/' + game.id + '/join';
     return this.http
       .post(`${environment.BASE_URL}/` + url, {}, this.generateHttpOptions())
       .toPromise()
-      .then(res => res.json().commands)
+      .then(res => [res.json().command])
       .catch(/* FIXME fail gracefully */);
   }
 }

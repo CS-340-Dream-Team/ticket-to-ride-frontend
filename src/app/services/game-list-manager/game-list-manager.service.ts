@@ -46,13 +46,16 @@ export class GameListManagerService {
       if (command.type === 'updateGameList') {
         this.games = command.data.gameList;
         this._gamesSubject.next(this.games);
+      } else if (command.type === 'updatePlayerList') {
+        this.currentGame.playersJoined = command.data.playerList;
+        this.currentGame.numPlayers = command.data.playerList.length;
       }
     });
   }
 
   setCurrentGame(game: Game|null) {
     this.currentGame = game;
-    this._activeGameSubject.next(this.currentGame);
+    this._currentGameSubject.next(this.currentGame);
   }
 
   createGame(gameName: string) {
@@ -63,7 +66,6 @@ export class GameListManagerService {
 
   joinGame(game: Game) {
     this.serverProxy.joinGame(game).then(commands => {
-      this.currentGame = game;
       this.handleCommands(commands);
     });
   }
