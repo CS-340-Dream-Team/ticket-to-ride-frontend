@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Game } from '../../../types';
 import { GameListManagerService } from '../../../services';
 
@@ -10,6 +10,8 @@ import { GameListManagerService } from '../../../services';
 export class ListedGameComponent implements OnInit {
 
   @Input() game: Game;
+  @Input() canClick: boolean;
+  @Output() selectEvent: EventEmitter<null> = new EventEmitter<null>();
 
   constructor(private gameListManager: GameListManagerService) { }
 
@@ -21,7 +23,12 @@ export class ListedGameComponent implements OnInit {
   }
 
   joinGame() {
-    this.gameListManager.joinGame(this.game);
+    // this.gameListManager.joinGame(this.game);
+    this.selectEvent.emit();
+  }
+
+  disableButton() {
+    return !this.canClick;
   }
 
 }

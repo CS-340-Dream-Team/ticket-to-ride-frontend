@@ -10,10 +10,14 @@ import { GameListManagerService } from '../../services';
 export class GameListComponent implements OnInit {
 
   @Input() activeGames: Game[] = [];
+  selectedGame: Game|null = null;
 
   constructor(private gameListManager: GameListManagerService) {
     gameListManager.gamesSubject.subscribe({
       next: (games) => this.activeGames = games
+    });
+    gameListManager.activeGameSubject.subscribe({
+      next: (game) => this.selectedGame = game
     });
   }
 
@@ -39,6 +43,13 @@ export class GameListComponent implements OnInit {
     return (this.activeGames.length === 0);
   }
 
+  canSelectGame(): boolean {
+    return this.selectedGame == null;
+  }
+
+  select(game: Game) {
+    this.gameListManager.setActiveGame(game);
+  }
 }
 
 // tslint:disable-next-line:max-line-length

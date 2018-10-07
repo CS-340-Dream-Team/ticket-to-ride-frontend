@@ -17,7 +17,7 @@
     </div>
     <p *ngIf="gameListEmpty()">Game list is empty</p>
     <div class="list-item" *ngFor="let game of activeGames">
-      <app-listed-game [game]="game"></app-listed-game>
+      <app-listed-game [game]="game" [canClick]="canSelectGame()" (selectEvent)="select(game)"></app-listed-game>
     </div>
   </div>
 </div>

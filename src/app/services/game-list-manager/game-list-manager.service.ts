@@ -19,8 +19,14 @@ export class GameListManagerService {
     return this._gamesSubject;
   }
 
+  get activeGameSubject() {
+    return this._activeGameSubject;
+  }
+
   _gamesSubject = new Subject<Game[]>();
+  _activeGameSubject = new Subject<Game|null>();
   games: Game[] = [];
+  activeGame: Game|null = null;
   polling = false;
 
   private poll(serverProxy: ServerProxyService) {
@@ -42,6 +48,11 @@ export class GameListManagerService {
         this._gamesSubject.next(this.games);
       }
     });
+  }
+
+  setActiveGame(game: Game|null) {
+    this.activeGame = game;
+    this._activeGameSubject.next(this.activeGame);
   }
 
   createGame(gameName: string) {

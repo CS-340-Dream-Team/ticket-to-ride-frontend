@@ -1,6 +1,6 @@
 <div class="listed-game-container">
   <div class="join-button">
-    <button (click)="joinGame()">Join</button>
+    <button (click)="joinGame()" [disabled]="!canClick">View</button>
   </div>
   <div class="title">
     <h5>
