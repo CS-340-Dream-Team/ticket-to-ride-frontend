@@ -3,12 +3,13 @@ import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command } from '../../types';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameListManagerService {
-  constructor(private serverProxy: ServerProxyService) {
+  constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
     if (!this.polling) {
       this.polling = true;
       this.poll(serverProxy);
@@ -35,6 +36,8 @@ export class GameListManagerService {
     }
     serverProxy.getUpdatedGames().then(commands => {
       this.handleCommands(commands);
+    }).catch(res => {
+      this.toastr.error(res.message);
     });
     setTimeout(() => {
       this.poll(serverProxy);
@@ -61,12 +64,16 @@ export class GameListManagerService {
   createGame(gameName: string) {
     this.serverProxy.createGame(gameName).then(commands => {
       this.handleCommands(commands);
-    });
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });;
   }
 
   joinGame(game: Game) {
     this.serverProxy.joinGame(game).then(commands => {
       this.handleCommands(commands);
-    });
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });;
   }
 }

@@ -24,8 +24,8 @@ export class ServerProxyService {
     return new RequestOptions({
       headers: new Headers({
         'Content-Type': 'application/json',
-        Authorization: this._authToken
-        // Authorization: 'Bearer: ' + this._authToken    // Uncomment this when the server changes
+        // Authorization: this._authToken
+        Authorization: 'Bearer: ' + this._authToken    // Uncomment this when the server changes
       })
     });
   }
