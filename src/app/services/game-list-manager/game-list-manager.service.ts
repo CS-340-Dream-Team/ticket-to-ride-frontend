@@ -19,8 +19,14 @@ export class GameListManagerService {
     return this._gamesSubject;
   }
 
+  get currentGameSubject() {
+    return this._currentGameSubject;
+  }
+
   _gamesSubject = new Subject<Game[]>();
+  _currentGameSubject = new Subject<Game|null>();
   games: Game[] = [];
+  currentGame: Game = null;
   polling = false;
 
   private poll(serverProxy: ServerProxyService) {
@@ -40,8 +46,16 @@ export class GameListManagerService {
       if (command.type === 'updateGameList') {
         this.games = command.data.gameList;
         this._gamesSubject.next(this.games);
+      } else if (command.type === 'updatePlayerList') {
+        this.currentGame.playersJoined = command.data.playerList;
+        this.currentGame.numPlayers = command.data.playerList.length;
       }
     });
+  }
+
+  setCurrentGame(game: Game|null) {
+    this.currentGame = game;
+    this._currentGameSubject.next(this.currentGame);
   }
 
   createGame(gameName: string) {

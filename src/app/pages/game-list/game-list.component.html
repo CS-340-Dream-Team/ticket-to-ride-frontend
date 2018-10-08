@@ -4,20 +4,27 @@
     (newGameNameEvent)='newGameTitle($event)'
     (closeEvent)='closeDialog($event)'
     ></app-create-game-dialog>
-<div class="game-list-content">
-  <div class="game-title">
-    <h1>Student ID to Ride: Provo</h1>
-  </div>
-  <div class="create-game-container" (click)="openCreateGameDialog()">
-    <h4>+ Create a Game</h4>
-  </div>
-  <div class="game-list-container">
-    <div class="page-title">
-      <h3>Active Games</h3>
+<div class="list-lobby-container">
+  <div class="game-list-content title">
+    <div class="game-title">
+      <h1>Student ID to Ride: Provo</h1>
     </div>
-    <p *ngIf="gameListEmpty()">Game list is empty</p>
-    <div class="list-item" *ngFor="let game of activeGames">
-      <app-listed-game [game]="game"></app-listed-game>
+    <div class="create-game-container" (click)="openCreateGameDialog()">
+      <h4>+ Create a Game</h4>
+    </div>
+    <div class="game-list-container">
+      <div class="page-title">
+        <h3>Active Games</h3>
+      </div>
+      <p *ngIf="gameListEmpty()">Game list is empty</p>
+      <div class="list-item" *ngFor="let game of activeGames">
+        <app-listed-game [game]="game" [canClick]="canSelectGame()" (selectEvent)="select(game)"></app-listed-game>
+      </div>
     </div>
   </div>
+  <app-lobby 
+    class="lobby-container" 
+    *ngIf="!canSelectGame()" 
+    [game]="selectedGame"
+    (closeEvent)="deselectGame()"></app-lobby> 
 </div>

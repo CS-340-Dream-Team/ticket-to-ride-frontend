@@ -1,0 +1,15 @@
+<div class="lobby">
+  <h1 class="title">Great Game</h1>
+  <ul class="players">
+    <li class="player host">
+      {{game.host.name}} (Host)
+    </li> 
+    <li class="player" *ngFor="let player of getNonHostPlayers()">{{player.name}}</li>
+    <li class="options">
+      <button (click)="closeLobby()">Close</button>
+      <button (click)="joinGame()" [disabled]="gameFull()">Join Game</button>
+    </li>
+  </ul>
+  
+  
+</div>
