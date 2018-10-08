@@ -43,6 +43,7 @@ export class GameListManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
+      const activeID = this.currentGame === null ? -1 : this.currentGame.id;
       if (command.type === 'updateGameList') {
         this.games = command.data.gameList;
         this._gamesSubject.next(this.games);
@@ -50,6 +51,12 @@ export class GameListManagerService {
         this.currentGame.playersJoined = command.data.playerList;
         this.currentGame.numPlayers = command.data.playerList.length;
       }
+      this.games.forEach(game => {
+        if (game.id === activeID && game !== this.currentGame) {
+          this.currentGame = game;
+          this._currentGameSubject.next(this.currentGame);
+        }
+      });
     });
   }
 
