@@ -83,5 +83,8 @@ export class GameListManagerService {
     console.warn(
       "Remember to move this logic into the same service that handles game logic"
     );
+    this.serverProxy.startGame(game).then(commands => {
+      this.handleCommands(commands);
+    })
   }
 }
