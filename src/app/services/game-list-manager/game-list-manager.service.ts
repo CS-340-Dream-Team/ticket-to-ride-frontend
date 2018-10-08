@@ -51,12 +51,18 @@ export class GameListManagerService {
         this.currentGame.playersJoined = command.data.playerList;
         this.currentGame.numPlayers = command.data.playerList.length;
       }
+      let found = false;
       this.games.forEach(game => {
         if (game.id === activeID && game !== this.currentGame) {
+          found = true;
           this.currentGame = game;
           this._currentGameSubject.next(this.currentGame);
         }
       });
+      if (!found) {
+        this.currentGame = null;
+        this._currentGameSubject.next(this.currentGame);
+      }
     });
   }
 
