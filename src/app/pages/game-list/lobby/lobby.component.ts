@@ -30,6 +30,14 @@ export class LobbyComponent implements OnInit {
     return players;
   }
 
+  canStartGame() {
+    return (
+      2 <= this.game.playersJoined.length &&
+      this.game.playersJoined.length <= 5 &&
+      this.game.host.name === this.authManagerService.currentUser.name
+    );
+  }
+
   closeLobby() {
     this.closeEvent.emit();
   }
@@ -42,11 +50,10 @@ export class LobbyComponent implements OnInit {
     return this.game.playersJoined.length >= 5;
   }
 
-  canStartGame() {
-    return (
-      2 <= this.game.playersJoined.length &&
-      this.game.playersJoined.length <= 5 &&
-      this.game.host.name === this.authManagerService.currentUser.name
-    );
+  startGame() {
+    if (!this.canStartGame()) {
+      throw Error("User is not permitted to start the game");
+    }
+    this.gameListManager.startGame(this.game);
   }
 }

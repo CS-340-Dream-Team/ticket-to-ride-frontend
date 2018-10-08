@@ -10,5 +10,7 @@
       <button (click)="joinGame()" [disabled]="gameFull()">Join Game</button>
     </li>
   </ul>
-  <button class="start-game-button" [disabled]="!canStartGame()">Start</button>
+  <div class="start-game-container">
+    <button class="start-game" (click)="$event.preventDefault; startGame()" [disabled]="!canStartGame()">Start</button>
+  </div>
 </div>
