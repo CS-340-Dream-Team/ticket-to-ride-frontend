@@ -55,6 +55,3 @@ export class GameListComponent implements OnInit {
     this.select(null);
   }
 }
-
-// tslint:disable-next-line:max-line-length
-// FIXME Give photographer cred. By Creator: Javin Weaver [CC BY-SA 3.0  (https://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], from Wikimedia Commons
