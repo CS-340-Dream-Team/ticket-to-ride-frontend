@@ -1,21 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Game, Player } from '../../../types';
-import { GameListManagerService } from '../../../services';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Game, Player } from "../../../types";
+import { GameListManagerService, AuthManagerService } from "../../../services";
 
 @Component({
-  selector: 'app-lobby',
-  templateUrl: './lobby.component.html',
-  styleUrls: ['./lobby.component.css']
+  selector: "app-lobby",
+  templateUrl: "./lobby.component.html",
+  styleUrls: ["./lobby.component.css"]
 })
 export class LobbyComponent implements OnInit {
+  constructor(
+    private gameListManager: GameListManagerService,
+    private authManagerService: AuthManagerService
+  ) {}
 
-  constructor(private gameListManager: GameListManagerService) { }
+  @Input()
+  game: Game = null;
+  @Output()
+  closeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() game: Game = null;
-  @Output() closeEvent: EventEmitter<any> = new EventEmitter<any>();
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getNonHostPlayers(): Player[] {
     const players = [];
@@ -27,6 +30,14 @@ export class LobbyComponent implements OnInit {
     return players;
   }
 
+  canStartGame() {
+    return (
+      2 <= this.game.playersJoined.length &&
+      this.game.playersJoined.length <= 5 &&
+      this.game.host.name === this.authManagerService.currentUser.name
+    );
+  }
+
   closeLobby() {
     this.closeEvent.emit();
   }
@@ -36,8 +47,13 @@ export class LobbyComponent implements OnInit {
   }
 
   gameFull() {
-    if (this.game.playersJoined.length >= 5) {
-      return true;
+    return this.game.playersJoined.length >= 5;
+  }
+
+  startGame() {
+    if (!this.canStartGame()) {
+      throw Error("User is not permitted to start the game");
     }
+    this.gameListManager.startGame(this.game);
   }
 }
