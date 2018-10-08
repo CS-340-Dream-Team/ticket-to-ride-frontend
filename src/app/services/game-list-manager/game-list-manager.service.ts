@@ -5,8 +5,9 @@ import { Command } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class GameListManagerService {
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
@@ -25,7 +26,7 @@ export class GameListManagerService {
   }
 
   _gamesSubject = new Subject<Game[]>();
-  _currentGameSubject = new Subject<Game|null>();
+  _currentGameSubject = new Subject<Game | null>();
   games: Game[] = [];
   currentGame: Game = null;
   polling = false;
@@ -46,17 +47,24 @@ export class GameListManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      if (command.type === 'updateGameList') {
+      const activeID = this.currentGame === null ? -1 : this.currentGame.id;
+      if (command.type === "updateGameList") {
         this.games = command.data.gameList;
         this._gamesSubject.next(this.games);
-      } else if (command.type === 'updatePlayerList') {
+      } else if (command.type === "updatePlayerList") {
         this.currentGame.playersJoined = command.data.playerList;
         this.currentGame.numPlayers = command.data.playerList.length;
       }
+      this.games.forEach(game => {
+        if (game.id === activeID && game !== this.currentGame) {
+          this.currentGame = game;
+          this._currentGameSubject.next(this.currentGame);
+        }
+      });
     });
   }
 
-  setCurrentGame(game: Game|null) {
+  setCurrentGame(game: Game | null) {
     this.currentGame = game;
     this._currentGameSubject.next(this.currentGame);
   }
@@ -75,5 +83,16 @@ export class GameListManagerService {
     }).catch(res => {
       this.toastr.error(res.message);
     });;
+  }
+
+  // TODO: Move this to the game running service
+  startGame(game: Game) {
+    console.log("Starting the game!");
+    console.warn(
+      "Remember to move this logic into the same service that handles game logic"
+    );
+    this.serverProxy.startGame(game).then(commands => {
+      this.handleCommands(commands);
+    })
   }
 }

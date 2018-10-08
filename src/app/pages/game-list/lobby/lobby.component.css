@@ -12,7 +12,7 @@
   width: 100%;
   background-color: black;
   border-radius: 10px;
-  font-family: 'Hind Madurai', sans-serif;
+  font-family: "Hind Madurai", sans-serif;
   text-align: center;
   color: white;
   padding: 8px 0;
@@ -42,4 +42,12 @@
 
 .options > button {
   margin: 0 10px;
+}
+
+.start-game-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
 }

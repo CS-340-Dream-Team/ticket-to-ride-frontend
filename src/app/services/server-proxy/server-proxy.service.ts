@@ -24,8 +24,7 @@ export class ServerProxyService {
     return new RequestOptions({
       headers: new Headers({
         'Content-Type': 'application/json',
-        // Authorization: this._authToken
-        Authorization: 'Bearer: ' + this._authToken    // Uncomment this when the server changes
+        Authorization: `Bearer: ${this._authToken}`
       })
     });
   }
@@ -141,5 +140,17 @@ export class ServerProxyService {
           }
         );
     });
+  }
+
+  public startGame(game: Game): Promise<Command[]> {
+    console.log('Starting ' + game.name);
+    const url = `games/${game.id}/start`;
+    return this.http
+    .post(`${environment.BASE_URL}/${url}`, {}, this.generateHttpOptions()).toPromise()
+    .then(response => {
+      console.log(response.json());
+      return response;
+    })
+    .then(res => [res.json().command])
   }
 }
