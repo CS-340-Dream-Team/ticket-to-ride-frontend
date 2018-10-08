@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { ServerProxyService } from "../server-proxy/server-proxy.service";
-import { Player } from "../../types";
+import { Injectable } from '@angular/core';
+import { ServerProxyService } from '../server-proxy/server-proxy.service';
+import { Player } from '../../types';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthManagerService {
   private _currentUser: Player;
@@ -12,7 +12,7 @@ export class AuthManagerService {
     return this._currentUser;
   }
 
-  constructor(private serverProxy: ServerProxyService) {}
+  constructor(private serverProxy: ServerProxyService) { }
 
   /**
    * Attempts to log a user in
@@ -23,9 +23,17 @@ export class AuthManagerService {
       this._currentUser = { name: credentials.username } as Player;
     });
   }
+
   public register(credentials: { username: string; password: string }) {
     return this.serverProxy.register(credentials).then(() => {
       this._currentUser = { name: credentials.username } as Player;
     });
   }
+
+  public isAuthenticated() {
+    return this.serverProxy.hasToken;
+  }
+
+
+
 }

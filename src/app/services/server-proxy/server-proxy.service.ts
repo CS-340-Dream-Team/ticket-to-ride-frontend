@@ -20,6 +20,10 @@ export class ServerProxyService {
     this._authToken = token;
   }
 
+  public get hasToken() {
+    return this._authToken !== null;
+  }
+
   private generateHttpOptions(): RequestOptions {
     return new RequestOptions({
       headers: new Headers({
@@ -29,7 +33,7 @@ export class ServerProxyService {
     });
   }
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   /**
    * Attempts to log a user in
@@ -100,11 +104,11 @@ export class ServerProxyService {
     console.log('Starting ' + game.name);
     const url = `games/${game.id}/start`;
     return this.http
-    .post(`${environment.BASE_URL}/${url}`, {}, this.generateHttpOptions()).toPromise()
-    .then(response => {
-      console.log(response.json());
-      return response;
-    })
-    .then(res => [res.json().command])
+      .post(`${environment.BASE_URL}/${url}`, {}, this.generateHttpOptions()).toPromise()
+      .then(response => {
+        console.log(response.json());
+        return response;
+      })
+      .then(res => [res.json().command])
   }
 }
