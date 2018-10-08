@@ -44,16 +44,20 @@ export class ServerProxyService {
       this.http
         .post(`${environment.BASE_URL}/login`, credentials)
         .subscribe(
-          (response: Response) => {
-            const responseJson = response.json();
-            this._authToken = responseJson.token;
-            resolve(responseJson);
+          (res: Response) => {
+            const resJson = res.json();
+            this._authToken = resJson.token;
+            resolve(resJson);
           }, err => {
             reject(err.json());
           });
     });
   }
 
+  /**
+   * Attempts to create a new user
+   * @param credentials Username and password
+   */
   public register(credentials: {
     username: string;
     password: string;
@@ -63,10 +67,10 @@ export class ServerProxyService {
       this.http
         .post(`${environment.BASE_URL}/register`, credentials)
         .subscribe(
-          (response: Response) => {
-            const responseJson = response.json();
-            this._authToken = responseJson.token;
-            resolve(response.json());
+          (res: Response) => {
+            const resJson = res.json();
+            this._authToken = resJson.token;
+            resolve(resJson);
           }, err => {
             reject(err.json());
           }
@@ -74,14 +78,17 @@ export class ServerProxyService {
     });
   }
 
+  /**
+   * Gets the current game list
+   */
   public getUpdatedGames(): Promise<Command[]> {
     console.log('Polling');
     return new Promise<any>((resolve, reject) => {
       this.http
         .get(`${environment.BASE_URL}/games`, this.generateHttpOptions())
         .subscribe(
-          (response: Response) => {
-            const resJson = response.json();
+          (res: Response) => {
+            const resJson = res.json();
             resolve([resJson.command]);
           }, err => {
             reject(err.json());
@@ -90,6 +97,10 @@ export class ServerProxyService {
     });
   }
 
+  /**
+   * Attempts to create a new game
+   * @param gameName Name of the GAME!
+   */
   public createGame(gameName: string): Promise<Command[]> {
     console.log('Creating ' + gameName);
     const requestBody = {
@@ -101,8 +112,8 @@ export class ServerProxyService {
       this.http
         .post(`${environment.BASE_URL}/games`, requestBody, this.generateHttpOptions())
         .subscribe(
-          (response: Response) => {
-            const resJson = response.json();
+          (res: Response) => {
+            const resJson = res.json();
             resolve([resJson.command]);
           }, err => {
             reject(err.json());
@@ -111,6 +122,10 @@ export class ServerProxyService {
     });
   }
 
+  /**
+   * Attempts to add the current user to the players list of an existing game
+   * @param game The game (type: Game)
+   */
   public joinGame(game: Game): Promise<Command[]> {
     console.log('Joining ' + game.name);
     const url = 'games/' + game.id + '/join';
@@ -118,8 +133,8 @@ export class ServerProxyService {
       this.http
         .post(`${environment.BASE_URL}/` + url, {}, this.generateHttpOptions())
         .subscribe(
-          (response: Response) => {
-            const resJson = response.json();
+          (res: Response) => {
+            const resJson = res.json();
             resolve([resJson.command]);
           }, err => {
             reject(err.json());
