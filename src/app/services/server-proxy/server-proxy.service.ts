@@ -29,7 +29,7 @@ export class ServerProxyService {
     });
   }
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   /**
    * Attempts to log a user in
@@ -39,61 +39,107 @@ export class ServerProxyService {
     username: string;
     password: string;
   }): Promise<any> {
-    return this.http
-      .post(`${environment.BASE_URL}/login`, credentials)
-      .toPromise()
-      .then((response: Response) => response.json())
-      .then((response: { success: string; token: string }) => {
-        this._authToken = response.token;
-        return response;
-      });
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .post(`${environment.BASE_URL}/login`, credentials)
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            this._authToken = resJson.token;
+            resolve(resJson);
+          }, err => {
+            reject(err.json());
+          });
+    });
   }
 
+  /**
+   * Attempts to create a new user
+   * @param credentials Username and password
+   */
   public register(credentials: {
     username: string;
     password: string;
   }): Promise<any> {
     console.log('Making register request with URL: ' + environment.BASE_URL);
-    return this.http
-      .post(`${environment.BASE_URL}/register`, credentials)
-      .toPromise()
-      .then((response: Response) => response.json())
-      .then((response: { success: string; token: string }) => {
-        this._authToken = response.token;
-        return response;
-      });
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .post(`${environment.BASE_URL}/register`, credentials)
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            this._authToken = resJson.token;
+            resolve(resJson);
+          }, err => {
+            reject(err.json());
+          }
+        );
+    });
   }
 
+  /**
+   * Gets the current game list
+   */
   public getUpdatedGames(): Promise<Command[]> {
     console.log('Polling');
-    return this.http
-      .get(`${environment.BASE_URL}/games`, this.generateHttpOptions())
-      .toPromise()
-      .then(res => [res.json().command])
-      .catch(/* FIXME fail gracefully */);
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .get(`${environment.BASE_URL}/games`, this.generateHttpOptions())
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            resolve([resJson.command]);
+          }, err => {
+            reject(err.json());
+          }
+        );
+    });
   }
 
+  /**
+   * Attempts to create a new game
+   * @param gameName Name of the GAME!
+   */
   public createGame(gameName: string): Promise<Command[]> {
     console.log('Creating ' + gameName);
     const requestBody = {
       name: gameName,
       host: this._currentUser
     };
-    return this.http
-      .post(`${environment.BASE_URL}/games`, requestBody, this.generateHttpOptions())
-      .toPromise()
-      .then(res => [res.json().command])
-      .catch(/* FIXME fail gracefully */);
+
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .post(`${environment.BASE_URL}/games`, requestBody, this.generateHttpOptions())
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            resolve([resJson.command]);
+          }, err => {
+            reject(err.json());
+          }
+        );
+    });
   }
 
+  /**
+   * Attempts to add the current user to the players list of an existing game
+   * @param game The game (type: Game)
+   */
   public joinGame(game: Game): Promise<Command[]> {
     console.log('Joining ' + game.name);
     const url = 'games/' + game.id + '/join';
-    return this.http
-      .post(`${environment.BASE_URL}/` + url, {}, this.generateHttpOptions())
-      .toPromise()
-      .then(res => [res.json().command])
-      .catch(/* FIXME fail gracefully */);
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .post(`${environment.BASE_URL}/` + url, {}, this.generateHttpOptions())
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            resolve([resJson.command]);
+          }, err => {
+            reject(err.json());
+          }
+        );
+    });
   }
 
   public startGame(game: Game): Promise<Command[]> {

@@ -1,4 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -36,7 +40,9 @@ const appRoutes: Routes = [
     LobbyComponent
   ],
   imports: [
+    BrowserAnimationsModule, // required animations module
     BrowserModule,
+    ToastrModule.forRoot(),
     HttpModule,
     RouterModule.forRoot(
       appRoutes
