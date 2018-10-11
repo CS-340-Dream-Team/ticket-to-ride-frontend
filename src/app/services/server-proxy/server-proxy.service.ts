@@ -106,7 +106,6 @@ export class ServerProxyService {
     return this.http
       .post(`${environment.BASE_URL}/${url}`, {}, this.generateHttpOptions()).toPromise()
       .then(response => {
-        console.log(response.json());
         return response;
       })
       .then(res => [res.json().command])
