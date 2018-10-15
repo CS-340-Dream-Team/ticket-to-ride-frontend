@@ -1,0 +1,17 @@
+<div *ngIf="showChat" class="container" >
+  <div class="head" (click)="closeChat()">Close</div>
+  <div class="chat-container">
+    <ul class="messages">
+      <li *ngFor="let message of messages">
+        <app-message [messageText]="message"></app-message>
+      </li>
+    </ul>
+  </div>
+  <form class="send-message-form" (keydown)="sendMessage($event)">
+    <input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message">
+  </form>
+</div>
+
+<div *ngIf="!showChat" (click)="openChat()">
+  <button class="open-button">Open Chat</button>
+</div>
