@@ -1,17 +1,22 @@
-<div *ngIf="showChat" class="container" >
-  <div class="head" (click)="closeChat()">Close</div>
-  <div class="chat-container">
-    <ul class="messages">
-      <li *ngFor="let message of messages">
-        <app-message [messageText]="message"></app-message>
-      </li>
-    </ul>
+<div class="background"></div>
+<div *ngIf="showChat" > 
+  <div class="container" >
+    <div class="chat-container">
+      <ul class="messages">
+        <li *ngFor="let message of messages">
+          <app-message [message]="message.message" [player]="currentPlayer" class="box color-4"></app-message>
+        </li>
+      </ul>
+    </div>
+    <form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
+      <input name="messageText" type="text" [(ngModel)]="inputMessage.message" placeholder="Message" autocomplete="off">
+    </form>
   </div>
-  <form class="send-message-form" (keydown)="sendMessage($event)">
-    <input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message">
-  </form>
-</div>
+  <div (click)="closeChat()">
+    <button class="chat-button">X</button>
+  </div>
+</div> 
 
 <div *ngIf="!showChat" (click)="openChat()">
-  <button class="open-button">Open Chat</button>
+  <button class="chat-button">Icon</button>
 </div>

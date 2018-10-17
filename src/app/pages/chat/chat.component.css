@@ -1,76 +1,72 @@
-* {
-  box-sizing: border-box;
-}
-.head {
-  width: 400px;
-  margin: 0 auto;
-  border: solid 1px #ccc;
-  border-radius: 10px;
-  overflow: hidden;
+.background {
+  background-color: gray; 
+  background-size: cover;
+  position: fixed;
+  height: 100%;
   width: 100%;
-  padding: 16px 20px;
-  background: rgba(1, 1, 1, 0.9);
-  color: white;
-  text-align: center;
 }
+
 .container {
-  width: 400px;
-  margin: 0 auto;
-  border: solid 1px #ccc;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   position: fixed;
-  bottom: 23px;
-  right: 28px;
+  bottom: 70px;
+  right: 40px;
   width: 280px;
-  padding: 16px 20px;
-  background: rgba(1, 1, 1, 0.9);
+  padding: 5px 5px;
+  background: rgb(255, 255, 255);
+  box-shadow: 1px 2px rgba(151, 151, 151, 0.3);
 }
-.open-button {
-  width: 400px;
-  margin: 0 auto;
-  border: solid 1px #ccc;
-  border-radius: 10px;
-  overflow: hidden;
+
+button {
+  outline: none;
+}
+
+.chat-button {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
   position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-  padding: 16px 20px;
-  background: rgba(1, 1, 1, 0.9);
+  bottom: 15px;
+  right: 50px;
+  background: rgba(78, 146, 70, 0.9);
   color: white;
+  border: none;
 }
+
 .chat-container {
-  height: 500px;
+  height: 300px;
+  width: 400px;
   overflow: auto;
-  /* -webkit-transform: rotate(180deg);
-          transform: rotate(180deg); */
-  /* direction: rtl; */
 }
+
 .chat-container .message {
   border-bottom: solid 1px #ccc;
   padding: 20px;
-  /* -webkit-transform: rotate(180deg);
-          transform: rotate(180deg); */
-  /* direction: ltr; */
 }
-.chat-container .message .avatar {
-  float: left;
-  margin-right: 5px;
-}
-.chat-container .message .datetime {
-  float: right;
-  color: #999;
-}
+
 .send-message-form input {
   width: 100%;
   border: none;
   font-size: 16px;
   padding: 10px;
 }
+
+.box {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+}
+
 .send-message-form button {
   display: none;
 }
+
 .messages {
   list-style-type: none;
+  padding: 0px;
+}
+
+input:focus {
+  outline: none;
 }

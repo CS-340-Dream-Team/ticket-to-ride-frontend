@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Player } from '../../types';
+import { Message } from '../../types/message/message.type';
 
 @Component({
   selector: 'app-message',
@@ -7,9 +9,18 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MessageComponent implements OnInit {
 
-  @Input() messageText: string;
+  @Input() message: Message;
+  @Input() player: Player;
 
   constructor() { }
+
+  isSender(): boolean {
+    return true;
+  }
+
+  isSender2(): boolean {
+    return false;
+  }
 
   ngOnInit() {
   }
