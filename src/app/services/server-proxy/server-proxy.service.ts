@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 import { environment } from '../../../environments/environment';
 
-import { Game, Command, Player } from '../../types';
+import { Game, Command, User } from '../../types';
 import { Message } from '../../types/message/message.type';
 
 @Injectable({

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Game, Player } from "../../../types";
+import { Game, User } from "../../../types";
 import { GameListManagerService, AuthManagerService } from "../../../services";
 
 @Component({
@@ -20,7 +20,7 @@ export class LobbyComponent implements OnInit {
 
   ngOnInit() {}
 
-  getNonHostPlayers(): Player[] {
+  getNonHostPlayers(): User[] {
     const players = [];
     this.game.playersJoined.forEach(player => {
       if (player.name !== this.game.host.name) {

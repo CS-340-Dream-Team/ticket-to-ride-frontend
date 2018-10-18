@@ -1,8 +1,8 @@
-import {Player} from '../player/player.type';
+import {User} from '../user/user.type';
 
 export interface Game {
-    playersJoined: Player[];
-    host: Player;
+    playersJoined: User[];
+    host: User;
     name: string;
     numPlayers: number;
     id: number;

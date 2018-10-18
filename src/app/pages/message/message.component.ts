@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Player } from '../../types';
+import { User } from '../../types';
 import { Message } from '../../types/message/message.type';
+import { ChatManagerService } from '../../services/chat-manager/chat-manager.service';
 
 @Component({
   selector: 'app-message',
@@ -10,9 +11,10 @@ import { Message } from '../../types/message/message.type';
 export class MessageComponent implements OnInit {
 
   @Input() message: Message;
-  @Input() player: Player;
+  @Input() player: User;
 
-  constructor() { }
+  constructor(private chatManager: ChatManagerService) { 
+  }
 
   isSender(): boolean {
     return true;

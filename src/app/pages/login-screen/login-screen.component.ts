@@ -23,7 +23,6 @@ export class LoginScreenComponent implements OnInit {
   }
 
   public login(name: string, password: string) {
-    // TODO add auth call
     this.authManager.login({ 'username': name, 'password': password }).then(response => {
       this.router.navigateByUrl('/game-list');
     }).catch(res => {

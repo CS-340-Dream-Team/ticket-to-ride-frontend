@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { ServerProxyService } from "../server-proxy/server-proxy.service";
-import { Player } from "../../types";
+import { User } from "../../types";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthManagerService {
-  private _currentUser: Player;
+  private _currentUser: User;
 
   public get currentUser() {
     return this._currentUser;
@@ -20,12 +20,12 @@ export class AuthManagerService {
    */
   public login(credentials: { username: string; password: string }) {
     return this.serverProxy.login(credentials).then(() => {
-      this._currentUser = { name: credentials.username } as Player;
+      this._currentUser = { name: credentials.username } as User;
     });
   }
   public register(credentials: { username: string; password: string }) {
     return this.serverProxy.register(credentials).then(() => {
-      this._currentUser = { name: credentials.username } as Player;
+      this._currentUser = { name: credentials.username } as User;
     });
   }
 }
