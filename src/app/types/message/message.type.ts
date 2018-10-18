@@ -1,7 +1,7 @@
-import { User } from "../user/user.type";
+import { Player } from "../player/player.type";
 
 export interface Message {
     message: string;
-    sender: User;
+    sender: Player;
     timestamp: number;
 }
