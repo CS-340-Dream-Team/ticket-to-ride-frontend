@@ -3,7 +3,7 @@ import { ServerProxyService } from "../server-proxy/server-proxy.service";
 import { User } from "../../types";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthManagerService {
   private _currentUser: User;
@@ -12,7 +12,7 @@ export class AuthManagerService {
     return this._currentUser;
   }
 
-  constructor(private serverProxy: ServerProxyService) {}
+  constructor(private serverProxy: ServerProxyService) { }
 
   /**
    * Attempts to log a user in
@@ -23,9 +23,17 @@ export class AuthManagerService {
       this._currentUser = { name: credentials.username } as User;
     });
   }
+
   public register(credentials: { username: string; password: string }) {
     return this.serverProxy.register(credentials).then(() => {
       this._currentUser = { name: credentials.username } as User;
     });
   }
+
+  public isAuthenticated() {
+    return this.serverProxy.hasToken;
+  }
+
+
+
 }

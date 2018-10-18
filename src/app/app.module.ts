@@ -14,6 +14,7 @@ import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/
 import { ListedGameComponent } from './pages/game-list/listed-game/listed-game.component';
 
 import {
+  AuthGuardService,
   AuthManagerService,
   GameListManagerService,
   ServerProxyService
@@ -24,8 +25,12 @@ import { MessageComponent } from './pages/message/message.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
-  { path: 'game-list', component: GameListComponent },
   { path: 'chat', component: ChatComponent },
+  {
+    path: 'game-list',
+    component: GameListComponent,
+    canActivate: [AuthGuardService]
+  },
   {
     path: '',
     redirectTo: '/login',
@@ -56,6 +61,7 @@ const appRoutes: Routes = [
     )
   ],
   providers: [
+    AuthGuardService,
     AuthManagerService,
     GameListManagerService,
     ServerProxyService
