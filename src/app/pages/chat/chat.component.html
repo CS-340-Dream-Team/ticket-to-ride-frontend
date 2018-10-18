@@ -1,0 +1,23 @@
+<div class="background"></div>
+<div *ngIf="showChat" > 
+  <div class="container" >
+    <div class="chat-container">
+      <ul class="messages">
+        <li *ngFor="let message of messages">
+          <!-- <div>{{message.xmessage}}</div> -->
+          <app-message [message]="message.message" [player]="currentPlayer" class="box color-4"></app-message>
+        </li>
+      </ul>
+    </div>
+    <form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
+      <input name="messageText" type="text" [(ngModel)]="inputMessage.message" placeholder="Message" autocomplete="off">
+    </form>
+  </div>
+  <div (click)="closeChat()">
+    <button class="chat-button">X</button>
+  </div>
+</div> 
+
+<div *ngIf="!showChat" (click)="openChat()">
+  <button class="chat-button">Icon</button>
+</div>
