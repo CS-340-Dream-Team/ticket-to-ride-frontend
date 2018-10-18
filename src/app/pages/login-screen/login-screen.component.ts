@@ -24,7 +24,8 @@ export class LoginScreenComponent implements OnInit {
 
   public login(name: string, password: string) {
     this.authManager.login({ 'username': name, 'password': password }).then(response => {
-      this.router.navigateByUrl('/game-list');
+      // this.router.navigateByUrl('/game-list');
+      this.router.navigateByUrl('/chat');
     }).catch(res => {
       this.toastr.error(res.message);
     });

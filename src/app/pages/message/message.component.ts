@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../../types';
+import { Player } from '../../types';
 import { Message } from '../../types/message/message.type';
 import { ChatManagerService } from '../../services/chat-manager/chat-manager.service';
 
@@ -11,13 +11,16 @@ import { ChatManagerService } from '../../services/chat-manager/chat-manager.ser
 export class MessageComponent implements OnInit {
 
   @Input() message: Message;
-  @Input() player: User;
+  @Input() player: Player;
 
-  constructor(private chatManager: ChatManagerService) { 
+  constructor() { 
   }
 
   isSender(): boolean {
-    return true;
+    if (this.message.sender.name  === this.player.name) {
+      return true;
+    }
+    return false;
   }
 
   isSender2(): boolean {

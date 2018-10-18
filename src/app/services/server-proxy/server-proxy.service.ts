@@ -159,7 +159,7 @@ export class ServerProxyService {
   }
 
   public addMessage(chatInfo: {
-    message: Message;
+    messageText: string;
     prevTimestamp: number;
   }): Promise<any> {
     return new Promise<any>((resolve, reject) => {
