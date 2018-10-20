@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../../types';
-import { Message } from '../../types/message/message.type';
-import { ChatManagerService } from '../../services/chat-manager/chat-manager.service';
+import { User } from '../../../types';
+import { Message } from '../../../types/message/message.type';
+import { ChatManagerService } from '../../../services/chat-manager/chat-manager.service';
 
 @Component({
   selector: 'app-message',
