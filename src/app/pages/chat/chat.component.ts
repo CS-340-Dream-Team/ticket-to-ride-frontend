@@ -15,9 +15,11 @@ export class ChatComponent implements OnInit {
   inputMessage: string;
   messages: Message[];
   showChat: boolean;
+  @ViewChild('chat_window') chat_window: ElementRef;
 
   constructor(private chatManager: ChatManagerService, private toastr: ToastrService) { 
     this.currentPlayer = chatManager.currentPlayer;
+    console.log(`player: ${this.currentPlayer}`)
     chatManager.messagesSubject.subscribe({
       next: (messages) => this.messages = messages
     });
@@ -32,6 +34,7 @@ export class ChatComponent implements OnInit {
     e.preventDefault();
     this.chatManager.addMessage({messageText: this.inputMessage, prevTimestamp: 0}).then(response => {
       this.inputMessage = '';
+      //TODO: scroll to the bottom of this.chat_window
       console.log(`component messages: ${JSON.stringify(this.messages)}`);
     }).catch(res => {
       this.toastr.error(res.message);

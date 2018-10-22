@@ -1,25 +1,16 @@
 <div class="background"></div>
 <div *ngIf="showChat" > 
   <div class="container" >
-    <div class="chat-container">
+    <div #chat_window class="chat-container">
       <ul class="messages">
         <li *ngFor="let message of messages">
-<<<<<<< HEAD
-          <!-- <div>{{message.messageText}}</div> -->
-          <app-message [message]="message" [player]="currentPlayer" class="box color-4"></app-message>
-=======
           <!-- <div>{{message.xmessage}}</div> -->
-          <app-message [message]="message.message" [player]="currentPlayer" class="box color-4"></app-message>
->>>>>>> f58c95a01e46ec76ba8ac623c73be361c1d70d59
+          <app-message [message]="message" [player]="currentPlayer" class="box color-4"></app-message>
         </li>
       </ul>
     </div>
     <form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
-<<<<<<< HEAD
       <input #input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message" autocomplete="off">
-=======
-      <input name="messageText" type="text" [(ngModel)]="inputMessage.message" placeholder="Message" autocomplete="off">
->>>>>>> f58c95a01e46ec76ba8ac623c73be361c1d70d59
     </form>
   </div>
   <div (click)="closeChat()">

@@ -86,7 +86,6 @@ export class ServerProxyService {
    * Gets the current game list
    */
   public getUpdatedGames(): Promise<Command[]> {
-    console.log('Polling');
     return new Promise<any>((resolve, reject) => {
       this.http
         .get(`${environment.BASE_URL}/games`, this.generateHttpOptions())
@@ -168,11 +167,26 @@ export class ServerProxyService {
       .subscribe(
         (res: Response) => {
           const resJson = res.json();
-          resolve(resJson);
+          resolve(resJson.command);
         }, err => {
           reject(err.json());
         }
       );
+    });
+  }
+
+  public getUpdatedMessages(timestamp: number): Promise<Command> {
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .get(`${environment.BASE_URL}/chat/${timestamp}`, this.generateHttpOptions())
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            resolve(resJson.command);
+          }, err => {
+            reject(err.json());
+          }
+        );
     });
   }
 }

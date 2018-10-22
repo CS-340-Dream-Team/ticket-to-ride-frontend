@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Player } from '../../types';
-import { Message } from '../../types/message/message.type';
-import { ChatManagerService } from '../../services/chat-manager/chat-manager.service';
+import { Player } from '../../../types';
+import { Message } from '../../../types/message/message.type';
+import { ChatManagerService } from '../../../services/chat-manager/chat-manager.service';
 
 @Component({
   selector: 'app-message',
@@ -20,10 +20,6 @@ export class MessageComponent implements OnInit {
     if (this.message.sender.name  === this.player.name) {
       return true;
     }
-    return false;
-  }
-
-  isSender2(): boolean {
     return false;
   }
 
