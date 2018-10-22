@@ -5,12 +5,12 @@ import { GameListManagerService } from '../../services';
 @Component({
   selector: 'app-game-list',
   templateUrl: './game-list.component.html',
-  styleUrls: ['./game-list.component.css']
+  styleUrls: ['./game-list.component.scss']
 })
 export class GameListComponent implements OnInit {
 
   @Input() activeGames: Game[] = [];
-  selectedGame: Game|null = null;
+  selectedGame: Game | null = null;
 
   constructor(private gameListManager: GameListManagerService) {
     gameListManager.gamesSubject.subscribe({

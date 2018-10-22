@@ -3,7 +3,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-create-game-dialog',
   templateUrl: './create-game-dialog.component.html',
-  styleUrls: ['./create-game-dialog.component.css']
+  styleUrls: ['./create-game-dialog.component.scss']
 })
 export class CreateGameDialogComponent implements OnInit {
 

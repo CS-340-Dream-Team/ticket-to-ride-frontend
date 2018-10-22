@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login-screen',
   templateUrl: './login-screen.component.html',
-  styleUrls: ['./login-screen.component.css']
+  styleUrls: ['./login-screen.component.scss']
 })
 export class LoginScreenComponent implements OnInit {
 
@@ -14,7 +14,7 @@ export class LoginScreenComponent implements OnInit {
   public showRegister = false;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private authManager: AuthManagerService,
     private toastr: ToastrService
   ) { }
@@ -23,6 +23,7 @@ export class LoginScreenComponent implements OnInit {
   }
 
   public login(name: string, password: string) {
+    // TODO add auth call
     this.authManager.login({ 'username': name, 'password': password }).then(response => {
       this.router.navigateByUrl('/game-list');
     }).catch(res => {

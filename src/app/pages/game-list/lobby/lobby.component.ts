@@ -1,24 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Game, Player } from "../../../types";
-import { GameListManagerService, AuthManagerService } from "../../../services";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Game, Player } from '../../../types';
+import { GameListManagerService, AuthManagerService } from '../../../services';
 
 @Component({
-  selector: "app-lobby",
-  templateUrl: "./lobby.component.html",
-  styleUrls: ["./lobby.component.css"]
+  selector: 'app-lobby',
+  templateUrl: './lobby.component.html',
+  styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
   constructor(
     private gameListManager: GameListManagerService,
     private authManagerService: AuthManagerService
-  ) {}
+  ) { }
 
   @Input()
   game: Game = null;
   @Output()
   closeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getNonHostPlayers(): Player[] {
     const players = [];
@@ -52,7 +52,7 @@ export class LobbyComponent implements OnInit {
 
   startGame() {
     if (!this.canStartGame()) {
-      throw Error("User is not permitted to start the game");
+      throw Error('User is not permitted to start the game');
     }
     this.gameListManager.startGame(this.game);
   }
