@@ -9,9 +9,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { GameListComponent, LoginScreenComponent } from './pages';
+import {
+  ChatComponent,
+  GameListComponent,
+  GameScreenComponent,
+  LoginScreenComponent,
+} from './pages';
+
 import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/create-game-dialog.component';
 import { ListedGameComponent } from './pages/game-list/listed-game/listed-game.component';
+import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
+import { MessageComponent } from './pages/chat/message/message.component';
 
 import {
   AuthGuardService,
@@ -20,9 +28,7 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
-import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
-import { ChatComponent } from './pages/chat/chat.component';
-import { MessageComponent } from './pages/chat/message/message.component';
+
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
@@ -30,6 +36,11 @@ const appRoutes: Routes = [
   {
     path: 'game-list',
     component: GameListComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'game-play',
+    component: GameScreenComponent,
     canActivate: [AuthGuardService]
   },
   {
@@ -49,7 +60,8 @@ const appRoutes: Routes = [
     ListedGameComponent,
     LobbyComponent,
     ChatComponent,
-    MessageComponent
+    MessageComponent,
+    GameScreenComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
