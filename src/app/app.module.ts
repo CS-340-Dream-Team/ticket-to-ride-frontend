@@ -17,11 +17,12 @@ import {
   AuthGuardService,
   AuthManagerService,
   GameListManagerService,
+  GamePlayManagerService,
   ServerProxyService
 } from './services';
 import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
 import { ChatComponent } from './pages/chat/chat.component';
-import { MessageComponent } from './pages/message/message.component';
+import { MessageComponent } from './pages/chat/message/message.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
@@ -64,6 +65,7 @@ const appRoutes: Routes = [
     AuthGuardService,
     AuthManagerService,
     GameListManagerService,
+    GamePlayManagerService,
     ServerProxyService
   ],
   bootstrap: [AppComponent]
