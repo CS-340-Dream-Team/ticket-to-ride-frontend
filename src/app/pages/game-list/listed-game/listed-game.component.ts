@@ -5,7 +5,7 @@ import { GameListManagerService } from '../../../services';
 @Component({
   selector: 'app-listed-game',
   templateUrl: './listed-game.component.html',
-  styleUrls: ['./listed-game.component.css']
+  styleUrls: ['./listed-game.component.scss']
 })
 export class ListedGameComponent implements OnInit {
 
