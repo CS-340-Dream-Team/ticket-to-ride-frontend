@@ -23,7 +23,7 @@ describe('ListedGameComponent', () => {
     component = fixture.componentInstance;
     const game: Game = {
       playersJoined: [],
-      host: { name: 'Andrew Tate', password: 'password123!' },
+      host: { name: 'Andrew Tate', color: 1 },
       name: 'New Game',
       numPlayers: 3,
       id: 1
