@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 import { environment } from '../../../environments/environment';
 
-import { Game, Command, User, Route, Segment } from '../../types';
+import { Game, Command, Route, Segment } from '../../types';
 import { Message } from '../../types/message/message.type';
 
 @Injectable({
@@ -164,15 +164,15 @@ export class ServerProxyService {
   }): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.http
-      .post(`${environment.BASE_URL}/chat/new/${chatInfo.prevTimestamp}`, chatInfo, this.generateHttpOptions())
-      .subscribe(
-        (res: Response) => {
-          const resJson = res.json();
-          resolve(resJson);
-        }, err => {
-          reject(err.json());
-        }
-      );
+        .post(`${environment.BASE_URL}/chat/new/${chatInfo.prevTimestamp}`, chatInfo, this.generateHttpOptions())
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            resolve(resJson);
+          }, err => {
+            reject(err.json());
+          }
+        );
     });
   }
 

@@ -70,7 +70,8 @@ const appRoutes: Routes = [
     ToastrModule.forRoot(),
     HttpModule,
     RouterModule.forRoot(
-      appRoutes
+      appRoutes,
+      { useHash: true }
     )
   ],
   providers: [

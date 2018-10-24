@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { ServerProxyService } from "../server-proxy/server-proxy.service";
-import { User } from "../../types";
+import { Injectable } from '@angular/core';
+import { ServerProxyService } from '../server-proxy/server-proxy.service';
+import { User } from '../../types';
 
 @Injectable({
   providedIn: 'root'
