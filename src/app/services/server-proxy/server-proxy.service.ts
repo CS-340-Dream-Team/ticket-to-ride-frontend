@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 import { environment } from '../../../environments/environment';
 
-import { Game, Command, User } from '../../types';
+import { Game, Command, User, Route, Segment } from '../../types';
 import { Message } from '../../types/message/message.type';
 
 @Injectable({
@@ -188,5 +188,17 @@ export class ServerProxyService {
           }
         );
     });
+  }
+  
+  public selectBusCard(index: number)/*: Promise<Command[]>*/ {
+    // FIXME implement
+  }
+
+  public selectRoutes(routes: Route[])/*: Promise<Command[]>*/ {
+    // FIXME implement
+  }
+
+  public claimSegment(segment: Segment)/*: Promise<Command[]>*/ {
+    // FIXME implement
   }
 }
