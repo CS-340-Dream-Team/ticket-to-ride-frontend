@@ -34,30 +34,33 @@ export class ChatManagerService {
 
 
   public addMessage(chatInfo: {messageText: string, prevTimestamp: number}) {
-    return this.serverProxy.addMessage(chatInfo).then(command => {
+    return this.serverProxy.addMessage(chatInfo).then(commands => {
       // commands.forEach(command => {
       //   if (command.type === "updateMessageList") {
       //     this._messages = this._messages.concat(command.data.messages);
       //     this._messagesSubject.next(this._messages);
       //   }
       // });
-      if (command.type === "updateMessageList") {
-        console.log(`incoming message: ${JSON.stringify(command.data.messages)}`);
-        this._messages = this._messages.concat(command.data.messages);
-        this._messagesSubject.next(this._messages);
-        console.log("this._messages");
-        console.log(JSON.stringify(this._messages));
-        console.log("this._currentPLayer");
-        console.log(this._currentPlayer);
-      }
+      this.handleCommands(commands);
+      // if (command.type === "updateMessageList") {
+      //   console.log(`incoming message: ${JSON.stringify(command.data.messages)}`);
+      //   this._messages = this._messages.concat(command.data.messages);
+      //   this._messagesSubject.next(this._messages);
+      //   console.log("this._messages");
+      //   console.log(JSON.stringify(this._messages));
+      //   console.log("this._currentPLayer");
+      //   console.log(this._currentPlayer);
+      // }
+    }).catch(res => {
+      this.toastr.error(res.message);
     });
   }
 
   private poll(serverProxy: ServerProxyService) {
     if (this._messages.length > 0) {
       let timestamp = this._messages[this._messages.length - 1].timestamp
-      serverProxy.getUpdatedMessages(timestamp).then(command => {
-        this.handleCommand(command);
+      serverProxy.getUpdatedMessages(timestamp).then(commands => {
+        this.handleCommands(commands);
       }).catch(res => {
         this.toastr.error(res.message);
       });
@@ -67,10 +70,12 @@ export class ChatManagerService {
     }, 3000);
   }
 
-  private handleCommand(command: Command) {
-    if (command.type === 'updateMessageList') {
-      this._messages = this._messages.concat(command.data.messages);
-      this._messagesSubject.next(this._messages);
-    }
+  private handleCommands(commands: Command[]) {
+    commands.forEach(command => {
+      if (command.type === 'updateMessageList') {
+        this._messages = this._messages.concat(command.data.message);
+        this._messagesSubject.next(this._messages);
+      }
+    });
   }
 }

@@ -157,7 +157,7 @@ export class ServerProxyService {
       .then(res => [res.json().command])
   }
 
-  public addMessage(chatInfo: {
+  public addMessage(chatInfo:{
     messageText: string;
     prevTimestamp: number;
   }): Promise<any> {
@@ -167,7 +167,7 @@ export class ServerProxyService {
       .subscribe(
         (res: Response) => {
           const resJson = res.json();
-          resolve(resJson.command);
+          resolve(resJson.commands);
         }, err => {
           reject(err.json());
         }
@@ -175,14 +175,14 @@ export class ServerProxyService {
     });
   }
 
-  public getUpdatedMessages(timestamp: number): Promise<Command> {
+  public getUpdatedMessages(timestamp: number): Promise<Command[]> {
     return new Promise<any>((resolve, reject) => {
       this.http
         .get(`${environment.BASE_URL}/chat/${timestamp}`, this.generateHttpOptions())
         .subscribe(
           (res: Response) => {
             const resJson = res.json();
-            resolve(resJson.command);
+            resolve(resJson.commands);
           }, err => {
             reject(err.json());
           }
