@@ -41,7 +41,7 @@ const appRoutes: Routes = [
   {
     path: 'game-play',
     component: GameScreenComponent,
-    // canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService]
   },
   {
     path: '',
