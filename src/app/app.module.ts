@@ -72,7 +72,8 @@ const appRoutes: Routes = [
     HttpModule,
     NgxAutoScrollModule,
     RouterModule.forRoot(
-      appRoutes
+      appRoutes,
+      { useHash: true }
     )
   ],
   providers: [
