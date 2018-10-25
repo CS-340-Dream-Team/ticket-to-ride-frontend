@@ -7,6 +7,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import {NgxAutoScrollModule} from "ngx-auto-scroll";
 
 import { AppComponent } from './app.component';
 import {
@@ -69,6 +70,7 @@ const appRoutes: Routes = [
     FormsModule,
     ToastrModule.forRoot(),
     HttpModule,
+    NgxAutoScrollModule,
     RouterModule.forRoot(
       appRoutes
     )

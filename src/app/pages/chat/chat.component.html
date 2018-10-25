@@ -1,10 +1,10 @@
 <div class="background"></div>
 <div *ngIf="showChat" > 
   <div class="container" >
-    <div #chat_window class="chat-container">
+    <div ngx-auto-scroll class="chat-container">
       <ul class="messages">
         <li *ngFor="let message of messages">
-          <app-message [message]="message" [player]="currentPlayer" class="box color-4"></app-message>
+          <app-message [message]="message" [player]="currentPlayer" [dateString]="convertDate(message.timestamp)" class="box color-4"></app-message>
         </li>
       </ul>
     </div>
@@ -18,5 +18,6 @@
 </div> 
 
 <div *ngIf="!showChat" (click)="openChat()">
+  <div *ngIf="messageNotification > 0" class="notification">{{messageNotification}}</div>
   <button class="chat-button">Icon</button>
 </div>

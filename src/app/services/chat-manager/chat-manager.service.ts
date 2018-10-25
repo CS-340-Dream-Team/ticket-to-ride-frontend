@@ -13,6 +13,8 @@ export class ChatManagerService {
   private _messagesSubject = new Subject<Message[]>();
   private _currentPlayer: Player;
   private _messages: Message[];
+  private _messageNotification: number;
+  private _messageNotificationSubject = new Subject<number>();
 
   constructor(
     private serverProxy: ServerProxyService, 
@@ -20,8 +22,9 @@ export class ChatManagerService {
     private toastr: ToastrService) {
     // this._currentPlayer = authManager.currentUser; //Add player to user so that I can grab that? Once they choose color.
     this._messages = [];
-    this._currentPlayer = {name: "Test Player", color: 2};
-    this.poll(serverProxy)
+    // this._currentPlayer = {name: "Test Player", color: 2};
+    this._currentPlayer = { name: authManager.currentUser.name, color: 2 };
+    this.poll(serverProxy);
   }
 
   public get currentPlayer() {
@@ -32,48 +35,49 @@ export class ChatManagerService {
     return this._messagesSubject;
   }
 
+  public get messageNotificationSubject() {
+    return this._messageNotificationSubject;
+  }
+
+  public resetMessageNotification() {
+    this._messageNotification = 0;
+    this._messageNotificationSubject.next(0);
+  }
 
   public addMessage(chatInfo: {messageText: string, prevTimestamp: number}) {
+    this._messageNotification = 0;
     return this.serverProxy.addMessage(chatInfo).then(commands => {
-      // commands.forEach(command => {
-      //   if (command.type === "updateMessageList") {
-      //     this._messages = this._messages.concat(command.data.messages);
-      //     this._messagesSubject.next(this._messages);
-      //   }
-      // });
       this.handleCommands(commands);
-      // if (command.type === "updateMessageList") {
-      //   console.log(`incoming message: ${JSON.stringify(command.data.messages)}`);
-      //   this._messages = this._messages.concat(command.data.messages);
-      //   this._messagesSubject.next(this._messages);
-      //   console.log("this._messages");
-      //   console.log(JSON.stringify(this._messages));
-      //   console.log("this._currentPLayer");
-      //   console.log(this._currentPlayer);
-      // }
     }).catch(res => {
       this.toastr.error(res.message);
     });
   }
 
   private poll(serverProxy: ServerProxyService) {
-    if (this._messages.length > 0) {
-      let timestamp = this._messages[this._messages.length - 1].timestamp
+    // if (this._messages.length > 0) {
+      let timestamp = 0;
+      if (this._messages.length > 0) {
+        timestamp = this._messages[this._messages.length - 1].timestamp;
+      }
       serverProxy.getUpdatedMessages(timestamp).then(commands => {
         this.handleCommands(commands);
       }).catch(res => {
         this.toastr.error(res.message);
       });
-    }
+    // }
     setTimeout(() => {
       this.poll(serverProxy);
     }, 3000);
   }
 
   private handleCommands(commands: Command[]) {
+    if (commands.length !== 0) {
+      this._messageNotification += commands.length;
+      this._messageNotificationSubject.next(this._messageNotification);
+    }
     commands.forEach(command => {
       if (command.type === 'updateMessageList') {
-        this._messages = this._messages.concat(command.data.message);
+        this._messages = this._messages.concat(command.data);
         this._messagesSubject.next(this._messages);
       }
     });

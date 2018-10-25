@@ -167,6 +167,7 @@ export class ServerProxyService {
       .subscribe(
         (res: Response) => {
           const resJson = res.json();
+          console.log(`addMessage commands: ${JSON.stringify(resJson.commands)}`);
           resolve(resJson.commands);
         }, err => {
           reject(err.json());
@@ -182,6 +183,7 @@ export class ServerProxyService {
         .subscribe(
           (res: Response) => {
             const resJson = res.json();
+            console.log(`getUpdatedMessages commands: ${JSON.stringify(resJson.commands)}`);
             resolve(resJson.commands);
           }, err => {
             reject(err.json());

@@ -3,6 +3,7 @@ import { ChatManagerService } from '../../services/chat-manager/chat-manager.ser
 import { ToastrService } from 'ngx-toastr';
 import { Player } from '../../types';
 import { Message } from '../../types/message/message.type';
+import { NgxAutoScroll } from 'ngx-auto-scroll';
 
 @Component({
   selector: 'app-chat',
@@ -15,13 +16,18 @@ export class ChatComponent implements OnInit {
   inputMessage: string;
   messages: Message[];
   showChat: boolean;
-  @ViewChild('chat_window') chat_window: ElementRef;
+  messageNotification: number;
+  @ViewChild('input') nameField: ElementRef;
+  @ViewChild(NgxAutoScroll) ngxAutoScroll: NgxAutoScroll;
 
   constructor(private chatManager: ChatManagerService, private toastr: ToastrService) { 
     this.currentPlayer = chatManager.currentPlayer;
     console.log(`player: ${this.currentPlayer}`)
     chatManager.messagesSubject.subscribe({
       next: (messages) => this.messages = messages
+    });
+    chatManager.messageNotificationSubject.subscribe({
+      next: (numMessages) => this.messageNotification = numMessages
     });
     this.showChat = false;
     this.inputMessage = '';
@@ -32,25 +38,40 @@ export class ChatComponent implements OnInit {
 
   addMessage(e) {
     e.preventDefault();
-    this.chatManager.addMessage({messageText: this.inputMessage, prevTimestamp: 0}).then(response => {
+    console.log(`message list: ${this.messages}`);
+    let timestamp = 0;
+    if (this.messages && this.messages.length > 0) {
+      timestamp = this.messages[this.messages.length - 1].timestamp;
+    }
+    this.chatManager.addMessage({messageText: this.inputMessage, prevTimestamp: timestamp}).then(response => {
       this.inputMessage = '';
       //TODO: scroll to the bottom of this.chat_window
-      console.log(`component messages: ${JSON.stringify(this.messages)}`);
     }).catch(res => {
       this.toastr.error(res.message);
     });
   }
 
-  @ViewChild('input') nameField: ElementRef;
   openChat() {
     this.showChat = true;
     setTimeout(()=>{
       this.nameField.nativeElement.focus(); //People online said this is a security issue for XSS attacks for example.
     },100);
+    // this.ngxAutoScroll.forceScrollDown();
+    this.chatManager.resetMessageNotification();
   }
   
   closeChat() {
     this.showChat = false;
+    this.chatManager.resetMessageNotification();
+  }
+
+  convertDate(timestamp: number) {
+    let date = new Date(timestamp);
+    let hour = date.getHours();
+    let meridiem = hour >= 12 ? ' PM' : ' AM';
+    let currentTime = ((hour + 11) % 12 + 1) + ':' + date.getMinutes() + meridiem + 
+                      ", " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+    return currentTime;
   }
 
 }

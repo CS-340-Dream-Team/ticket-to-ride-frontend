@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { Player } from '../../../types';
 import { Message } from '../../../types/message/message.type';
 import { ChatManagerService } from '../../../services/chat-manager/chat-manager.service';
@@ -12,6 +12,7 @@ export class MessageComponent implements OnInit {
 
   @Input() message: Message;
   @Input() player: Player;
+  @Input() dateString: string;
 
   constructor() { 
   }
