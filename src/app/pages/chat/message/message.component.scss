@@ -1,3 +1,5 @@
+@import "../../../variables.scss";
+
 .container {
     border-radius: 15px;
     padding: 10px;
@@ -41,25 +43,25 @@ p {
 }
 
 .color-0 {
-    background-color: gray;
+    background-color: $color-dark-background-accent;
   }
   
 .color-1 {
-    background-color: red;
+    background-color: $color-red;
 }
 
 .color-2 {
-    background-color: rgb(78, 146, 70);
+    background-color: $color-green;
 }
 
 .color-3 {
-    background-color: #0076FF;
+    background-color: $color-blue;
 }
 
 .color-4 {
-    background-color: yellow;
+    background-color: $color-yellow;
 }
 
 .color-5 {
-    background-color: black;
+    background-color: $color-black;
 }
