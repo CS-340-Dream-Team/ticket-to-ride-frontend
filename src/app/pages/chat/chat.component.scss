@@ -34,6 +34,20 @@ button {
   border: none;
 }
 
+.notification {
+  min-height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 47px;
+  right: 45px;
+  background: rgba(221, 9, 9, 0.9);
+  color: white;
+  text-align: center;
+  border: none;
+  z-index: 1;
+}
+
 .chat-container {
   height: 300px;
   width: 400px;

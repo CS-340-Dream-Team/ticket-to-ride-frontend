@@ -1,26 +1,26 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../../../types';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Player } from '../../../types';
 import { Message } from '../../../types/message/message.type';
 import { ChatManagerService } from '../../../services/chat-manager/chat-manager.service';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit {
 
   @Input() message: Message;
-  @Input() player: User;
+  @Input() player: Player;
+  @Input() dateString: string;
 
-  constructor(private chatManager: ChatManagerService) { 
+  constructor() { 
   }
 
   isSender(): boolean {
-    return true;
-  }
-
-  isSender2(): boolean {
+    if (this.message.sender.name  === this.player.name) {
+      return true;
+    }
     return false;
   }
 

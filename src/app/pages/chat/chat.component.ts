@@ -1,32 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChatManagerService } from '../../services/chat-manager/chat-manager.service';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../../types';
+import { Player } from '../../types';
 import { Message } from '../../types/message/message.type';
+import { NgxAutoScroll } from 'ngx-auto-scroll';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
 
-  currentPlayer: User;
-  inputMessage: Message;
-  // messages: string[] = [];
+  currentPlayer: Player;
+  inputMessage: string;
   messages: Message[];
   showChat: boolean;
+  messageNotification: number;
+  @ViewChild('input') nameField: ElementRef;
+  @ViewChild(NgxAutoScroll) ngxAutoScroll: NgxAutoScroll;
 
   constructor(private chatManager: ChatManagerService, private toastr: ToastrService) { 
-    // chatManager.currentPlayerSubject.subscribe({
-    //   next: (player) => this.currentPlayer = player
-    // });
     this.currentPlayer = chatManager.currentPlayer;
     chatManager.messagesSubject.subscribe({
       next: (messages) => this.messages = messages
     });
+    chatManager.messageNotificationSubject.subscribe({
+      next: (numMessages) => this.messageNotification = numMessages
+    });
     this.showChat = false;
-    this.inputMessage = {message: '', timestamp: 0, sender: this.currentPlayer}
+    this.inputMessage = '';
   }
 
   ngOnInit() {
@@ -34,9 +37,12 @@ export class ChatComponent implements OnInit {
 
   addMessage(e) {
     e.preventDefault();
-    this.chatManager.addMessage({message: this.inputMessage, prevTimestamp: 0}).then(response => {
-      this.inputMessage.message = '';
-      console.log(`component messages: ${JSON.stringify(this.messages)}`);
+    let timestamp = 0;
+    if (this.messages && this.messages.length > 0) {
+      timestamp = this.messages[this.messages.length - 1].timestamp;
+    }
+    this.chatManager.addMessage({messageText: this.inputMessage, prevTimestamp: timestamp}).then(response => {
+      this.inputMessage = '';
     }).catch(res => {
       this.toastr.error(res.message);
     });
@@ -44,10 +50,26 @@ export class ChatComponent implements OnInit {
 
   openChat() {
     this.showChat = true;
+    setTimeout(()=>{
+      this.nameField.nativeElement.focus();
+    },100);
+    //TODO: scroll to bottom when chat is opened
+    // this.ngxAutoScroll.forceScrollDown();
+    this.chatManager.resetMessageNotification();
   }
   
   closeChat() {
     this.showChat = false;
+    this.chatManager.resetMessageNotification();
+  }
+
+  convertDate(timestamp: number) {
+    let date = new Date(timestamp);
+    let hour = date.getHours();
+    let meridiem = hour >= 12 ? ' PM' : ' AM';
+    let currentTime = ((hour + 11) % 12 + 1) + ':' + date.getMinutes() + meridiem + 
+                      ", " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+    return currentTime;
   }
 
 }

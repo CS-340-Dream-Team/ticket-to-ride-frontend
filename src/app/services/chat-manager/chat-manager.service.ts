@@ -1,22 +1,31 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../types';
+import { Player, Command } from '../../types';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { Message } from '../../types/message/message.type';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatManagerService {
-  // private _currentPlayerSubject = new Subject<Player>();
   private _messagesSubject = new Subject<Message[]>();
-  private _currentPlayer: User;
+  private _currentPlayer: Player;
   private _messages: Message[];
+  private _messageNotification: number;
+  private _messageNotificationSubject = new Subject<number>();
 
-  // public get currentPlayerSubject() {
-  //   return this._currentPlayerSubject;
-  // }
+  constructor(
+    private serverProxy: ServerProxyService, 
+    private authManager: AuthManagerService,
+    private toastr: ToastrService) {
+    this._messages = [];
+    //FIXME change to commented line when user includes player on frontend
+    this._currentPlayer = { name: authManager.currentUser.name, color: 0 };
+    // this._currentPlayer = authManager.currentUser.player;
+    this.poll(serverProxy);
+  }
 
   public get currentPlayer() {
     return this._currentPlayer;
@@ -26,20 +35,48 @@ export class ChatManagerService {
     return this._messagesSubject;
   }
 
-  constructor(private serverProxy: ServerProxyService, private authManager: AuthManagerService) {
-    this._currentPlayer = authManager.currentUser;
-    this._messages = [];
+  public get messageNotificationSubject() {
+    return this._messageNotificationSubject;
   }
 
-  public addMessage(chatInfo: {message: Message, prevTimestamp: number}) {
-    return this.serverProxy.addMessage(chatInfo).then(messages => {
-      if (messages.command.type === "updateMessageList") {
-        this._messages = this._messages.concat(messages.command.data.messages as Message[]);
+  public resetMessageNotification() {
+    this._messageNotification = 0;
+    this._messageNotificationSubject.next(0);
+  }
+
+  public addMessage(chatInfo: {messageText: string, prevTimestamp: number}) {
+    this._messageNotification = 0;
+    return this.serverProxy.addMessage(chatInfo).then(commands => {
+      this.handleCommands(commands);
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });
+  }
+
+  private poll(serverProxy: ServerProxyService) {
+      let timestamp = 0;
+      if (this._messages.length > 0) {
+        timestamp = this._messages[this._messages.length - 1].timestamp;
+      }
+      serverProxy.getUpdatedMessages(timestamp).then(commands => {
+        this.handleCommands(commands);
+      }).catch(res => {
+        this.toastr.error(res.message);
+      });
+    setTimeout(() => {
+      this.poll(serverProxy);
+    }, 3000);
+  }
+
+  private handleCommands(commands: Command[]) {
+    if (commands.length !== 0) {
+      this._messageNotification += commands.length;
+      this._messageNotificationSubject.next(this._messageNotification);
+    }
+    commands.forEach(command => {
+      if (command.type === 'updateMessageList') {
+        this._messages = this._messages.concat(command.data);
         this._messagesSubject.next(this._messages);
-        console.log("this._messages");
-        console.log(this._messages);
-        console.log("this._currentPLayer");
-        console.log(this._currentPlayer);
       }
     });
   }

@@ -7,6 +7,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import {NgxAutoScrollModule} from "ngx-auto-scroll";
 
 import { AppComponent } from './app.component';
 import {
@@ -33,7 +34,6 @@ import { MapComponent } from './pages/map/map.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
-  { path: 'chat', component: ChatComponent },
   {
     path: 'game-list',
     component: GameListComponent,
@@ -71,6 +71,7 @@ const appRoutes: Routes = [
     FormsModule,
     ToastrModule.forRoot(),
     HttpModule,
+    NgxAutoScrollModule,
     RouterModule.forRoot(
       appRoutes,
       { useHash: true }

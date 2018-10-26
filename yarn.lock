@@ -4608,6 +4608,11 @@ neo-async@^2.5.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.0.tgz#b9d15e4d71c6762908654b5183ed38b753340835"
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
+ngx-auto-scroll@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ngx-auto-scroll/-/ngx-auto-scroll-1.1.0.tgz#05d7d2961a61e8b2d405fb48bbbcf087fce1a260"
+  integrity sha512-+zYhl8OGof4LhNzTh0t2o0/L61rMIaDWdmRg8OEiqJA+ehWirlpp+IpMcLAWrXI11XtvfkPtxspmRPHzU3scXA==
+
 ngx-toastr@^9.1.0:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-9.1.1.tgz#c7ec0284d13951422ccf47439a387372ddccc768"

@@ -1,16 +1,15 @@
 <div class="background"></div>
 <div *ngIf="showChat" > 
   <div class="container" >
-    <div class="chat-container">
+    <div ngx-auto-scroll class="chat-container">
       <ul class="messages">
         <li *ngFor="let message of messages">
-          <!-- <div>{{message.xmessage}}</div> -->
-          <app-message [message]="message.message" [player]="currentPlayer" class="box color-4"></app-message>
+          <app-message [message]="message" [player]="currentPlayer" [dateString]="convertDate(message.timestamp)" class="box color-4"></app-message>
         </li>
       </ul>
     </div>
     <form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
-      <input name="messageText" type="text" [(ngModel)]="inputMessage.message" placeholder="Message" autocomplete="off">
+      <input #input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message" autocomplete="off">
     </form>
   </div>
   <div (click)="closeChat()">
@@ -19,5 +18,6 @@
 </div> 
 
 <div *ngIf="!showChat" (click)="openChat()">
-  <button class="chat-button">Icon</button>
+  <div *ngIf="messageNotification > 0" class="notification">{{messageNotification}}</div>
+  <button class="chat-button">Chat</button>
 </div>

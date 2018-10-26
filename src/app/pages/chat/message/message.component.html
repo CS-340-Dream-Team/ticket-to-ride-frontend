@@ -1,11 +1,4 @@
-<div class="container color-3" [ngClass]="{'right': isSender(), 'left': !isSender()}">
-  <p>{{message.message}}</p>
-  <span class="signature">Name - 11:00</span>
+<div class="container {{'color-'+message.sender.color}}" [ngClass]="{'right': isSender(), 'left': !isSender()}">
+  <p>{{message.messageText}}</p>
+  <span class="signature">{{message.sender.name}} - {{dateString}}</span>
 </div>
-
-<!-- <div class="container" [ngClass]="{'right': isSender(), 'left': !isSender2()}">
-  <p>Other text</p>
-  <span class="signature">Name - 11:01</span>
-</div> -->
-
-<!-- class="{{'color-' + player.color}}" -->

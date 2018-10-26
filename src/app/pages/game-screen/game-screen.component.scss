@@ -23,3 +23,6 @@
     background-color: $color-light-background;
     grid-area: map;
 }
+.chat {
+    z-index: 1000;
+}

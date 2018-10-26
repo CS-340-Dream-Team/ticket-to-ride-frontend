@@ -85,7 +85,6 @@ export class ServerProxyService {
    * Gets the current game list
    */
   public getUpdatedGames(): Promise<Command[]> {
-    console.log('Polling');
     return new Promise<any>((resolve, reject) => {
       this.http
         .get(`${environment.BASE_URL}/games`, this.generateHttpOptions())
@@ -165,7 +164,7 @@ export class ServerProxyService {
   }
 
   public addMessage(chatInfo: {
-    message: Message;
+    messageText: string;
     prevTimestamp: number;
   }): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -174,7 +173,7 @@ export class ServerProxyService {
         .subscribe(
           (res: Response) => {
             const resJson = res.json();
-            resolve(resJson);
+            resolve(resJson.commands);
           }, err => {
             reject(err.json());
           }
@@ -182,6 +181,21 @@ export class ServerProxyService {
     });
   }
 
+  public getUpdatedMessages(timestamp: number): Promise<Command[]> {
+    return new Promise<any>((resolve, reject) => {
+      this.http
+        .get(`${environment.BASE_URL}/chat/${timestamp}`, this.generateHttpOptions())
+        .subscribe(
+          (res: Response) => {
+            const resJson = res.json();
+            resolve(resJson.commands);
+          }, err => {
+            reject(err.json());
+          }
+        );
+    });
+  }
+  
   public selectBusCard(index: number)/*: Promise<Command[]>*/ {
     // FIXME implement
   }
