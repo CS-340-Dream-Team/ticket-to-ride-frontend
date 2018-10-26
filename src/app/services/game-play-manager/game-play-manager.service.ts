@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
-import { Command, Route, Segment } from '../../types';
+import { Command, Route, Segment, Location as MapLocation } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -21,7 +21,7 @@ export class GamePlayManagerService {
     return this._currentGameSubject;
   }
 
-  get locationSubject() : Subject<Location[]> {
+  get locationSubject() : Subject<MapLocation[]> {
     return this._locationSubject;
   }
 
@@ -30,8 +30,8 @@ export class GamePlayManagerService {
   }
 
   _currentGameSubject = new Subject<Game | null>();
-  private _locations: Array<Location> = [];
-  private _locationSubject = new Subject<Location[]>();
+  private _locations: MapLocation[] = [];
+  private _locationSubject = new Subject<MapLocation[]>();
   private _segments: Array<Segment> = [];
   private _segmentSubject = new Subject<Segment[]>();
   currentGame: Game = null;
@@ -59,7 +59,7 @@ export class GamePlayManagerService {
 
   public getMapData() {
     this.serverProxy.getMapData()
-    .then(({ locations, segments } : { locations: Location[], segments: Segment[] }) => {
+    .then(({ locations, segments } : { locations: MapLocation[], segments: Segment[] }) => {
       this._locations = locations;
       this._segments = segments;
       this.locationSubject.next(this._locations);

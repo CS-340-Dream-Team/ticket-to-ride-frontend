@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-
 import { environment } from '../../../environments/environment';
 
-import { Game, Command, Route, Segment } from '../../types';
+import { Game, Command, User, Route, Segment, Location as MapLocation } from '../../types';
 import { Message } from '../../types/message/message.type';
 
 @Injectable({
@@ -158,7 +157,7 @@ export class ServerProxyService {
       .then(res => [res.json().command])
   }
 
-  public getMapData(): Promise<{ locations: Array<Location>, segments: Array<Segment> }> {
+  public getMapData(): Promise<{ locations: Array<MapLocation>, segments: Array<Segment> }> {
     const url = `map`;
     return this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
       .toPromise()
