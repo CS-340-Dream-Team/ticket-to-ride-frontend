@@ -1,7 +1,7 @@
 import { Player } from "../player/player.type";
 
 export interface Message {
-    message: string;
+    messageText: string;
     sender: Player;
     timestamp: number;
 }
