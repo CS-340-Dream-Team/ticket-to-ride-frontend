@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { map, Map, tileLayer, LatLng } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
+import { Segment } from "src/app/types";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 
 
@@ -15,7 +17,14 @@ export class MapComponent implements OnInit {
 	_mapEl: ElementRef;
   
 	constructor(
-    private gamePlayManager: GamePlayManagerService,) {}
+    private gamePlayManager: GamePlayManagerService,) {
+      gamePlayManager.locationSubject.subscribe({
+        next: this._renderLocations
+      })
+      gamePlayManager.segmentSubject.subscribe({
+        next: this._renderSegments
+      })
+    }
   
 	ngOnInit() {
   }
@@ -35,5 +44,14 @@ export class MapComponent implements OnInit {
       detectRetina: true,
       maxZoom,
     }).addTo(this._mapController);
+    this.gamePlayManager.getMapData();
+  }
+
+  private _renderLocations(locations: Location[]) {
+    console.log('Rendering locations');
+  }
+
+  private _renderSegments(segments: Segment[]) {
+    console.log('Rendering segments');
   }
 }
