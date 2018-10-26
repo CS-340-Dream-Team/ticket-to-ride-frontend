@@ -4,13 +4,19 @@ import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { GamePlayManagerService } from '../game-play-manager/game-play-manager.service';
+import { AuthManagerService } from '../auth-manager/auth-manager.service';
 
 
 @Injectable({
   providedIn: "root"
 })
 export class GameListManagerService {
-  constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+  constructor(
+    private serverProxy: ServerProxyService, 
+    private toastr: ToastrService,
+    private gameplayService: GamePlayManagerService,
+    private authService: AuthManagerService) {
     if (!this.polling) {
       this.polling = true;
       this.poll(serverProxy);
@@ -54,6 +60,8 @@ export class GameListManagerService {
       } else if (command.type === "updatePlayerList") {
         this.currentGame.playersJoined = command.data.playerList;
         this.currentGame.numPlayers = command.data.playerList.length;
+      } else if (command.type === "gameStarted") {
+        this.findClientPlayer(command);
       }
       this.games.forEach(game => {
         if (game.id === activeID && game !== this.currentGame) {
@@ -62,6 +70,14 @@ export class GameListManagerService {
         }
       });
     });
+  }
+
+  findClientPlayer(command: Command) {
+    command.data.game.playersJoined.forEach(player => {
+      if (player.name === this.authService.currentUser) {
+        this.gameplayService.clientPlayer = player;
+      }
+    })
   }
 
   setCurrentGame(game: Game | null) {
