@@ -29,6 +29,7 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
+import { MapComponent } from './pages/map/map.component';
 
 
 const appRoutes: Routes = [
@@ -62,7 +63,8 @@ const appRoutes: Routes = [
     LobbyComponent,
     ChatComponent,
     MessageComponent,
-    GameScreenComponent
+    GameScreenComponent,
+    MapComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module

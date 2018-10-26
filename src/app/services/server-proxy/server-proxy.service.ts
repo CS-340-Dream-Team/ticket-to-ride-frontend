@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-
 import { environment } from '../../../environments/environment';
 
-import { Game, Command, Route, Segment } from '../../types';
+import { Game, Command, User, Route, Segment, Location as MapLocation } from '../../types';
 import { Message } from '../../types/message/message.type';
 
 @Injectable({
@@ -157,8 +156,15 @@ export class ServerProxyService {
       .then(res => [res.json().command])
   }
 
-  public addMessage(chatInfo:{
-    messageText: string;
+  public getMapData(): Promise<{ locations: Array<MapLocation>, segments: Array<Segment> }> {
+    const url = `map`;
+    return this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
+      .toPromise()
+      .then((response: Response) => response.json());
+  }
+
+  public addMessage(chatInfo: {
+    message: Message;
     prevTimestamp: number;
   }): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -199,7 +205,10 @@ export class ServerProxyService {
     // FIXME implement
   }
 
-  public claimSegment(segment: Segment)/*: Promise<Command[]>*/ {
-    // FIXME implement
+  public claimSegment(segment: Segment) : Promise<Command[]> {
+    const url: string = `${environment.BASE_URL}/segment/${segment.id}/claim`;
+    return this.http.post(url, {}, this.generateHttpOptions())
+      .toPromise()
+      .then((response: Response) => response.json().command)
   }
 }
