@@ -1,10 +1,13 @@
-import { Location } from '../location/location.type';
-import {Player} from '../player/player.type';
+import { Location } from "../location/location.type";
+import { Player } from "../player/player.type";
+import { BusColor } from "../bus-color/bus-color.type";
 
 export interface Segment {
-    start: Location;
-    end: Location;
-    length: number;
-    owner: Player|null;
-    pair: Segment|null;
+	id: number;
+	start: Location;
+	end: Location;
+	color: BusColor;
+	length: number;
+	owner?: Player;
+	pair?: Segment;
 }
