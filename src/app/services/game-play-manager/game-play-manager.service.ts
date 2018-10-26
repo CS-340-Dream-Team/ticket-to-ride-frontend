@@ -45,6 +45,10 @@ export class GamePlayManagerService {
       });
   }
 
+  public getMapData() {
+    
+  }
+
   public selectBusCard(index: number) {
     // FIXME implement
   }

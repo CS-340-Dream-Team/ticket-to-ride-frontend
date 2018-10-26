@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { map, Map, tileLayer, LatLng } from "leaflet";
+import { GamePlayManagerService } from "src/app/services";
 
 
 
@@ -13,7 +14,8 @@ export class MapComponent implements OnInit {
   @ViewChild("map")
 	_mapEl: ElementRef;
   
-	constructor() {}
+	constructor(
+    private gamePlayManager: GamePlayManagerService,) {}
   
 	ngOnInit() {
   }
