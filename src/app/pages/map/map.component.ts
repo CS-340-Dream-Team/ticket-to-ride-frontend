@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, Point, point } from "leaflet";
+import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
 import { Segment, Location as MapLocation } from "src/app/types";
 
@@ -19,7 +19,7 @@ export class MapComponent implements OnInit {
         next: (locations) => this._renderLocations(locations)
       })
       gamePlayManager.segmentSubject.subscribe({
-        next: this._renderSegments
+        next: (segments) => this._renderSegments(segments)
       })
     }
   
@@ -64,5 +64,29 @@ export class MapComponent implements OnInit {
 
   private _renderSegments(segments: Segment[]) {
     console.log('Rendering segments');
+    for (const segment of segments) {
+      const { start, end } : { start: MapLocation, end: MapLocation } = segment;
+      const line: LatLngExpression[] = [ 
+        latLng(start.latLong.lat, start.latLong.long), 
+        latLng(end.latLong.lat, end.latLong.long) 
+      ];
+      let toolTip: string = `Length: ${segment.length}`;
+      const options: PolylineOptions = {
+        color: 'grey',
+        opacity: 1,
+        stroke: true,
+      }
+      if (segment.pair) {
+        options.weight = 6;
+        toolTip += ', Double Path';
+      }
+      if (segment.owner) {
+        toolTip += `, Claimed by ${segment.owner.name}`;
+        options.opacity = 0.5;
+      }
+      polyline(line, options)
+        .addTo(this._mapController)
+        .bindTooltip(toolTip);
+    }
   }
 }
