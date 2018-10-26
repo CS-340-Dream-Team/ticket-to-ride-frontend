@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
-import { Segment, Location as MapLocation } from "src/app/types";
+import { Segment, Location as MapLocation, BusColor } from "src/app/types";
 
 @Component({
   selector: "app-map",
@@ -47,7 +47,7 @@ export class MapComponent implements OnInit {
   private _renderLocations(locations: MapLocation[]) {
     const pin: Icon = icon({
       iconUrl: '../../../assets/images/pin.png',
-      iconSize: [39.6, 53.91]
+      iconSize: [22, 29.5]
     });
     for (const location of locations) {
       const { lat, long } : { lat: number, long: number } = location.latLong;
@@ -72,7 +72,7 @@ export class MapComponent implements OnInit {
       ];
       let toolTip: string = `Length: ${segment.length}`;
       const options: PolylineOptions = {
-        color: 'grey',
+        color: segment.color.toString() === 'any' ? 'grey' : segment.color.toString(),
         opacity: 1,
         stroke: true,
       }
