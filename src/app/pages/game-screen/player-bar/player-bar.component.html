@@ -1,0 +1,9 @@
+<div *ngFor="let player of players" class="player-row " [ngClass]="
+{'red': player.color === playerColor.Red,
+'black': player.color === playerColor.Black,
+'green': player.color === playerColor.Green,
+'yellow': player.color === playerColor.Yellow,
+'blue': player.color === playerColor.Blue}
+">
+  {{player.name}}
+</div>
