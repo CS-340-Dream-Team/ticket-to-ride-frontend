@@ -30,6 +30,10 @@ export class MapComponent implements OnInit {
     this._initMap();
   }
   
+  private _claimSegment(segment: Segment) {
+    this.gamePlayManager.claimSegment(segment);
+  }
+
   private _initMap(): void {
     const hbllLocation: LatLng = new LatLng(40.248157, -111.649150);
     const defaultZoomLevel: number = 16;
@@ -96,7 +100,10 @@ export class MapComponent implements OnInit {
       }
       polyline(line, options)
         .addTo(this._mapController)
-        .bindTooltip(toolTip);
+        .bindTooltip(toolTip)
+        .on('dblclick', () => {
+          this._claimSegment(segment);
+        });
     }
   }
 }

@@ -190,7 +190,10 @@ export class ServerProxyService {
     // FIXME implement
   }
 
-  public claimSegment(segment: Segment)/*: Promise<Command[]>*/ {
-    // FIXME implement
+  public claimSegment(segment: Segment) : Promise<Command[]> {
+    const url: string = `${environment.BASE_URL}/segment/${segment.id}/claim`;
+    return this.http.post(url, {}, this.generateHttpOptions())
+      .toPromise()
+      .then((response: Response) => response.json().command)
   }
 }
