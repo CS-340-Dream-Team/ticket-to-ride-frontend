@@ -164,7 +164,7 @@ export class ServerProxyService {
   }
 
   public addMessage(chatInfo: {
-    message: Message;
+    messageText: string;
     prevTimestamp: number;
   }): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -173,7 +173,7 @@ export class ServerProxyService {
         .subscribe(
           (res: Response) => {
             const resJson = res.json();
-            resolve(resJson);
+            resolve(resJson.commands);
           }, err => {
             reject(err.json());
           }
@@ -188,7 +188,6 @@ export class ServerProxyService {
         .subscribe(
           (res: Response) => {
             const resJson = res.json();
-            console.log(`getUpdatedMessages commands: ${JSON.stringify(resJson.commands)}`);
             resolve(resJson.commands);
           }, err => {
             reject(err.json());

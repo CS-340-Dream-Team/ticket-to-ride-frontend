@@ -8,7 +8,7 @@ import { NgxAutoScroll } from 'ngx-auto-scroll';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
 
@@ -22,7 +22,6 @@ export class ChatComponent implements OnInit {
 
   constructor(private chatManager: ChatManagerService, private toastr: ToastrService) { 
     this.currentPlayer = chatManager.currentPlayer;
-    console.log(`player: ${this.currentPlayer}`)
     chatManager.messagesSubject.subscribe({
       next: (messages) => this.messages = messages
     });
@@ -38,7 +37,6 @@ export class ChatComponent implements OnInit {
 
   addMessage(e) {
     e.preventDefault();
-    console.log(`message list: ${this.messages}`);
     let timestamp = 0;
     if (this.messages && this.messages.length > 0) {
       timestamp = this.messages[this.messages.length - 1].timestamp;

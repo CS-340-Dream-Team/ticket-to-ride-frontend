@@ -34,7 +34,6 @@ import { MapComponent } from './pages/map/map.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
-  { path: 'chat', component: ChatComponent },
   {
     path: 'game-list',
     component: GameListComponent,
