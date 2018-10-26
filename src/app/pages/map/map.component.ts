@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { map, Map, tileLayer, LatLng } from "leaflet";
+import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, Point, point } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
-import { Segment } from "src/app/types";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
-
-
+import { Segment, Location as MapLocation } from "src/app/types";
 
 @Component({
   selector: "app-map",
@@ -19,7 +16,7 @@ export class MapComponent implements OnInit {
 	constructor(
     private gamePlayManager: GamePlayManagerService,) {
       gamePlayManager.locationSubject.subscribe({
-        next: this._renderLocations
+        next: (locations) => this._renderLocations(locations)
       })
       gamePlayManager.segmentSubject.subscribe({
         next: this._renderSegments
@@ -47,8 +44,22 @@ export class MapComponent implements OnInit {
     this.gamePlayManager.getMapData();
   }
 
-  private _renderLocations(locations: Location[]) {
-    console.log('Rendering locations');
+  private _renderLocations(locations: MapLocation[]) {
+    const pin: Icon = icon({
+      iconUrl: '../../../assets/images/pin.png',
+      iconSize: [39.6, 53.91]
+    });
+    for (const location of locations) {
+      const { lat, long } : { lat: number, long: number } = location.latLong;
+      marker(latLng(lat, long), { 
+        title: location.name,
+        icon: pin
+      }).addTo(this._mapController)
+      .bindTooltip(location.name, {
+        direction: 'top',
+        offset: point(0, -20)
+      });
+    }
   }
 
   private _renderSegments(segments: Segment[]) {
