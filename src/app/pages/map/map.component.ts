@@ -79,8 +79,18 @@ export class MapComponent implements OnInit {
       if (segment.pair) {
         options.weight = 6;
         toolTip += ', Double Path';
+        if (segment.owner === undefined && segment.pair.owner) {
+          toolTip += `, Half Claimed by ${segment.pair.owner.name}`;
+          options.opacity = 0.5;
+        } else if (segment.owner && segment.pair.owner === undefined) {
+          toolTip += `, Half Claimed by ${segment.owner.name}`;
+          options.opacity = 0.5;
+        } else if (segment.owner && segment.pair.owner) {
+          toolTip += `, Claimed by ${segment.owner.name} & ${segment.pair.owner.name}`;
+          options.opacity = 0.5;
+        }
       }
-      if (segment.owner) {
+      if (segment.pair === undefined && segment.owner) {
         toolTip += `, Claimed by ${segment.owner.name}`;
         options.opacity = 0.5;
       }
