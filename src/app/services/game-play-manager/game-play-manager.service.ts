@@ -21,7 +21,19 @@ export class GamePlayManagerService {
     return this._currentGameSubject;
   }
 
+  get locationSubject() : Subject<Location[]> {
+    return this._locationSubject;
+  }
+
+  get segmentSubject() : Subject<Segment[]> {
+    return this._segmentSubject;
+  }
+
   _currentGameSubject = new Subject<Game | null>();
+  private _locations: Array<Location> = [];
+  private _locationSubject = new Subject<Location[]>();
+  private _segments: Array<Segment> = [];
+  private _segmentSubject = new Subject<Segment[]>();
   currentGame: Game = null;
   polling = false;
 
@@ -46,7 +58,13 @@ export class GamePlayManagerService {
   }
 
   public getMapData() {
-    
+    this.serverProxy.getMapData()
+    .then(({ locations, segments } : { locations: Location[], segments: Segment[] }) => {
+      this._locations = locations;
+      this._segments = segments;
+      this.locationSubject.next(this._locations);
+      this.segmentSubject.next(this._segments);
+    });
   }
 
   public selectBusCard(index: number) {
