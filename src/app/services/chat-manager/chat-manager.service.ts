@@ -20,10 +20,10 @@ export class ChatManagerService {
     private serverProxy: ServerProxyService, 
     private authManager: AuthManagerService,
     private toastr: ToastrService) {
-    // this._currentPlayer = authManager.currentUser; //Add player to user so that I can grab that? Once they choose color.
     this._messages = [];
-    // this._currentPlayer = {name: "Test Player", color: 2};
-    this._currentPlayer = { name: authManager.currentUser.name, color: 2 };
+    //FIXME change to commented line when user includes player on frontend
+    this._currentPlayer = { name: authManager.currentUser.name, color: 0 };
+    // this._currentPlayer = authManager.currentUser.player;
     this.poll(serverProxy);
   }
 
@@ -54,7 +54,6 @@ export class ChatManagerService {
   }
 
   private poll(serverProxy: ServerProxyService) {
-    // if (this._messages.length > 0) {
       let timestamp = 0;
       if (this._messages.length > 0) {
         timestamp = this._messages[this._messages.length - 1].timestamp;
@@ -64,7 +63,6 @@ export class ChatManagerService {
       }).catch(res => {
         this.toastr.error(res.message);
       });
-    // }
     setTimeout(() => {
       this.poll(serverProxy);
     }, 3000);

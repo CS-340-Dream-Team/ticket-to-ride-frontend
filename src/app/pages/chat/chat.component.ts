@@ -43,7 +43,6 @@ export class ChatComponent implements OnInit {
     }
     this.chatManager.addMessage({messageText: this.inputMessage, prevTimestamp: timestamp}).then(response => {
       this.inputMessage = '';
-      //TODO: scroll to the bottom of this.chat_window
     }).catch(res => {
       this.toastr.error(res.message);
     });
@@ -52,8 +51,9 @@ export class ChatComponent implements OnInit {
   openChat() {
     this.showChat = true;
     setTimeout(()=>{
-      this.nameField.nativeElement.focus(); //People online said this is a security issue for XSS attacks for example.
+      this.nameField.nativeElement.focus();
     },100);
+    //TODO: scroll to bottom when chat is opened
     // this.ngxAutoScroll.forceScrollDown();
     this.chatManager.resetMessageNotification();
   }
