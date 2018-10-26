@@ -158,6 +158,13 @@ export class ServerProxyService {
       .then(res => [res.json().command])
   }
 
+  public getMapData(): Promise<{ locations: Array<Location>, segments: Array<Segment> }> {
+    const url = `map`;
+    return this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
+      .toPromise()
+      .then((response: Response) => response.json());
+  }
+
   public addMessage(chatInfo: {
     message: Message;
     prevTimestamp: number;
