@@ -35,12 +35,12 @@ button {
 }
 
 .notification {
-  height: 30px;
-  width: 30px;
+  min-height: 20px;
+  min-width: 20px;
   border-radius: 50%;
   position: fixed;
-  bottom: 40px;
-  right: 35px;
+  bottom: 47px;
+  right: 45px;
   background: rgba(221, 9, 9, 0.9);
   color: white;
   text-align: center;
