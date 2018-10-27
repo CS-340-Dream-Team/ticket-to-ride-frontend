@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
-import { Command, Route, Segment, Location as MapLocation } from '../../types';
+import { Command, Route, Segment, Location as MapLocation, Player } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -10,11 +10,22 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class GamePlayManagerService {
+
+  private _clientPlayer: Player;
+
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
     if (!this.polling) {
       this.polling = true;
       this.poll(serverProxy);
     }
+  }
+
+  get clientPlayer() {
+    return this._clientPlayer;
+  }
+
+  set clientPlayer(player: Player) {
+    this._clientPlayer = player;
   }
 
   get currentGameSubject() {

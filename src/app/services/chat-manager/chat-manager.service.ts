@@ -5,6 +5,7 @@ import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { Message } from '../../types/message/message.type';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { GamePlayManagerService } from '../game-play-manager/game-play-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,11 @@ export class ChatManagerService {
 
   constructor(
     private serverProxy: ServerProxyService, 
-    private authManager: AuthManagerService,
+    private gameplayManager: GamePlayManagerService,
     private toastr: ToastrService) {
     this._messages = [];
     //FIXME change to commented line when user includes player on frontend
-    this._currentPlayer = { name: authManager.currentUser.name, color: 0 };
+    this._currentPlayer = gameplayManager.clientPlayer;
     // this._currentPlayer = authManager.currentUser.player;
     this.poll(serverProxy);
   }

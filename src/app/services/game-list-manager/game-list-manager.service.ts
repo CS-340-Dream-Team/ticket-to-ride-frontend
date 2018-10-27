@@ -4,13 +4,19 @@ import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { GamePlayManagerService } from '../game-play-manager/game-play-manager.service';
+import { AuthManagerService } from '../auth-manager/auth-manager.service';
 
 
 @Injectable({
   providedIn: "root"
 })
 export class GameListManagerService {
-  constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+  constructor(
+    private serverProxy: ServerProxyService, 
+    private toastr: ToastrService,
+    private gameplayService: GamePlayManagerService,
+    private authService: AuthManagerService) {
     if (!this.polling) {
       this.polling = true;
       this.poll(serverProxy);
@@ -27,6 +33,7 @@ export class GameListManagerService {
 
   _gamesSubject = new Subject<Game[]>();
   _currentGameSubject = new Subject<Game | null>();
+  _gameStartedSubject = new Subject<boolean>();
   games: Game[] = [];
   currentGame: Game = null;
   polling = false;
@@ -54,6 +61,9 @@ export class GameListManagerService {
       } else if (command.type === "updatePlayerList") {
         this.currentGame.playersJoined = command.data.playerList;
         this.currentGame.numPlayers = command.data.playerList.length;
+      } else if (command.type === "gameStarted") {
+        this._gameStartedSubject.next(true);
+        this.findClientPlayer(command);
       }
       this.games.forEach(game => {
         if (game.id === activeID && game !== this.currentGame) {
@@ -62,6 +72,14 @@ export class GameListManagerService {
         }
       });
     });
+  }
+
+  findClientPlayer(command: Command) {
+    command.data.game.playersJoined.forEach(player => {
+      if (player.name === this.authService.currentUser.name) {
+        this.gameplayService.clientPlayer = player;
+      }
+    })
   }
 
   setCurrentGame(game: Game | null) {
@@ -87,7 +105,6 @@ export class GameListManagerService {
 
   // TODO: Move this to the game running service
   startGame(game: Game) {
-    console.log("Starting the game!");
     console.warn(
       "Remember to move this logic into the same service that handles game logic"
     );
