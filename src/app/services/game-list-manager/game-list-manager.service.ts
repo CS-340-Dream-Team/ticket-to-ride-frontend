@@ -33,6 +33,7 @@ export class GameListManagerService {
 
   _gamesSubject = new Subject<Game[]>();
   _currentGameSubject = new Subject<Game | null>();
+  _gameStartedSubject = new Subject<boolean>();
   games: Game[] = [];
   currentGame: Game = null;
   polling = false;
@@ -61,6 +62,7 @@ export class GameListManagerService {
         this.currentGame.playersJoined = command.data.playerList;
         this.currentGame.numPlayers = command.data.playerList.length;
       } else if (command.type === "gameStarted") {
+        this._gameStartedSubject.next(true);
         this.findClientPlayer(command);
       }
       this.games.forEach(game => {
@@ -74,7 +76,7 @@ export class GameListManagerService {
 
   findClientPlayer(command: Command) {
     command.data.game.playersJoined.forEach(player => {
-      if (player.name === this.authService.currentUser) {
+      if (player.name === this.authService.currentUser.name) {
         this.gameplayService.clientPlayer = player;
       }
     })
@@ -103,7 +105,6 @@ export class GameListManagerService {
 
   // TODO: Move this to the game running service
   startGame(game: Game) {
-    console.log("Starting the game!");
     console.warn(
       "Remember to move this logic into the same service that handles game logic"
     );
