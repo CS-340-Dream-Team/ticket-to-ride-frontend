@@ -10,12 +10,20 @@
 
     <div class="icon-container">
       <div class="stat">
-        <p>{{player.stars}}</p>
+        <p>{{player.points}}</p>
         <i class="material-icons star">star</i>
       </div>
       <div class="stat">
-        {{player.numRoutes}}
+        <p style="top: -3px">{{player.numCards}}</p>
+        <img class="wild-card-icon" src="assets/images/cards-icon.svg" alt="Player hand">
+      </div>
+      <div class="stat">
+        <p>{{player.numRoutes}}</p>
         <i class="material-icons pin">place</i>
+      </div>
+      <div class="stat">
+        <p>{{player.numBusses}}</p>
+        <i class="material-icons">train</i>
       </div>
     </div>
   </div>
@@ -65,7 +73,7 @@
           </div>
         </td>
         <td>
-          <div class="yellow-background circle"></div>
+          <img class="wild-card-icon" src="assets/images/wild-icon.svg" alt="Wild cards">
         </td>
         <td>
           <div>

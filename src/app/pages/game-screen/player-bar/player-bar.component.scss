@@ -7,7 +7,7 @@
     box-sizing: border-box;
     font-size: 16pt;
     position: relative;
-
+    
     i {
         position: relative;
         bottom: -3px;
@@ -19,10 +19,11 @@
         
         &.pin {
             color: darkred;
-            margin-left: -6px;
+            margin-left: -4px;
         }
     }
-
+    
+    
     .name-bar {
         border-left: 5px solid;
         margin: 8px 0;
@@ -39,6 +40,11 @@
                 margin-left: 10px;
                 flex-basis: 1;
                 
+                .wild-card-icon {
+                    width: 25px;
+                    height: auto;
+                    margin-top: 2px;
+                }
                 p {
                     display: inline;
                     position: relative;
@@ -51,9 +57,19 @@
     
     .current-player-info {
         background-color: $color-dark-background;
-
+        
         ul {
             list-style: none;
+        }
+        
+        table {
+            font-size: 12pt;
+            color: $color-light-text;
+            .wild-card-icon {
+                width: 30px;
+                height: auto;
+                margin-top: 2px;
+            }
         }
     }
     .red-left-border {

@@ -15,25 +15,33 @@ export class PlayerBarComponent implements OnInit {
       name: 'Andrew',
       color: PlayerColor.Blue,
       numRoutes: 3,
-      stars: 10,
+      points: 10,
+      numCards: 40,
+      numBusses: 40
     },
     {
       name: 'Carter',
       color: PlayerColor.Yellow,
       numRoutes: 6,
-      stars: 6,
+      points: 20,
+      numCards: 40,
+      numBusses: 40
     },
     {
       name: 'Berkley',
       color: PlayerColor.Green,
       numRoutes: 1,
-      stars: 2,
+      points: 2,
+      numCards: 40,
+      numBusses: 40
     },
     {
       name: 'Michael',
       color: PlayerColor.Red,
       numRoutes: 6,
-      stars: 1,
+      points: 1,
+      numCards: 40,
+      numBusses: 40
     }
   ];
 
