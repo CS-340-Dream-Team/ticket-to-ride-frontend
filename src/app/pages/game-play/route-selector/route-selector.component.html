@@ -1,0 +1,13 @@
+<div class="dimmer"></div>
+<div class="dialog-container">
+  <div class="dialog">
+    <h6 class="dialog-title">These are your new routes!</h6>
+    <h6 class="dialog-title">(Select up to 1 to discard)</h6>
+    <div *ngFor="let route of selections" class="button-container">
+      <button class="route-button" [ngClass]="{'selected': route.selected, 'not-selected': !route.selected}" (click)="selectRoute(route)">
+        {{route.route.name}}: {{route.route.start.name}} to {{route.route.end.name}} &mdash; {{route.route.points}} points
+      </button>
+    </div>
+    <button [disabled]="numSelected() <= 1" (click)="makeFinalSelection()" class="submit-button">{{submitButtonText()}}</button>
+  </div>
+</div>
