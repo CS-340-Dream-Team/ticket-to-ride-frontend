@@ -22,9 +22,7 @@ export class ChatManagerService {
     private gameplayManager: GamePlayManagerService,
     private toastr: ToastrService) {
     this._messages = [];
-    //FIXME change to commented line when user includes player on frontend
     this._currentPlayer = gameplayManager.clientPlayer;
-    // this._currentPlayer = authManager.currentUser.player;
     this.poll(serverProxy);
   }
 
@@ -66,7 +64,7 @@ export class ChatManagerService {
       });
     setTimeout(() => {
       this.poll(serverProxy);
-    }, 3000);
+    }, 1000);
   }
 
   private handleCommands(commands: Command[]) {
