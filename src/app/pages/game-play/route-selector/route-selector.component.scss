@@ -22,9 +22,8 @@
     height: 330px;
     border-radius: 10px;
     z-index:2000;
-    margin-top: 115px;
     position: fixed;
-    top: 60px;
+    top: calc(50% - 165px);
     left: calc(50% - 350px);
 }
 
