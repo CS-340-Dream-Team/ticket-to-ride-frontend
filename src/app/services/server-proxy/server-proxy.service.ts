@@ -200,8 +200,9 @@ export class ServerProxyService {
     // FIXME implement
   }
 
-  public selectRoutes(routes: Route[])/*: Promise<Command[]>*/ {
-    // FIXME implement
+  public selectRoutes(selectedRoutes: Route[], rejectedRoutes)/*: Promise<Command[]>*/ {
+    console.log('Keeping these:');
+    console.log(selectedRoutes);
   }
 
   public claimSegment(segment: Segment) : Promise<Command[]> {

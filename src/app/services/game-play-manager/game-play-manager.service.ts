@@ -40,6 +40,10 @@ export class GamePlayManagerService {
     return this._segmentSubject;
   }
 
+  get selectingRoutesSubject(): Subject<boolean> {
+    return this._selectingRoutesSubject;
+  }
+
   _currentGameSubject = new Subject<Game | null>();
   private _locations: MapLocation[] = [];
   private _locationSubject = new Subject<MapLocation[]>();
@@ -47,6 +51,8 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   currentGame: Game = null;
   polling = false;
+  private _selectingRoutes = false;
+  private _selectingRoutesSubject = new Subject<boolean>();
 
   private poll(serverProxy: ServerProxyService) {
     if (!this.polling) {
@@ -68,9 +74,15 @@ export class GamePlayManagerService {
       });
   }
 
+  public startGame() {
+    console.log('Starting the game!');
+    this._selectingRoutes = true;
+    this._selectingRoutesSubject.next(this._selectingRoutes);
+  }
+
   public getMapData() {
     this.serverProxy.getMapData()
-    .then(({ locations, segments } : { locations: MapLocation[], segments: Segment[] }) => {
+    .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
       this._locations = locations;
       this._segments = segments;
       this.locationSubject.next(this._locations);
@@ -82,8 +94,11 @@ export class GamePlayManagerService {
     // FIXME implement
   }
 
-  public selectRoutes(routes: Route[] ) {
-    // FIXME implement
+  public selectRoutes(selectedRoutes: Route[], rejectedRoutes: Route[]) {
+    this.serverProxy.selectRoutes(selectedRoutes, rejectedRoutes);
+    // FIXME, wait until a successful response
+    this._selectingRoutes = false;
+    this.selectingRoutesSubject.next(this._selectingRoutes);
   }
 
   public claimSegment(segment: Segment): void {

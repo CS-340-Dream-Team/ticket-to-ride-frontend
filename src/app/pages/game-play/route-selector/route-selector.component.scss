@@ -1,0 +1,86 @@
+@import "../../../../variables.scss";
+
+.dimmer {
+    background: #000;
+	opacity: 0.9;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.dialog-container {
+    display: flex;
+    justify-content: center;
+}
+
+.dialog {
+    background-color: $color-light-accent;
+    width: 700px;
+    height: 330px;
+    border-radius: 10px;
+    z-index:2000;
+    margin-top: 115px;
+    position: fixed;
+    top: 60px;
+    left: calc(50% - 350px);
+}
+
+.button-container {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+}
+
+.route-button {
+    width: 500px;
+    text-align: center;
+    margin: 8px auto;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    border-radius: 15px;
+    border: none;
+}
+
+.route-button:hover {
+    cursor: pointer;
+}
+
+.dialog-title {
+    font-size: 24px;
+    text-align: center;
+    font-family: 'Hind Madurai', sans-serif;
+    line-height: 0;
+    margin: 30px;
+}
+
+.submit-button {
+    display: block;
+    margin: 10px auto;
+    color: black;
+    background-color: $color-dark-background-accent;
+    border: none;
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-size: larger;
+}
+
+.submit-button:hover:enabled {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.submit-button:disabled {
+    color: $color-red;
+}
+
+.not-selected {
+    background-color: $color-dark-background-accent;
+}
+
+.selected {
+    background-color: $color-green;
+}
