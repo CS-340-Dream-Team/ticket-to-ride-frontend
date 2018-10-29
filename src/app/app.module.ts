@@ -7,7 +7,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
-import {NgxAutoScrollModule} from "ngx-auto-scroll";
+import { NgxAutoScrollModule } from "ngx-auto-scroll";
 
 import { AppComponent } from './app.component';
 import {
@@ -21,6 +21,8 @@ import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/
 import { ListedGameComponent } from './pages/game-list/listed-game/listed-game.component';
 import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
 import { MessageComponent } from './pages/chat/message/message.component';
+import { MapComponent } from './pages/map/map.component';
+import { PlayerBarComponent } from './pages/game-screen/player-bar/player-bar.component';
 
 import {
   AuthGuardService,
@@ -29,7 +31,6 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
-import { MapComponent } from './pages/map/map.component';
 
 
 const appRoutes: Routes = [
@@ -37,12 +38,12 @@ const appRoutes: Routes = [
   {
     path: 'game-list',
     component: GameListComponent,
-    canActivate: [AuthGuardService]
+    // canActivate: [AuthGuardService]
   },
   {
     path: 'game-play',
     component: GameScreenComponent,
-    canActivate: [AuthGuardService]
+    // canActivate: [AuthGuardService]
   },
   {
     path: '',
@@ -63,7 +64,8 @@ const appRoutes: Routes = [
     ChatComponent,
     MessageComponent,
     GameScreenComponent,
-    MapComponent
+    MapComponent,
+    PlayerBarComponent,
   ],
   imports: [
     BrowserAnimationsModule, // required animations module

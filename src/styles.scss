@@ -38,3 +38,44 @@ a {
 .center-text {
     text-align: center;
 }
+
+.circle {
+    border-radius: 50%;
+    min-width: 25px;
+    min-height: 25px;
+}
+
+// Color classes
+.purple-background {
+    background-color: purple;
+}
+
+.orange-background {
+    background-color: orange;
+}
+
+.blue-background {
+    background-color: blue;
+}
+
+.yellow-background {
+    background-color: yellow;
+}
+
+.white-background {
+    background-color: white;
+}
+
+.black-background {
+    background-color: black;
+}
+
+.red-background {
+    background-color: red;
+}
+
+.green-background {
+    background-color: green;
+}
+
+

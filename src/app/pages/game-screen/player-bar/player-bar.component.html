@@ -1,9 +1,111 @@
-<div *ngFor="let player of players" class="player-row " [ngClass]="
-{'red': player.color === playerColor.Red,
-'black': player.color === playerColor.Black,
-'green': player.color === playerColor.Green,
-'yellow': player.color === playerColor.Yellow,
-'blue': player.color === playerColor.Blue}
-">
-  {{player.name}}
-</div>
+<div class="player-row" *ngFor="let player of players">
+  <div class="name-bar" [ngClass]="
+    {'red-left-border': player.color === playerColor.Red,
+    'black-left-border': player.color === playerColor.Black,
+    'green-left-border': player.color === playerColor.Green,
+    'yellow-left-border': player.color === playerColor.Yellow,
+    'blue-left-border': player.color === playerColor.Blue}
+    ">
+    {{player.name}}
+
+    <div class="icon-container">
+      <div class="stat">
+        <p>{{player.stars}}</p>
+        <i class="material-icons star">star</i>
+      </div>
+      <div class="stat">
+        {{player.numRoutes}}
+        <i class="material-icons pin">place</i>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isCurrentPlayer(player)" class="current-player-info">
+    <ul class="no-style">
+      <li>
+        <i class="material-icons pin">place</i>
+      </li>
+      <li>
+        <i class="material-icons pin">place</i>
+      </li>
+    </ul>
+
+    <table>
+      <tr>
+        <td>
+          <div class="purple-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="orange-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="blue-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="yellow-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="yellow-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="white-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="black-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="red-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+        <td>
+          <div class="green-background circle"></div>
+        </td>
+        <td>
+          <div>
+            x 3
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>

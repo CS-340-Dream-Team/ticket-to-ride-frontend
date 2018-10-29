@@ -10,28 +10,40 @@ export class PlayerBarComponent implements OnInit {
 
   public playerColor = PlayerColor;
 
-  public players: Player[] = [
+  public players = [
     {
       name: 'Andrew',
-      color: PlayerColor.Blue
+      color: PlayerColor.Blue,
+      numRoutes: 3,
+      stars: 10,
     },
     {
       name: 'Carter',
-      color: PlayerColor.Yellow
+      color: PlayerColor.Yellow,
+      numRoutes: 6,
+      stars: 6,
     },
     {
       name: 'Berkley',
-      color: PlayerColor.Green
+      color: PlayerColor.Green,
+      numRoutes: 1,
+      stars: 2,
     },
     {
       name: 'Michael',
-      color: PlayerColor.Red
+      color: PlayerColor.Red,
+      numRoutes: 6,
+      stars: 1,
     }
   ];
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public isCurrentPlayer(player) {
+    return player.name === 'Carter';
   }
 
 }

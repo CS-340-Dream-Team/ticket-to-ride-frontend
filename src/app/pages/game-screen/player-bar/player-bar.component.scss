@@ -1,24 +1,78 @@
+@import "../../../../variables.scss";
+
 .player-row {
+    font-family: 'Hind Madurai', sans-serif;
+    color: $color-dark-text;
     width: 100%;
-    border-left: 5px solid;
-}
+    box-sizing: border-box;
+    font-size: 16pt;
+    position: relative;
 
-.red {
-    border-color: red !important;
-}
+    i {
+        position: relative;
+        bottom: -3px;
+        
+        &.star {
+            color: yellow;
+            margin-left: 2px;
+        }
+        
+        &.pin {
+            color: darkred;
+            margin-left: -6px;
+        }
+    }
 
-.green {
-    border-color: green;
-}
+    .name-bar {
+        border-left: 5px solid;
+        margin: 8px 0;
+        padding: 10px 0 10px 5px;
+        background-color: $color-dark-background-accent;
+        
+        .icon-container {
+            position: absolute;
+            right: 8px;
+            top: 9px;
+            display: flex;
+            
+            .stat {
+                margin-left: 10px;
+                flex-basis: 1;
+                
+                p {
+                    display: inline;
+                    position: relative;
+                }
+            }
+            
+        }
+        
+    }
+    
+    .current-player-info {
+        background-color: $color-dark-background;
 
-.blue {
-    border-color: blue;
-}
-
-.yellow {
-    border-color: yellow;
-}
-
-.black {
-    border-color: black;
+        ul {
+            list-style: none;
+        }
+    }
+    .red-left-border {
+        border-color: red !important;
+    }
+    
+    .green-left-border {
+        border-color: green;
+    }
+    
+    .blue-left-border {
+        border-color: blue;
+    }
+    
+    .yellow-left-border {
+        border-color: yellow;
+    }
+    
+    .black-left-border {
+        border-color: black;
+    }
 }
