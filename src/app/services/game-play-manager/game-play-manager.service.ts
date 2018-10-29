@@ -12,6 +12,13 @@ import { ToastrService } from 'ngx-toastr';
 export class GamePlayManagerService {
 
   private _clientPlayer: Player;
+  private _locations: MapLocation[] = [];
+  private _locationSubject = new Subject<MapLocation[]>();
+  private _segments: Array<Segment> = [];
+  private _segmentSubject = new Subject<Segment[]>();
+  _currentGameSubject = new Subject<Game | null>();
+  currentGame: Game = null;
+  polling = false;
 
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
     if (!this.polling) {
@@ -40,13 +47,11 @@ export class GamePlayManagerService {
     return this._segmentSubject;
   }
 
-  _currentGameSubject = new Subject<Game | null>();
-  private _locations: MapLocation[] = [];
-  private _locationSubject = new Subject<MapLocation[]>();
-  private _segments: Array<Segment> = [];
-  private _segmentSubject = new Subject<Segment[]>();
-  currentGame: Game = null;
-  polling = false;
+  setSegmentOwner(index: number, player: Player) {
+    console.log(JSON.stringify(this._segments[index]));
+    this._segments[index].owner = player;
+    this.segmentSubject.next(this._segments);
+  }
 
   private poll(serverProxy: ServerProxyService) {
     if (!this.polling) {
