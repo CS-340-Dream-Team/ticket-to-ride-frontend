@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression, Polyline, Layer } from "leaflet";
+import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression, Polyline, Layer, Tooltip } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
 import { Segment, Location as MapLocation, BusColor } from "src/app/types";
 import { LineString, MultiLineString } from "geojson";
+import 'leaflet-polylineoffset';
 
 @Component({
   selector: "app-map",
@@ -37,6 +38,26 @@ export class MapComponent implements OnInit {
     this.gamePlayManager.claimSegment(segment);
   }
 
+  private _constructLine(segment: Segment): { line: Polyline<LineString | MultiLineString, any>, toolTip: string} {
+    const { start, end } : { start: MapLocation, end: MapLocation } = segment;
+    const line: LatLngExpression[] = [
+      latLng(start.latLong.lat, start.latLong.long),
+      latLng(end.latLong.lat, end.latLong.long)
+    ];
+    let toolTip: string = `Length: ${segment.length}`;
+    const options: PolylineOptions = {
+      color: segment.color.toString() === 'any' ? 'grey' : segment.color.toString(),
+      opacity: 1,
+      stroke: true,
+    }
+    if (segment.owner) {
+      toolTip += `, Claimed by ${segment.owner.name}`;
+      options.opacity = 0.5;
+    }
+    const leafletLine: Polyline<LineString | MultiLineString, any> = polyline(line, options);
+    return { line: leafletLine, toolTip }
+  }
+
   private _initMap(): void {
     const hbllLocation: LatLng = new LatLng(40.248157, -111.649150);
     const defaultZoomLevel: number = 16;
@@ -63,53 +84,28 @@ export class MapComponent implements OnInit {
         icon: pin
       }).addTo(this._mapController)
       .bindTooltip(location.name, {
+        sticky: true,
         direction: 'top',
         offset: point(0, -20)
       });
     }
   }
 
-  private _renderSegments(segments: Segment[]) {
+  private _renderSegments(segments: Segment[]): void {
     this._removeSegments();
-    for (const segment of segments) {
-      const { start, end } : { start: MapLocation, end: MapLocation } = segment;
-      const line: LatLngExpression[] = [
-        latLng(start.latLong.lat, start.latLong.long),
-        latLng(end.latLong.lat, end.latLong.long)
-      ];
-      let toolTip: string = `Length: ${segment.length}`;
-      const options: PolylineOptions = {
-        color: segment.color.toString() === 'any' ? 'grey' : segment.color.toString(),
-        opacity: 1,
-        stroke: true,
-      }
-      if (segment.pair) {
-        options.weight = 6;
-        toolTip += ', Double Path';
-        if (segment.owner === undefined && segment.pair.owner) {
-          toolTip += `, Half Claimed by ${segment.pair.owner.name}`;
-          options.opacity = 0.5;
-        } else if (segment.owner && segment.pair.owner === undefined) {
-          toolTip += `, Half Claimed by ${segment.owner.name}`;
-          options.opacity = 0.5;
-        } else if (segment.owner && segment.pair.owner) {
-          toolTip += `, Claimed by ${segment.owner.name} & ${segment.pair.owner.name}`;
-          options.opacity = 0.5;
-        }
-      }
-      if (segment.pair === undefined && segment.owner) {
-        toolTip += `, Claimed by ${segment.owner.name}`;
-        options.opacity = 0.5;
-      }
-      const leafletLine: Polyline<LineString | MultiLineString, any> = polyline(line, options);
-      this._segments.push(leafletLine);
-      leafletLine
+    segments.forEach((segment: Segment, index: number) => {
+      const {line, toolTip} = this._constructLine(segment);
+      this._segments.push(line);
+      line
         .addTo(this._mapController)
         .bindTooltip(toolTip)
         .on('dblclick', () => {
           this._claimSegment(segment);
         });
-    }
+        if (segment.pair && segment.pair <= index + 1) {
+          (<any>line).setOffset(5);
+        }
+    });
   }
 
   private _removeSegments(): void {
