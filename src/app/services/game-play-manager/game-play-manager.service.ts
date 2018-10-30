@@ -53,25 +53,35 @@ export class GamePlayManagerService {
   polling = false;
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
+  private lastCommandId = 0;
 
   private poll(serverProxy: ServerProxyService) {
     if (!this.polling) {
       return;
     }
-    // FIXME poll for game updates
+    serverProxy.getGameData(this.lastCommandId).then(commands => {
+      console.log(commands);
+      this.handleCommands(commands);
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });
     setTimeout(() => {
       this.poll(serverProxy);
     }, 3000);
   }
 
   private handleCommands(commands: Command[]) {
-      commands.forEach(command => {
-          switch (command.type) {
-              // FIXME add any commands here
-              default:
-                break;
-          }
-      });
+    commands.forEach(command => {
+      //FIXME implement gameplay commands
+      if (command.type === "updateSpread") {
+        //spread: [5 cards]
+        //deckSize: number
+      } else if (command.type === "updateClientPlayer") {
+        //player: player
+      } else if (command.type === "updateOpponentPlayers") {
+        //players: [{number of cards and such},...]
+      }
+    });
   }
 
   public startGame() {
