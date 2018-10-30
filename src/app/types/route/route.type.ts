@@ -5,5 +5,5 @@ export interface Route {
     start: Location;
     end: Location;
     points: number;
-    complete:boolean;
+    complete?:boolean;
 }

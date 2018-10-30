@@ -1,5 +1,5 @@
 import { PlayerColor } from "../PlayerColor/PlayerColor";
-import { BusCard } from "..";
+import { BusCard, Route } from "..";
 
 export interface Player {
     name:string;
@@ -7,5 +7,5 @@ export interface Player {
     points: number;
     busPieces: number;
     busCards: BusCard[] | number; //BusCard[] if client player, number of opponent player
-    routeCards: RouteCard[] | number; //same idea as above
+    routeCards: Route[] | number; //same idea as above
 }

@@ -86,15 +86,19 @@ export class GamePlayManagerService {
         let deckSize = command.data.deckSize;
         this._spreadSubject.next(spread);
         this._deckSizeSubject.next(deckSize);
+        console.log(spread);
+        console.log(deckSize);
         //spread: [5 cards]
         //deckSize: number
       } else if (command.type === "updateClientPlayer") {
         let player = command.data.player;
         this._clientPlayer = player;
+        console.log(this._clientPlayer);
         //player: player
       } else if (command.type === "updateOpponentPlayers") {
         let players = command.data.players;
         this._opponentPlayers = players;
+        console.log(this._opponentPlayers);
         //players: [{number of cards and such},...]
       }
     });
