@@ -16,6 +16,7 @@ export class ChatManagerService {
   private _messages: Message[];
   private _messageNotification: number;
   private _messageNotificationSubject = new Subject<number>();
+  polling = false;
 
   constructor(
     private serverProxy: ServerProxyService, 
@@ -23,7 +24,6 @@ export class ChatManagerService {
     private toastr: ToastrService) {
     this._messages = [];
     this._currentPlayer = gameplayManager.clientPlayer;
-    this.poll(serverProxy);
   }
 
   public get currentPlayer() {
@@ -52,7 +52,8 @@ export class ChatManagerService {
     });
   }
 
-  private poll(serverProxy: ServerProxyService) {
+  poll(serverProxy: ServerProxyService) {
+    if (this.polling) {
       let timestamp = 0;
       if (this._messages.length > 0) {
         timestamp = this._messages[this._messages.length - 1].timestamp;
@@ -62,6 +63,7 @@ export class ChatManagerService {
       }).catch(res => {
         this.toastr.error(res.message);
       });
+    }
     setTimeout(() => {
       this.poll(serverProxy);
     }, 1000);
