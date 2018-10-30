@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression } from "leaflet";
+import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression, Polyline, Layer } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
 import { Segment, Location as MapLocation, BusColor } from "src/app/types";
+import { LineString, MultiLineString } from "geojson";
 
 @Component({
   selector: "app-map",
@@ -11,8 +12,10 @@ import { Segment, Location as MapLocation, BusColor } from "src/app/types";
 export class MapComponent implements OnInit {
   private _mapController: Map;
   @ViewChild("map")
-	_mapEl: ElementRef;
-  
+  _mapEl: ElementRef;
+  _markers: any = {};
+  _segments: Polyline<LineString | MultiLineString, any>[] = [];
+
 	constructor(
     private gamePlayManager: GamePlayManagerService,) {
       gamePlayManager.locationSubject.subscribe({
@@ -22,14 +25,14 @@ export class MapComponent implements OnInit {
         next: (segments) => this._renderSegments(segments)
       })
     }
-  
+
 	ngOnInit() {
   }
-  
+
   ngAfterViewInit() {
     this._initMap();
   }
-  
+
   private _claimSegment(segment: Segment) {
     this.gamePlayManager.claimSegment(segment);
   }
@@ -55,7 +58,7 @@ export class MapComponent implements OnInit {
     });
     for (const location of locations) {
       const { lat, long } : { lat: number, long: number } = location.latLong;
-      marker(latLng(lat, long), { 
+      marker(latLng(lat, long), {
         title: location.name,
         icon: pin
       }).addTo(this._mapController)
@@ -67,12 +70,12 @@ export class MapComponent implements OnInit {
   }
 
   private _renderSegments(segments: Segment[]) {
-    console.log('Rendering segments');
+    this._removeSegments();
     for (const segment of segments) {
       const { start, end } : { start: MapLocation, end: MapLocation } = segment;
-      const line: LatLngExpression[] = [ 
-        latLng(start.latLong.lat, start.latLong.long), 
-        latLng(end.latLong.lat, end.latLong.long) 
+      const line: LatLngExpression[] = [
+        latLng(start.latLong.lat, start.latLong.long),
+        latLng(end.latLong.lat, end.latLong.long)
       ];
       let toolTip: string = `Length: ${segment.length}`;
       const options: PolylineOptions = {
@@ -98,12 +101,21 @@ export class MapComponent implements OnInit {
         toolTip += `, Claimed by ${segment.owner.name}`;
         options.opacity = 0.5;
       }
-      polyline(line, options)
+      const leafletLine: Polyline<LineString | MultiLineString, any> = polyline(line, options);
+      this._segments.push(leafletLine);
+      leafletLine
         .addTo(this._mapController)
         .bindTooltip(toolTip)
         .on('dblclick', () => {
           this._claimSegment(segment);
         });
+    }
+  }
+
+  private _removeSegments(): void {
+    while (this._segments.length > 0) {
+      const segment: Polyline<LineString | MultiLineString, any> = this._segments.pop();
+      segment.remove();
     }
   }
 }
