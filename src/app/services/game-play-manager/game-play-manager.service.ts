@@ -144,9 +144,6 @@ export class GamePlayManagerService {
   }
 
   public claimSegment(segment: Segment): void {
-    console.log(`Attempt to claim segment between ${segment.start.name} and ${segment.end.name}`);
-    // check if it is the player's turn.
-    // check if they have all the right bus pieces.
     this.serverProxy.claimSegment(segment)
       .then((commands: Command[]) => this.handleCommands(commands));
   }

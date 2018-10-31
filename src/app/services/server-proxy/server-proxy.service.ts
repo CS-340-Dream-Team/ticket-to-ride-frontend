@@ -105,7 +105,6 @@ export class ServerProxyService {
    * @param gameName Name of the GAME!
    */
   public createGame(gameName: string): Promise<Command[]> {
-    console.log('Creating ' + gameName);
     const requestBody = {
       name: gameName,
       host: this._currentUser
@@ -130,7 +129,6 @@ export class ServerProxyService {
    * @param game The game (type: Game)
    */
   public joinGame(game: Game): Promise<Command[]> {
-    console.log('Joining ' + game.name);
     const url = 'games/' + game.id + '/join';
     return new Promise<any>((resolve, reject) => {
       this.http
@@ -147,7 +145,6 @@ export class ServerProxyService {
   }
 
   public startGame(game: Game): Promise<Command[]> {
-    console.log('Starting ' + game.name);
     const url = `games/${game.id}/start`;
     return this.http
       .post(`${environment.BASE_URL}/${url}`, {}, this.generateHttpOptions()).toPromise()
