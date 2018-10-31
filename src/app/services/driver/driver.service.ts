@@ -34,8 +34,42 @@ export class DriverService {
     this.toastr.success(`Adding destination cards for ${player.name}`);
     await this.delay(this.timeBetweenCommands);
     let routeCards = this.gamePlayService.clientPlayer.routeCards as Route[];
-    routeCards.push({color: BusColor.Red});
-    busCards.push({color: BusColor.Red});
+    routeCards.push({
+      "name": "Gains 'n' Grades",
+      "points": 4,
+      "start": {
+         "name": "The Testing Center",
+         "latLong": {
+            "lat": 40.245433,
+            "long": -111.652399
+         }
+      },
+      "end": {
+         "name": "Vasa",
+         "latLong": {
+            "lat": 40.240334,
+            "long": -111.642054
+         }
+      }
+    });
+    routeCards.push({
+         "name": "America's Passtime",
+         "points": 5,
+         "start": {
+            "name": "J-Dawgs",
+            "latLong": {
+               "lat": 40.245286,
+               "long": -111.646318
+            }
+         },
+         "end": {
+            "name": "Baseball Stadium",
+            "latLong": {
+               "lat": 40.254821,
+               "long": -111.651125
+            }
+         }
+    });
 
     this.toastr.success(`Removing destination cards for ${player.name}`);
     await this.delay(this.timeBetweenCommands);
