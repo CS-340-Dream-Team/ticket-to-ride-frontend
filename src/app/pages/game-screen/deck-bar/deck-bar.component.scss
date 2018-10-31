@@ -31,6 +31,15 @@
             &.card-color-red {
                 background-color: $color-red;
             }
+            &.card-color-orange {
+                background-color: $color-orange;
+            }
+            &.card-color-black {
+                background-color: $color-black;
+            }
+            &.card-color-purple {
+                background-color: $color-purple;
+            }
             &.card-color-rainbow {
                 background-image: linear-gradient(to right,$color-red, $color-orange, $color-yellow, $color-green, $color-blue, $color-purple);
             }
@@ -50,12 +59,9 @@
             margin-right: -7px;
         }
         .routes-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
-            margin: 0 12px;
-            background-color: $color-red;
+            margin: 4px 12px;
             overflow: hidden;
+            font-size: 50px;
         }
         .card {
             width: 60px;

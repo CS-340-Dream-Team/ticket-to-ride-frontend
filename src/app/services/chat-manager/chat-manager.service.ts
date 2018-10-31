@@ -19,7 +19,7 @@ export class ChatManagerService {
   polling = false;
 
   constructor(
-    private serverProxy: ServerProxyService, 
+    private serverProxy: ServerProxyService,
     private gameplayManager: GamePlayManagerService,
     private toastr: ToastrService) {
     this._messages = [];
@@ -53,6 +53,7 @@ export class ChatManagerService {
   }
 
   poll(serverProxy: ServerProxyService) {
+    console.log('Polling for chats');
     if (this.polling) {
       let timestamp = 0;
       if (this._messages.length > 0) {

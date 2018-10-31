@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BusCard, BusColor } from '../../../types';
+import { GamePlayManagerService } from '../../../services';
 
 @Component({
   selector: 'app-deck-bar',
@@ -13,24 +14,16 @@ export class DeckBarComponent implements OnInit {
   private numRoutes = 16;
 
 
-  constructor() {
-    this.spread = [
-      {
-        color: BusColor.Blue
-      },
-      {
-        color: BusColor.White
-      },
-      {
-        color: BusColor.Rainbow
-      },
-      {
-        color: BusColor.Yellow
-      },
-      {
-        color: BusColor.Red
-      }
-    ];
+  constructor(private gamePlayManager: GamePlayManagerService) {
+    gamePlayManager.spreadSubject.subscribe({
+      next: (spread) => this.spread = spread
+    });
+    gamePlayManager.deckSizeSubject.subscribe({
+      next: (deckSize) => this.numBuses = deckSize
+    });
+    gamePlayManager.getSpread().then(spread => {
+      this.spread = spread;
+    });
    }
 
   ngOnInit() {
