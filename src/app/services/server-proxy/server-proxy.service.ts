@@ -163,6 +163,21 @@ export class ServerProxyService {
       .then((response: Response) => response.json());
   }
 
+  public getGameData(lastCommandId: number): Promise<any> {
+    const url = `play/${lastCommandId}`;
+    return new Promise<any>((resolve, reject) => {
+      this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          resolve(resJson.commands);
+        }, err => {
+          reject(err.json());
+        }
+      );
+    })
+  }
+
   public addMessage(chatInfo: {
     messageText: string;
     prevTimestamp: number;
@@ -200,8 +215,9 @@ export class ServerProxyService {
     // FIXME implement
   }
 
-  public selectRoutes(routes: Route[])/*: Promise<Command[]>*/ {
-    // FIXME implement
+  public selectRoutes(selectedRoutes: Route[], rejectedRoutes)/*: Promise<Command[]>*/ {
+    console.log('Keeping these:');
+    console.log(selectedRoutes);
   }
 
   public claimSegment(segment: Segment) : Promise<Command[]> {

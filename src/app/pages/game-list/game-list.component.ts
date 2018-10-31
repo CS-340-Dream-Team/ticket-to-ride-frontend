@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Game } from '../../types';
 import { GameListManagerService } from '../../services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-list',
@@ -11,13 +12,19 @@ export class GameListComponent implements OnInit {
 
   @Input() activeGames: Game[] = [];
   selectedGame: Game | null = null;
+  gameStarted: boolean = false;
 
-  constructor(private gameListManager: GameListManagerService) {
+  constructor(private gameListManager: GameListManagerService, private router: Router) {
     gameListManager.gamesSubject.subscribe({
       next: (games) => this.activeGames = games
     });
     gameListManager.currentGameSubject.subscribe({
       next: (game) => this.selectedGame = game
+    });
+    gameListManager._gameStartedSubject.subscribe( started => {
+      if (started == true) {
+        this.router.navigateByUrl('/game-play');
+      }
     });
   }
 

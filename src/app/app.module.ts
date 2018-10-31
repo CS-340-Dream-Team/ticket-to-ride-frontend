@@ -15,14 +15,15 @@ import {
   GameListComponent,
   GameScreenComponent,
   LoginScreenComponent,
+  MapComponent
 } from './pages';
 
 import { CreateGameDialogComponent } from './pages/game-list/create-game-dialog/create-game-dialog.component';
 import { ListedGameComponent } from './pages/game-list/listed-game/listed-game.component';
 import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
 import { MessageComponent } from './pages/chat/message/message.component';
-import { MapComponent } from './pages/map/map.component';
 import { PlayerBarComponent } from './pages/game-screen/player-bar/player-bar.component';
+import { RouteSelectorComponent } from './pages/game-play/route-selector/route-selector.component';
 
 import {
   AuthGuardService,
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
     GameScreenComponent,
     MapComponent,
     PlayerBarComponent,
+    RouteSelectorComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module

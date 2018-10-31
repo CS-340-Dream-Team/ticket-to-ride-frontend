@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GamePlayManagerService } from '../../services';
 
 @Component({
   selector: 'app-game-screen',
@@ -7,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameScreenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private gamePlayManager: GamePlayManagerService) {
+    gamePlayManager.selectingRoutesSubject.subscribe({
+      next: (selectingRoutes) => {
+        this.selectingRoutes = selectingRoutes;
+        console.log('Updating selectingRoutes to ' + (selectingRoutes));
+      }
+    });
+  }
+
+  public selectingRoutes = true;
 
   ngOnInit() {
   }
