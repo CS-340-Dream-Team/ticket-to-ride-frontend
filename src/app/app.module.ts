@@ -24,6 +24,7 @@ import { LobbyComponent } from './pages/game-list/lobby/lobby.component';
 import { MessageComponent } from './pages/chat/message/message.component';
 import { PlayerBarComponent } from './pages/game-screen/player-bar/player-bar.component';
 import { RouteSelectorComponent } from './pages/game-play/route-selector/route-selector.component';
+import { DeckBarComponent } from './pages/game-screen/deck-bar/deck-bar.component';
 
 import {
   AuthGuardService,
@@ -67,7 +68,9 @@ const appRoutes: Routes = [
     GameScreenComponent,
     MapComponent,
     PlayerBarComponent,
-    RouteSelectorComponent
+    RouteSelectorComponent,
+    RouteSelectorComponent,
+    DeckBarComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module

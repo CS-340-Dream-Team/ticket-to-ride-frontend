@@ -67,6 +67,7 @@ export class GameListManagerService {
         this._gameStartedSubject.next(true);
         this.findClientPlayer(command);
         this.gameplayService.poll(this.serverProxy);
+        this.gameplayService.startGame();
         this.chatService.poll(this.serverProxy);
         this.polling = false;
       }
@@ -83,6 +84,7 @@ export class GameListManagerService {
     command.data.game.playersJoined.forEach(player => {
       if (player.name === this.authService.currentUser.name) {
         this.gameplayService.clientPlayer = player;
+        this.gameplayService.clientPlayerSubject.next(player);
       }
     })
   }
