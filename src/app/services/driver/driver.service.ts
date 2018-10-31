@@ -100,7 +100,7 @@ export class DriverService {
     await this.delay(this.timeBetweenCommands);
     this.gamePlayService.updateRouteDeckSize(7);
 
-    this.toastr.success("Claiming route from Baseball Stadium to Smith Field House");
+    this.toastr.success("Claiming route from Baseball Stadium to Smith Field House. (mouse over)");
     await this.delay(this.timeBetweenCommands);
     this.gamePlayService.setSegmentOwner(21, player);
   }
