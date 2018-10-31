@@ -25,6 +25,7 @@ export class GamePlayManagerService {
   
   //Gameplay data
   private _clientPlayer: Player;
+  private _clientPlayerSubject = new Subject<Player>();
   private _opponentPlayers: Player[];
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
@@ -38,6 +39,10 @@ export class GamePlayManagerService {
 
   set clientPlayer(player: Player) {
     this._clientPlayer = player;
+  }
+
+  get clientPlayerSubject() {
+    return this._clientPlayerSubject;
   }
 
   get currentGameSubject() {

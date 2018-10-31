@@ -84,6 +84,7 @@ export class GameListManagerService {
     command.data.game.playersJoined.forEach(player => {
       if (player.name === this.authService.currentUser.name) {
         this.gameplayService.clientPlayer = player;
+        this.gameplayService.clientPlayerSubject.next(player);
       }
     })
   }

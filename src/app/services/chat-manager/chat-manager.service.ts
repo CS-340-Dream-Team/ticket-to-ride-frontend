@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Player, Command } from '../../types';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
-import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { Message } from '../../types/message/message.type';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -16,14 +15,15 @@ export class ChatManagerService {
   private _messages: Message[];
   private _messageNotification: number;
   private _messageNotificationSubject = new Subject<number>();
-  polling = false;
 
   constructor(
     private serverProxy: ServerProxyService,
-    private gameplayManager: GamePlayManagerService,
+    private gameplayService: GamePlayManagerService,
     private toastr: ToastrService) {
     this._messages = [];
-    this._currentPlayer = gameplayManager.clientPlayer;
+    this.gameplayService.clientPlayerSubject.subscribe({
+      next: (player) => this._currentPlayer = player
+    });
   }
 
   public get currentPlayer() {
@@ -54,17 +54,15 @@ export class ChatManagerService {
 
   poll(serverProxy: ServerProxyService) {
     console.log('Polling for chats');
-    if (this.polling) {
-      let timestamp = 0;
-      if (this._messages.length > 0) {
-        timestamp = this._messages[this._messages.length - 1].timestamp;
-      }
-      serverProxy.getUpdatedMessages(timestamp).then(commands => {
-        this.handleCommands(commands);
-      }).catch(res => {
-        this.toastr.error(res.message);
-      });
+    let timestamp = 0;
+    if (this._messages.length > 0) {
+      timestamp = this._messages[this._messages.length - 1].timestamp;
     }
+    serverProxy.getUpdatedMessages(timestamp).then(commands => {
+      this.handleCommands(commands);
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });
     setTimeout(() => {
       this.poll(serverProxy);
     }, 1000);

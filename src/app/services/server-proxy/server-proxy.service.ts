@@ -236,7 +236,6 @@ export class ServerProxyService {
       .subscribe(
         (res: Response) => {
           const resJson = res.json();
-          debugger;
           resolve(resJson.command);
         }, err => {
           reject(err.json());
