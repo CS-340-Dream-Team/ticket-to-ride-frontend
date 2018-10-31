@@ -1,0 +1,74 @@
+@import "../../../../variables.scss";
+
+.deck-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 80px;
+
+    .face-up {
+        display: flex;
+        margin-top: 20px;
+        margin-left: 75px;
+
+        .card {
+            width: 60px;
+            height: 60px;
+            border-radius: 100px;
+            margin: 0 10px;
+
+            &.card-color-blue {
+                background-color: $color-blue;
+            }
+            &.card-color-white {
+                background-color: $color-white;
+            }
+            &.card-color-yellow {
+                background-color: $color-yellow;
+            }
+            &.card-color-green {
+                background-color: $color-green;
+            }
+            &.card-color-red {
+                background-color: $color-red;
+            }
+            &.card-color-rainbow {
+                background-image: linear-gradient(to right,$color-red, $color-orange, $color-yellow, $color-green, $color-blue, $color-purple);
+            }
+        }
+    }
+
+
+    .face-down {
+        margin-top: 20px;
+        display: flex;
+
+        .card-label {
+            font-size: 22px;
+            line-height: 0px;
+            margin-top: 30px;
+            margin-left: 10px;
+            margin-right: -7px;
+        }
+        .routes-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            margin: 0 12px;
+            background-color: $color-red;
+            overflow: hidden;
+        }
+        .card {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            margin: 0 12px;
+            background-color: $color-dark-background-accent;
+            overflow: hidden;
+            p {
+                margin-left: 22px;
+                margin-top: 14px;
+                font-size: 32px;
+            }
+        }
+    }
+}

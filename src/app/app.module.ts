@@ -31,6 +31,7 @@ import {
 } from './services';
 import { MapComponent } from './pages/map/map.component';
 import { RouteSelectorComponent } from './pages/game-play/route-selector/route-selector.component';
+import { DeckBarComponent } from './pages/game-screen/deck-bar/deck-bar.component';
 
 
 const appRoutes: Routes = [
@@ -65,7 +66,8 @@ const appRoutes: Routes = [
     MessageComponent,
     GameScreenComponent,
     MapComponent,
-    RouteSelectorComponent
+    RouteSelectorComponent,
+    DeckBarComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
