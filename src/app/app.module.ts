@@ -30,6 +30,7 @@ import {
   ServerProxyService
 } from './services';
 import { MapComponent } from './pages/map/map.component';
+import { DeckBarComponent } from './pages/game-screen/deck-bar/deck-bar.component';
 
 
 const appRoutes: Routes = [
@@ -63,7 +64,8 @@ const appRoutes: Routes = [
     ChatComponent,
     MessageComponent,
     GameScreenComponent,
-    MapComponent
+    MapComponent,
+    DeckBarComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
