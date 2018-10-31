@@ -6,6 +6,6 @@ export interface Player {
     color: PlayerColor;
     points: number;
     busPieces: number;
-    busCards: BusCard[] | number; //BusCard[] if client player, number of opponent player
+    busCards: BusCard[] | number; //BusCard[] if client player, number if opponent player
     routeCards: Route[] | number; //same idea as above
 }
