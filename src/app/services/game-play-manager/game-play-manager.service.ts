@@ -25,6 +25,7 @@ export class GamePlayManagerService {
   
   //Gameplay data
   private _clientPlayer: Player;
+  private _clientPlayerSubject = new Subject<Player>();
   private _opponentPlayers: Player[];
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
@@ -38,6 +39,10 @@ export class GamePlayManagerService {
 
   set clientPlayer(player: Player) {
     this._clientPlayer = player;
+  }
+
+  get clientPlayerSubject() {
+    return this._clientPlayerSubject;
   }
 
   get currentGameSubject() {
@@ -80,34 +85,26 @@ export class GamePlayManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      //FIXME implement gameplay commands
-      if (command.type === "updateSpread") {
-        let spread = command.data.spread;
-        let deckSize = command.data.deckSize;
+      // FIXME implement gameplay commands
+      if (command.type === 'updateSpread') {
+        const spread = command.data.spread;
+        const deckSize = command.data.deckSize;
         this._spreadSubject.next(spread);
         this._deckSizeSubject.next(deckSize);
-        console.log(spread);
-        console.log(deckSize);
-        //spread: [5 cards]
-        //deckSize: number
-      } else if (command.type === "updateClientPlayer") {
-        let player = command.data.player;
+      } else if (command.type === 'updateClientPlayer') {
+        const player = command.data.player;
         this._clientPlayer = player;
-        console.log(this._clientPlayer);
-        //player: player
-      } else if (command.type === "updateOpponentPlayers") {
-        let players = command.data.players;
+        this._selectingRoutes = true;
+        this._selectingRoutesSubject.next(this._selectingRoutes);
+      } else if (command.type === 'updateOpponentPlayers') {
+        const players = command.data.players;
         this._opponentPlayers = players;
-        console.log(this._opponentPlayers);
-        //players: [{number of cards and such},...]
       }
     });
   }
 
   public startGame() {
     console.log('Starting the game!');
-    this._selectingRoutes = true;
-    this._selectingRoutesSubject.next(this._selectingRoutes);
   }
 
   public getMapData() {
@@ -124,11 +121,26 @@ export class GamePlayManagerService {
     // FIXME implement
   }
 
+  public getSpread(): Promise<BusCard[]> {
+    return this.serverProxy.getSpread().then(command => {
+      if (command.data['deckSize']) {
+        this.deckSizeSubject.next(command.data['deckSize']);
+      }
+      return command.data['spread'];
+    });
+  }
+
+  public drawRoutes(): Promise<Route[]> {
+    return this.serverProxy.drawRoutes().then(command => {
+      return command['privateData'];
+    });
+  }
+
   public selectRoutes(selectedRoutes: Route[], rejectedRoutes: Route[]) {
-    this.serverProxy.selectRoutes(selectedRoutes, rejectedRoutes);
-    // FIXME, wait until a successful response
-    this._selectingRoutes = false;
-    this.selectingRoutesSubject.next(this._selectingRoutes);
+    this.serverProxy.selectRoutes(selectedRoutes, rejectedRoutes).then(commands => {
+      this._selectingRoutes = false;
+      this.selectingRoutesSubject.next(this._selectingRoutes);
+    });
   }
 
   public claimSegment(segment: Segment): void {

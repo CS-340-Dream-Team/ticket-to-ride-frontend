@@ -12,7 +12,6 @@ export class GameScreenComponent implements OnInit {
     gamePlayManager.selectingRoutesSubject.subscribe({
       next: (selectingRoutes) => {
         this.selectingRoutes = selectingRoutes;
-        console.log('Updating selectingRoutes to ' + (selectingRoutes));
       }
     });
   }

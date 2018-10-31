@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 
 import { Game, Command, User, Route, Segment, Location as MapLocation } from '../../types';
 import { Message } from '../../types/message/message.type';
+import { resolve, reject } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -210,14 +211,51 @@ export class ServerProxyService {
         );
     });
   }
-  
+
   public selectBusCard(index: number)/*: Promise<Command[]>*/ {
     // FIXME implement
   }
 
-  public selectRoutes(selectedRoutes: Route[], rejectedRoutes)/*: Promise<Command[]>*/ {
-    console.log('Keeping these:');
-    console.log(selectedRoutes);
+  public getSpread(): Promise<Command> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get(`${environment.BASE_URL}/play/bus`, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          resolve(resJson.command);
+        }, err => {
+          reject(err.json());
+        }
+      );
+    });
+  }
+
+  public drawRoutes(): Promise<Command[]> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get(`${environment.BASE_URL}/play/routes`, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          resolve(resJson.command);
+        }, err => {
+          reject(err.json());
+        }
+      );
+    });
+  }
+
+  public selectRoutes(selectedRoutes: Route[], rejectedRoutes: Route[]): Promise<Command[]> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(`${environment.BASE_URL}/play/routes`, {rejectedRoutes: rejectedRoutes}, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          resolve(resJson.commands);
+        }, err => {
+          reject(err.json());
+        }
+      );
+    });
   }
 
   public claimSegment(segment: Segment) : Promise<Command[]> {
