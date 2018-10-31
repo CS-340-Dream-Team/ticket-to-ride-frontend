@@ -30,8 +30,11 @@ export class GamePlayManagerService {
   private _opponentPlayers: Player[];
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
+  private _routeDeckSize: number = 20;
+  private _routeDeckSizeSubject = new Subject<number>();
 
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+    this._routeDeckSizeSubject.next(this._routeDeckSize);
   }
 
   get clientPlayer() {
@@ -73,6 +76,10 @@ export class GamePlayManagerService {
 
   get deckSizeSubject(): Subject<number> {
     return this._deckSizeSubject;
+  }
+
+  get routeDeckSizeSubject(): Subject<number> {
+    return this._routeDeckSizeSubject;
   }
 
   poll(serverProxy: ServerProxyService) {
