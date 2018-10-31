@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Player, PlayerColor } from 'src/app/types';
+import { GamePlayManagerService } from 'src/app/services';
 
 @Component({
   selector: 'app-player-bar',
@@ -10,48 +11,23 @@ export class PlayerBarComponent implements OnInit {
 
   public playerColor = PlayerColor;
 
-  public players = [
-    {
-      name: 'Andrew',
-      color: PlayerColor.Blue,
-      numRoutes: 3,
-      points: 10,
-      numCards: 40,
-      numBusses: 40
-    },
-    {
-      name: 'Carter',
-      color: PlayerColor.Yellow,
-      numRoutes: 6,
-      points: 20,
-      numCards: 40,
-      numBusses: 40
-    },
-    {
-      name: 'Berkley',
-      color: PlayerColor.Green,
-      numRoutes: 1,
-      points: 2,
-      numCards: 40,
-      numBusses: 40
-    },
-    {
-      name: 'Michael',
-      color: PlayerColor.Red,
-      numRoutes: 6,
-      points: 1,
-      numCards: 40,
-      numBusses: 40
-    }
-  ];
+  public players: Player[] = [];
 
-  constructor() { }
+  constructor(
+    private gamePlayManager: GamePlayManagerService
+  ) {
+    this.gamePlayManager.allPlayersSubject.subscribe({
+      next: players => {
+        this.players = players;
+      }
+    });
+  }
 
   ngOnInit() {
   }
 
   public isCurrentPlayer(player) {
-    return player.name === 'Carter';
+    return player.name === this.gamePlayManager.clientPlayer.name;
   }
 
 }

@@ -7,7 +7,7 @@
     box-sizing: border-box;
     font-size: 16pt;
     position: relative;
-    
+
     i {
         position: relative;
         bottom: -3px;
@@ -30,6 +30,13 @@
         padding: 10px 0 10px 5px;
         background-color: $color-dark-background-accent;
         
+        .player-name {
+            width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .icon-container {
             position: absolute;
             right: 8px;
