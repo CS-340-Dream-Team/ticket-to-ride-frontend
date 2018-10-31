@@ -53,7 +53,6 @@ export class ChatManagerService {
   }
 
   poll(serverProxy: ServerProxyService) {
-    console.log('Polling for chats');
     let timestamp = 0;
     if (this._messages.length > 0) {
       timestamp = this._messages[this._messages.length - 1].timestamp;

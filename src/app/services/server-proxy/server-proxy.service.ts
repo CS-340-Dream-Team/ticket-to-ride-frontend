@@ -164,9 +164,9 @@ export class ServerProxyService {
       .then((response: Response) => response.json());
   }
 
-  public getGameData(lastCommandId: number): Promise<any> {
+  public getGameData(lastCommandId: number): Promise<Command[]> {
     const url = `play/${lastCommandId}`;
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<Command[]>((resolve, reject) => {
       this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
       .subscribe(
         (res: Response) => {

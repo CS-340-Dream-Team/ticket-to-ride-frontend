@@ -84,6 +84,8 @@ export class GamePlayManagerService {
   }
 
   private handleCommands(commands: Command[]) {
+    if(commands===undefined)
+    console.log("commands not defined")
     commands.forEach(command => {
       // FIXME implement gameplay commands
       if (command.type === 'updateSpread') {
@@ -91,8 +93,34 @@ export class GamePlayManagerService {
         const deckSize = command.data.deckSize;
         this._spreadSubject.next(spread);
         this._deckSizeSubject.next(deckSize);
-      } else if (command.type === 'updateClientPlayer') {
-        const player = command.data.player;
+        console.log(spread);
+        console.log(deckSize);
+        //spread: [5 cards]
+        //deckSize: number
+      } 
+      else if(command.type ==="updatePlayers"){
+        let players:Player[] =command.data;
+
+        players.forEach(player => {
+          if(player.name===this._clientPlayer.name){
+            this._clientPlayer=player
+          }
+          else{
+            players.push(player);
+          }
+        });
+      }
+      else if(command.type ==="initialize"){
+        if(command.id){
+          if(command.id>this.lastCommandId)
+          {
+            this.lastCommandId=command.id;
+          }
+        }
+      }
+      /*
+      else if (command.type === "updatePlayer") {
+        let player = command.data.player;
         this._clientPlayer = player;
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
@@ -100,6 +128,7 @@ export class GamePlayManagerService {
         const players = command.data.players;
         this._opponentPlayers = players;
       }
+      */
     });
   }
 
