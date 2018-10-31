@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Player } from '../../types';
 import { Message } from '../../types/message/message.type';
 import { NgxAutoScroll } from 'ngx-auto-scroll';
+import { GamePlayManagerService } from 'src/app/services';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +21,10 @@ export class ChatComponent implements OnInit {
   @ViewChild('input') nameField: ElementRef;
   @ViewChild(NgxAutoScroll) ngxAutoScroll: NgxAutoScroll;
 
-  constructor(private chatManager: ChatManagerService, private toastr: ToastrService) { 
+  constructor(
+    private chatManager: ChatManagerService,
+    private toastr: ToastrService,
+    private gameplayService: GamePlayManagerService) { 
     this.currentPlayer = chatManager.currentPlayer;
     chatManager.messagesSubject.subscribe({
       next: (messages) => this.messages = messages
@@ -28,6 +32,9 @@ export class ChatComponent implements OnInit {
     chatManager.messageNotificationSubject.subscribe({
       next: (numMessages) => this.messageNotification = numMessages
     });
+    this.gameplayService.clientPlayerSubject.subscribe({
+      next: (player) => this.currentPlayer = player
+    })
     this.showChat = false;
     this.inputMessage = '';
   }

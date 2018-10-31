@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GamePlayManagerService } from '../game-play-manager/game-play-manager.service';
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
+import { ChatManagerService } from '../chat-manager/chat-manager.service';
 
 
 @Injectable({
@@ -16,6 +17,7 @@ export class GameListManagerService {
     private serverProxy: ServerProxyService, 
     private toastr: ToastrService,
     private gameplayService: GamePlayManagerService,
+    private chatService: ChatManagerService,
     private authService: AuthManagerService) {
     if (!this.polling) {
       this.polling = true;
@@ -64,6 +66,10 @@ export class GameListManagerService {
       } else if (command.type === "gameStarted") {
         this._gameStartedSubject.next(true);
         this.findClientPlayer(command);
+        this.gameplayService.poll(this.serverProxy);
+        this.gameplayService.startGame();
+        this.chatService.poll(this.serverProxy);
+        this.polling = false;
       }
       this.games.forEach(game => {
         if (game.id === activeID && game !== this.currentGame) {
@@ -78,6 +84,7 @@ export class GameListManagerService {
     command.data.game.playersJoined.forEach(player => {
       if (player.name === this.authService.currentUser.name) {
         this.gameplayService.clientPlayer = player;
+        this.gameplayService.clientPlayerSubject.next(player);
       }
     })
   }

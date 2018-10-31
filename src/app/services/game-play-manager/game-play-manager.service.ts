@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
-import { Command, Route, Segment, Location as MapLocation, Player } from '../../types';
+import { Command, Route, Segment, Location as MapLocation, Player, BusCard } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ParsedUrlQuery } from 'querystring';
@@ -12,22 +12,26 @@ import { ParsedUrlQuery } from 'querystring';
 })
 export class GamePlayManagerService {
 
-  private _clientPlayer: Player;
+  currentGame: Game = null;
+  _currentGameSubject = new Subject<Game | null>();
   private _locations: MapLocation[] = [];
   private _locationSubject = new Subject<MapLocation[]>();
   private _segments: Array<Segment> = [];
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
-  private currentGame: Game = null;
-  private _currentGameSubject = new Subject<Game | null>();
-  private polling = false;
+  
+  private lastCommandId = -1;
+  polling = false;
+  
+  //Gameplay data
+  private _clientPlayer: Player;
+  private _clientPlayerSubject = new Subject<Player>();
+  private _opponentPlayers: Player[];
+  private _spreadSubject = new Subject<BusCard[]>();
+  private _deckSizeSubject = new Subject<number>();
 
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
-    if (!this.polling) {
-      this.polling = true;
-      this.poll(serverProxy);
-    }
   }
 
   get clientPlayer() {
@@ -36,6 +40,10 @@ export class GamePlayManagerService {
 
   set clientPlayer(player: Player) {
     this._clientPlayer = player;
+  }
+
+  get clientPlayerSubject() {
+    return this._clientPlayerSubject;
   }
 
   get currentGameSubject() {
@@ -59,30 +67,50 @@ export class GamePlayManagerService {
     return this._selectingRoutesSubject;
   }
 
-  private poll(serverProxy: ServerProxyService) {
-    if (!this.polling) {
-      return;
-    }
-    // FIXME poll for game updates
+  get spreadSubject(): Subject<BusCard[]> {
+    return this._spreadSubject;
+  }
+
+  get deckSizeSubject(): Subject<number> {
+    return this._deckSizeSubject;
+  }
+
+  poll(serverProxy: ServerProxyService) {
+    serverProxy.getGameData(this.lastCommandId).then(commands => {
+      if (commands.length > 0) {
+        this.lastCommandId = 0;
+        this.handleCommands(commands);
+      }
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });
     setTimeout(() => {
       this.poll(serverProxy);
     }, 3000);
   }
 
   private handleCommands(commands: Command[]) {
-      commands.forEach(command => {
-          switch (command.type) {
-              // FIXME add any commands here
-              default:
-                break;
-          }
-      });
+    commands.forEach(command => {
+      // FIXME implement gameplay commands
+      if (command.type === 'updateSpread') {
+        const spread = command.data.spread;
+        const deckSize = command.data.deckSize;
+        this._spreadSubject.next(spread);
+        this._deckSizeSubject.next(deckSize);
+      } else if (command.type === 'updateClientPlayer') {
+        const player = command.data.player;
+        this._clientPlayer = player;
+        this._selectingRoutes = true;
+        this._selectingRoutesSubject.next(this._selectingRoutes);
+      } else if (command.type === 'updateOpponentPlayers') {
+        const players = command.data.players;
+        this._opponentPlayers = players;
+      }
+    });
   }
 
   public startGame() {
     console.log('Starting the game!');
-    this._selectingRoutes = true;
-    this._selectingRoutesSubject.next(this._selectingRoutes);
   }
 
   public getMapData() {
@@ -99,11 +127,26 @@ export class GamePlayManagerService {
     // FIXME implement
   }
 
+  public getSpread(): Promise<BusCard[]> {
+    return this.serverProxy.getSpread().then(command => {
+      if (command.data['deckSize']) {
+        this.deckSizeSubject.next(command.data['deckSize']);
+      }
+      return command.data['spread'];
+    });
+  }
+
+  public drawRoutes(): Promise<Route[]> {
+    return this.serverProxy.drawRoutes().then(command => {
+      return command['privateData'];
+    });
+  }
+
   public selectRoutes(selectedRoutes: Route[], rejectedRoutes: Route[]) {
-    this.serverProxy.selectRoutes(selectedRoutes, rejectedRoutes);
-    // FIXME, wait until a successful response
-    this._selectingRoutes = false;
-    this.selectingRoutesSubject.next(this._selectingRoutes);
+    this.serverProxy.selectRoutes(selectedRoutes, rejectedRoutes).then(commands => {
+      this._selectingRoutes = false;
+      this.selectingRoutesSubject.next(this._selectingRoutes);
+    });
   }
 
   public claimSegment(segment: Segment): void {

@@ -32,6 +32,7 @@ import {
 import { MapComponent } from './pages/map/map.component';
 import { DriverComponent } from './pages/driver/driver.component';
 import { RouteSelectorComponent } from './pages/game-play/route-selector/route-selector.component';
+import { DeckBarComponent } from './pages/game-screen/deck-bar/deck-bar.component';
 
 
 const appRoutes: Routes = [
@@ -67,7 +68,8 @@ const appRoutes: Routes = [
     GameScreenComponent,
     MapComponent,
     DriverComponent,
-    RouteSelectorComponent
+    RouteSelectorComponent,
+    DeckBarComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
