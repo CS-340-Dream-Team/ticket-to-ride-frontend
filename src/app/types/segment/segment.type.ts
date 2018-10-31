@@ -9,5 +9,5 @@ export interface Segment {
 	color: BusColor;
 	length: number;
 	owner?: Player;
-	pair?: Segment;
+	pair?: number;
 }
