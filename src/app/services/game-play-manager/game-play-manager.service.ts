@@ -37,6 +37,21 @@ export class GamePlayManagerService {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
   }
 
+  // @Driver
+  updateDeckSize(newDeckSize: number) {
+    this._deckSizeSubject.next(newDeckSize);
+  }
+
+  // @Driver
+  updateSpread(newSpread: BusCard[]) {
+    this._spreadSubject.next(newSpread);
+  }
+
+  // @Driver
+  updateRouteDeckSize(newRouteDeckSize: number) {
+    this._routeDeckSizeSubject.next(newRouteDeckSize);
+  }
+
   get clientPlayer() {
     return this._clientPlayer;
   }

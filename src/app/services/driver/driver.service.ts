@@ -86,12 +86,19 @@ export class DriverService {
 
     this.toastr.success(`Updating the face up cards of the deck`);
     await this.delay(this.timeBetweenCommands);
+    this.gamePlayService.updateSpread([{color: BusColor.Blue},
+                                       {color: BusColor.Rainbow},
+                                       {color: BusColor.Yellow},
+                                       {color: BusColor.Rainbow},
+                                       {color: BusColor.Blue}]);
 
     this.toastr.success(`Updating the number of face down cards of the deck`);
     await this.delay(this.timeBetweenCommands);
+    this.gamePlayService.updateDeckSize(76);
 
     this.toastr.success(`Updating the number of destination cards in deck`);
     await this.delay(this.timeBetweenCommands);
+    this.gamePlayService.updateRouteDeckSize(7);
 
     this.toastr.success("Claiming route from Baseball Stadium to Smith Field House");
     await this.delay(this.timeBetweenCommands);
