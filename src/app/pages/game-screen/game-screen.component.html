@@ -3,9 +3,11 @@
       <app-deck-bar></app-deck-bar>
   </div>
   <div class="side-bar">
-    Sidebar goes here
+    <app-player-bar>
+    </app-player-bar>
   </div>
   <app-map class="map"></app-map>
   <app-chat class="chat"></app-chat>
   <app-route-selector *ngIf="selectingRoutes"></app-route-selector>
 </div>
+<app-route-selector *ngIf="selectingRoutes"></app-route-selector>
