@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command, Route, Segment, Location as MapLocation, Player, BusCard } from '../../types';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -18,7 +18,7 @@ export class GamePlayManagerService {
   private _segments: Array<Segment> = [];
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
-  private _selectingRoutesSubject = new Subject<boolean>();
+  private _selectingRoutesSubject = new BehaviorSubject<boolean>(true);
   
   private lastCommandId = -1;
   polling = false;
