@@ -55,26 +55,24 @@ export class GamePlayManagerService {
   }
 
   // @Driver
-  updateClientPlayer() {
-    this._clientPlayerSubject.next(this._clientPlayer);
-  }
-
-  // @Driver
   get randomOpponent() {
     if (this._allPlayers[0].name === this._clientPlayer.name) {
       return this._allPlayers[1];
     }
-    return this._clientPlayer;
+    return this._allPlayers[0];
   }
 
   // @Driver
-  updateOpponent(opponent: Player) {
-    this._allPlayers.forEach((player, index, array) => {
-      if (player.name === opponent.name) {
-        array[index] = opponent;
+  updatePlayer(player: Player) {
+    this._allPlayers.forEach((aPlayer, index, array) => {
+      if (aPlayer.name === player.name) {
+        array[index] = player;
       }
     });
     this._allPlayersSubject.next(this._allPlayers);
+    if (player.name === this.clientPlayer.name) {
+      this._clientPlayerSubject.next(player);
+    }
   }
 
   get clientPlayer() {
@@ -87,6 +85,10 @@ export class GamePlayManagerService {
 
   get clientPlayerSubject() {
     return this._clientPlayerSubject;
+  }
+
+  get allPlayers() {
+    return this._allPlayers;
   }
 
   get allPlayersSubject() {

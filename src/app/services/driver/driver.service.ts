@@ -8,7 +8,7 @@ import { BusCard, BusColor, Route, Player } from 'src/app/types';
 })
 export class DriverService {
 
-  timeBetweenCommands: number = 3000;
+  timeBetweenCommands: number = 5000;
   players: Player[];
 
   constructor(private gamePlayService: GamePlayManagerService, private toastr: ToastrService) {
@@ -18,27 +18,34 @@ export class DriverService {
   }
 
   async drive() {
-    let player = this.gamePlayService.clientPlayer;
-    let opponent = this.gamePlayService.randomOpponent;
+    const allPlayers = this.gamePlayService.allPlayers;
+    const clientPlayerName = this.gamePlayService.clientPlayer.name;
+    let clientPlayer = null;
+    allPlayers.forEach(player => {
+      if (player.name === clientPlayerName) {
+        clientPlayer = player;
+      }
+    });
+    const opponent = this.gamePlayService.randomOpponent;
 
-    this.toastr.success(`Updating ${player.name}'s points`);
+    this.toastr.success(`Updating ${clientPlayer.name}'s points`);
     await this.delay(this.timeBetweenCommands);
-    this.gamePlayService.clientPlayer.points = 50;
-    this.gamePlayService.updateClientPlayer();
+    clientPlayer.points = 50;
+    this.gamePlayService.updatePlayer(clientPlayer);
 
-    this.toastr.success(`Adding train cards for ${player.name}`);
+    this.toastr.success(`Adding train cards for ${clientPlayer.name}`);
     await this.delay(this.timeBetweenCommands);
-    let busCards = this.gamePlayService.clientPlayer.busCards as BusCard[];
+    let busCards = clientPlayer.busCards as BusCard[];
     busCards.push({color: BusColor.Red});
     busCards.push({color: BusColor.Red});
-    this.gamePlayService.updateClientPlayer();
+    this.gamePlayService.updatePlayer(clientPlayer);
 
-    this.toastr.success(`Removing train cards for ${player.name}`);
+    this.toastr.success(`Removing train cards for ${clientPlayer.name}`);
     await this.delay(this.timeBetweenCommands);
-    busCards = [];
-    this.gamePlayService.updateClientPlayer();
+    clientPlayer.busCards = [];
+    this.gamePlayService.updatePlayer(clientPlayer);
 
-    this.toastr.success(`Adding destination cards for ${player.name}`);
+    this.toastr.success(`Adding destination cards for ${clientPlayer.name}`);
     await this.delay(this.timeBetweenCommands);
     let routeCards = this.gamePlayService.clientPlayer.routeCards as Route[];
     routeCards.push({
@@ -77,27 +84,28 @@ export class DriverService {
             }
          }
     });
-    this.gamePlayService.updateClientPlayer();
+    clientPlayer.routeCards = routeCards;
+    this.gamePlayService.updatePlayer(clientPlayer);
 
-    this.toastr.success(`Removing destination cards for ${player.name}`);
+    this.toastr.success(`Removing destination cards for ${clientPlayer.name}`);
     await this.delay(this.timeBetweenCommands);
-    routeCards = [];
-    this.gamePlayService.updateClientPlayer();
+    clientPlayer.routeCards = [];
+    this.gamePlayService.updatePlayer(clientPlayer);
 
     this.toastr.success(`Updating number of train CARDS for opponent players`);
     await this.delay(this.timeBetweenCommands);
     (opponent.busCards as number) += 2;
-    this.gamePlayService.updateOpponent(opponent);
+    this.gamePlayService.updatePlayer(opponent);
 
     this.toastr.success(`Updating number of train CARS for opponent players`);
     await this.delay(this.timeBetweenCommands);
     opponent.busPieces -= 5;
-    this.gamePlayService.updateOpponent(opponent);
+    this.gamePlayService.updatePlayer(opponent);
 
     this.toastr.success(`Updating number of destination cards for opponent players`);
     await this.delay(this.timeBetweenCommands);
     (opponent.routeCards as number) += 5;
-    this.gamePlayService.updateOpponent(opponent);
+    this.gamePlayService.updatePlayer(opponent);
 
     this.toastr.success(`Updating the face up cards of the deck`);
     await this.delay(this.timeBetweenCommands);
@@ -117,7 +125,7 @@ export class DriverService {
 
     this.toastr.success("Claiming route from Baseball Stadium to Smith Field House. (mouse over)");
     await this.delay(this.timeBetweenCommands);
-    this.gamePlayService.setSegmentOwner(21, player);
+    this.gamePlayService.setSegmentOwner(21, clientPlayer);
   }
 
   async delay(ms: number) {
