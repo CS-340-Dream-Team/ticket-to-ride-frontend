@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GamePlayManagerService } from '../game-play-manager/game-play-manager.service';
 import { ToastrService } from 'ngx-toastr';
-import { BusCard, BusColor, Route } from 'src/app/types';
+import { BusCard, BusColor, Route, Player } from 'src/app/types';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +9,12 @@ import { BusCard, BusColor, Route } from 'src/app/types';
 export class DriverService {
 
   timeBetweenCommands: number = 3000;
+  players: Player[];
 
   constructor(private gamePlayService: GamePlayManagerService, private toastr: ToastrService) {
-    
+    gamePlayService.allPlayersSubject.subscribe({
+      next: (players) => this.players = players
+    });
   }
 
   async drive() {
