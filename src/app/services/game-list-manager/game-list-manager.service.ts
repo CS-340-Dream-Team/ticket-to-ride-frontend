@@ -14,7 +14,7 @@ import { ChatManagerService } from '../chat-manager/chat-manager.service';
 })
 export class GameListManagerService {
   constructor(
-    private serverProxy: ServerProxyService, 
+    private serverProxy: ServerProxyService,
     private toastr: ToastrService,
     private gameplayService: GamePlayManagerService,
     private chatService: ChatManagerService,

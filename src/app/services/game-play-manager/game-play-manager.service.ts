@@ -20,15 +20,18 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
-  
+
   private lastCommandId = -1;
   polling = false;
-  
-  //Gameplay data
+
+  // Game play data
   private _clientPlayer: Player;
   private _clientPlayerSubject = new Subject<Player>();
   private _allPlayersSubject = new Subject<Player[]>();
+<<<<<<< HEAD
   private _opponentPlayers: Player[];
+=======
+>>>>>>> 67532e603f7df4857a407e9d78c7c6ba9d9709be
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
   private _routeDeckSize: number = 20;
@@ -73,11 +76,11 @@ export class GamePlayManagerService {
     return this._currentGameSubject;
   }
 
-  get locationSubject() : Subject<MapLocation[]> {
+  get locationSubject(): Subject<MapLocation[]> {
     return this._locationSubject;
   }
 
-  get segmentSubject() : Subject<Segment[]> {
+  get segmentSubject(): Subject<Segment[]> {
     return this._segmentSubject;
   }
 
@@ -124,14 +127,11 @@ export class GamePlayManagerService {
         const deckSize = command.data.deckSize;
         this._spreadSubject.next(spread);
         this._deckSizeSubject.next(deckSize);
-      } else if (command.type === 'updateClientPlayer') {
-        const player = command.data.player;
-        this._clientPlayer = player;
+      } else if (command.type === 'updatePlayers') {
+        const players = command.data.players;
+        this._allPlayersSubject.next(players);
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
-      } else if (command.type === 'updateOpponentPlayers') {
-        const players = command.data.players;
-        this._opponentPlayers = players;
       }
     });
   }
@@ -142,12 +142,12 @@ export class GamePlayManagerService {
 
   public getMapData() {
     this.serverProxy.getMapData()
-    .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
-      this._locations = locations;
-      this._segments = segments;
-      this.locationSubject.next(this._locations);
-      this.segmentSubject.next(this._segments);
-    });
+      .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
+        this._locations = locations;
+        this._segments = segments;
+        this.locationSubject.next(this._locations);
+        this.segmentSubject.next(this._segments);
+      });
   }
 
   public selectBusCard(index: number) {
@@ -177,9 +177,6 @@ export class GamePlayManagerService {
   }
 
   public claimSegment(segment: Segment): void {
-    console.log(`Attempt to claim segment between ${segment.start.name} and ${segment.end.name}`);
-    // check if it is the player's turn.
-    // check if they have all the right bus pieces.
     this.serverProxy.claimSegment(segment)
       .then((commands: Command[]) => this.handleCommands(commands));
   }
