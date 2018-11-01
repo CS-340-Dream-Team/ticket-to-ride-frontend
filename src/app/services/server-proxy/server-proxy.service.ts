@@ -6,6 +6,7 @@ import { Game, Command, User, Route, Segment, Location as MapLocation } from '..
 import { Message } from '../../types/message/message.type';
 import { resolve, reject } from 'q';
 
+const AUTH_TOKEN_STORAGE_KEY: string = 'AUTH_TOKEN';
 @Injectable({
   providedIn: 'root'
 })
@@ -34,7 +35,11 @@ export class ServerProxyService {
     });
   }
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+    const authToken: string = this._getFromLocalStorage(AUTH_TOKEN_STORAGE_KEY);
+    this._authToken = authToken;
+    (<any>window).logout = this.logout.bind(this);
+  }
 
   /**
    * Attempts to log a user in
@@ -51,6 +56,7 @@ export class ServerProxyService {
           (res: Response) => {
             const resJson = res.json();
             this._authToken = resJson.token;
+            this._saveToLocalStorage(AUTH_TOKEN_STORAGE_KEY, this._authToken);
             resolve(resJson);
           }, err => {
             reject(err.json());
@@ -74,12 +80,19 @@ export class ServerProxyService {
           (res: Response) => {
             const resJson = res.json();
             this._authToken = resJson.token;
+            this._saveToLocalStorage(AUTH_TOKEN_STORAGE_KEY, this._authToken);
             resolve(resJson);
           }, err => {
             reject(err.json());
           }
         );
     });
+  }
+
+  public logout(): void {
+    console.log("Logging out");
+    this.authToken = null;
+    this._saveToLocalStorage(AUTH_TOKEN_STORAGE_KEY, this.authToken);
   }
 
   /**
@@ -263,5 +276,13 @@ export class ServerProxyService {
     return this.http.post(url, {}, this.generateHttpOptions())
       .toPromise()
       .then((response: Response) => response.json().command)
+  }
+
+  private _saveToLocalStorage(key: string, value: string): void {
+    localStorage.setItem(key, value);
+  }
+
+  private _getFromLocalStorage(key: string): string {
+    return localStorage.getItem(key);
   }
 }
