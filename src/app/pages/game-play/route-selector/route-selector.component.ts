@@ -11,6 +11,12 @@ import { GamePlayManagerService } from '../../../services';
 export class RouteSelectorComponent implements OnInit {
 
   constructor(private gamePlayManager: GamePlayManagerService) {
+    this.gamePlayManager.drawRoutes().then(routes => {
+      this.routes = routes;
+      this.routes.forEach(route => {
+        this.selections.push({route: route, selected: true});
+      });
+    });
     gamePlayManager.selectingRoutesSubject.subscribe({
       next: (selectingRoutes) => {
         this.selectingRoutes = selectingRoutes;
