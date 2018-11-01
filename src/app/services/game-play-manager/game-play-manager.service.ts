@@ -26,12 +26,10 @@ export class GamePlayManagerService {
 
   // Game play data
   private _clientPlayer: Player;
+  private _allPlayers: Player[];
   private _clientPlayerSubject = new Subject<Player>();
   private _allPlayersSubject = new Subject<Player[]>();
-<<<<<<< HEAD
   private _opponentPlayers: Player[];
-=======
->>>>>>> 67532e603f7df4857a407e9d78c7c6ba9d9709be
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
   private _routeDeckSize: number = 20;
@@ -54,6 +52,29 @@ export class GamePlayManagerService {
   // @Driver
   updateRouteDeckSize(newRouteDeckSize: number) {
     this._routeDeckSizeSubject.next(newRouteDeckSize);
+  }
+
+  // @Driver
+  updateClientPlayer() {
+    this._clientPlayerSubject.next(this._clientPlayer);
+  }
+
+  // @Driver
+  get randomOpponent() {
+    if (this._allPlayers[0].name === this._clientPlayer.name) {
+      return this._allPlayers[1];
+    }
+    return this._clientPlayer;
+  }
+
+  // @Driver
+  updateOpponent(opponent: Player) {
+    this._allPlayers.forEach((player, index, array) => {
+      if (player.name === opponent.name) {
+        array[index] = opponent;
+      }
+    });
+    this._allPlayersSubject.next(this._allPlayers);
   }
 
   get clientPlayer() {
@@ -129,6 +150,7 @@ export class GamePlayManagerService {
         this._deckSizeSubject.next(deckSize);
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
+        this._allPlayers = players;
         this._allPlayersSubject.next(players);
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);

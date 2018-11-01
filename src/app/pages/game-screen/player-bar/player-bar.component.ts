@@ -48,6 +48,16 @@ export class PlayerBarComponent {
         }
       }
     });
+
+    this.gamePlayManager.clientPlayerSubject.subscribe({
+      next: clientPlayer => {
+        this.players.forEach((player, index, array) => {
+          if (player.name === clientPlayer.name) {
+            array[index] = clientPlayer;
+          }
+        });
+      }
+    });
   }
 
   /**
