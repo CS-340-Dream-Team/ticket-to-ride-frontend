@@ -19,10 +19,10 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new BehaviorSubject<boolean>(true);
-  
+
   private lastCommandId = -1;
   polling = false;
-  
+
   //Gameplay data
   private _clientPlayer: Player;
   private _clientPlayerSubject = new Subject<Player>();
@@ -97,9 +97,9 @@ export class GamePlayManagerService {
         console.log(deckSize);
         //spread: [5 cards]
         //deckSize: number
-      } 
+      }
       else if(command.type ==="updatePlayers"){
-        let players:Player[] =command.data;
+        let players:Player[] =command.data.players;
 
         players.forEach(player => {
           if(player.name===this._clientPlayer.name){
