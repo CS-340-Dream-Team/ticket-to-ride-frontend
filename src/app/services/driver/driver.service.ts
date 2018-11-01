@@ -92,6 +92,10 @@ export class DriverService {
     clientPlayer.routeCards = [];
     this.gamePlayService.updatePlayer(clientPlayer);
 
+    this.toastr.success(`Changing turns`);
+    await this.delay(this.timeBetweenCommands);
+    this.gamePlayService.changeTurn();
+
     this.toastr.success(`Updating number of train CARDS for opponent players`);
     await this.delay(this.timeBetweenCommands);
     (opponent.busCards as number) += 2;

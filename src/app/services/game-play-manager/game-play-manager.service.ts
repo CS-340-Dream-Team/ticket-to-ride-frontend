@@ -20,6 +20,8 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
+  private _playerTurn = 0;
+  private _playerTurnSubject = new Subject<number>();
 
   private lastCommandId = -1;
   polling = false;
@@ -75,6 +77,12 @@ export class GamePlayManagerService {
     }
   }
 
+  // @Driver
+  changeTurn() {
+    this._playerTurn = (this._playerTurn + 1) % this._allPlayers.length;
+    this._playerTurnSubject.next(this._playerTurn);
+  }
+
   get clientPlayer() {
     return this._clientPlayer;
   }
@@ -85,6 +93,10 @@ export class GamePlayManagerService {
 
   get clientPlayerSubject() {
     return this._clientPlayerSubject;
+  }
+
+  get playerTurnSubject() {
+    return this._playerTurnSubject;
   }
 
   get allPlayers() {

@@ -19,6 +19,8 @@ export class PlayerBarComponent {
 
   public players: Player[] = [];
 
+  public playerTurn = 0;
+
   public busCardCounts = {
     red: 0,
     orange: 0,
@@ -58,6 +60,11 @@ export class PlayerBarComponent {
         });
       }
     });
+
+    this.gamePlayManager.playerTurnSubject.subscribe({
+        next: (turnNumber) => this.playerTurn = turnNumber
+      }
+    );
   }
 
   /**
@@ -78,6 +85,13 @@ export class PlayerBarComponent {
 
   public isCurrentPlayer(player) {
     return player.name === this.gamePlayManager.clientPlayer.name;
+  }
+
+  isTurn(player: Player) {
+    if (player.name === this.players[this.playerTurn].name) {
+      return true;
+    }
+    return false;
   }
 
 }
