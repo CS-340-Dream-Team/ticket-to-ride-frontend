@@ -24,6 +24,9 @@ export class DeckBarComponent implements OnInit {
     gamePlayManager.getSpread().then(spread => {
       this.spread = spread;
     });
+    gamePlayManager.routeDeckSizeSubject.subscribe({
+      next: (numRoutes) => this.numRoutes = numRoutes
+    });
    }
 
   ngOnInit() {

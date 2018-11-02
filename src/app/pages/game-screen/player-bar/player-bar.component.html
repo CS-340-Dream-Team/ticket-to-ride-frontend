@@ -7,7 +7,9 @@
           'yellow-left-border': player.color === playerColor.Yellow,
           'blue-left-border': player.color === playerColor.Blue}
           ">
-      <div class="player-name">{{player.name}}</div>
+          <div class="player-name" [ngClass]="{'is-turn': isTurn(player)}">
+            {{player.name}}
+          </div>
 
       <div class="icon-container">
         <div class="stat">
@@ -38,7 +40,9 @@
       'yellow-left-border': player.color === playerColor.Yellow,
       'blue-left-border': player.color === playerColor.Blue}
       ">
-      <div class="player-name">{{player.name}}</div>
+      <div class="player-name" [ngClass]="{'is-turn': isTurn(player)}">
+        {{player.name}}
+      </div>
 
       <div class="icon-container">
         <div class="stat">

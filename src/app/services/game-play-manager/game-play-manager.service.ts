@@ -19,18 +19,26 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
+  private _playerTurn = 0;
+  private _playerTurnSubject = new Subject<number>();
 
   private lastCommandId = -1;
   polling = false;
 
   // Game play data
   private _clientPlayer: Player;
+  private _allPlayers: Player[];
   private _clientPlayerSubject = new Subject<Player>();
+  private _opponentPlayers: Player[];
   private _allPlayersSubject = new Subject<Player[]>();
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
+  private _routeDeckSize = 20;
+  private _routeDeckSizeSubject = new Subject<number>();
+
 
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+    this._routeDeckSizeSubject.next(this._routeDeckSize);
   }
 
   get clientPlayer() {
@@ -73,6 +81,17 @@ export class GamePlayManagerService {
     return this._deckSizeSubject;
   }
 
+  get playerTurnSubject() {
+    return this._playerTurnSubject;
+  }
+  get allPlayers() {
+    return this._allPlayers;
+  }
+
+  get routeDeckSizeSubject(): Subject<number> {
+    return this._routeDeckSizeSubject;
+  }
+
   poll(serverProxy: ServerProxyService) {
     serverProxy.getGameData(this.lastCommandId).then(commands => {
       if (commands.length > 0) {
@@ -97,11 +116,18 @@ export class GamePlayManagerService {
         this._deckSizeSubject.next(deckSize);
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
+        this._allPlayers = players;
         this._allPlayersSubject.next(players);
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
       }
     });
+  }
+
+  setSegmentOwner(index: number, player: Player) {
+    console.log(JSON.stringify(this._segments[index]));
+    this._segments[index].owner = player;
+    this.segmentSubject.next(this._segments);
   }
 
   public startGame() {
