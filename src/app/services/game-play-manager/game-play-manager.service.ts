@@ -72,7 +72,6 @@ export class GamePlayManagerService {
   get deckSizeSubject(): Subject<number> {
     return this._deckSizeSubject;
   }
-
   poll(serverProxy: ServerProxyService) {
     serverProxy.getGameData(this.lastCommandId).then(commands => {
       if (commands.length > 0) {
@@ -98,8 +97,17 @@ export class GamePlayManagerService {
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
         this._allPlayersSubject.next(players);
-        this._selectingRoutes = true;
-        this._selectingRoutesSubject.next(this._selectingRoutes);
+      } else if(command.type === 'drawRoutes'){
+        if(command.player===this.clientPlayer.name)
+        {
+          this._selectingRoutes = true;
+          this._selectingRoutesSubject.next(this._selectingRoutes);
+        }
+        else{
+          //update number of routes for other players.
+        }
+      } else if(command.type ==='discardRoutes'){
+        //add routes to player.
       }
     });
   }
