@@ -84,6 +84,13 @@ export class GamePlayManagerService {
   get playerTurnSubject() {
     return this._playerTurnSubject;
   }
+
+  incrementplayerTurn() {
+    this._playerTurn++;
+    this._playerTurn = this._playerTurn % this._allPlayers.length;
+    this._playerTurnSubject.next(this._playerTurn);
+  }  
+
   get allPlayers() {
     return this._allPlayers;
   }
