@@ -121,6 +121,19 @@ export class GamePlayManagerService {
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
       }
+      else if(command.type === 'drawRoutes'){
+        if(command.player===this.clientPlayer.name)
+        {
+          this._selectingRoutes = true;
+          this._selectingRoutesSubject.next(this._selectingRoutes);
+        }
+        else{
+          //FIXME: update number of routes for other players.
+        }
+      } else if(command.type ==='discardRoutes'){
+
+        //FIXME:add routes to player.
+      }
     });
   }
 
