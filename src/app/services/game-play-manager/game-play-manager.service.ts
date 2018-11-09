@@ -85,18 +85,18 @@ export class GamePlayManagerService {
     return this._playerTurnSubject;
   }
 
+  get allPlayers() {
+    return this._allPlayers;
+  }
+  
+  get routeDeckSizeSubject(): Subject<number> {
+    return this._routeDeckSizeSubject;
+  }
+
   incrementplayerTurn() {
     this._playerTurn++;
     this._playerTurn = this._playerTurn % this._allPlayers.length;
     this._playerTurnSubject.next(this._playerTurn);
-  }  
-
-  get allPlayers() {
-    return this._allPlayers;
-  }
-
-  get routeDeckSizeSubject(): Subject<number> {
-    return this._routeDeckSizeSubject;
   }
 
   poll(serverProxy: ServerProxyService) {
