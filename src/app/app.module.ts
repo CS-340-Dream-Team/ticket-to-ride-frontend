@@ -33,6 +33,7 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
+import { HistoryComponent } from './pages/history/history.component';
 
 
 const appRoutes: Routes = [
@@ -70,7 +71,8 @@ const appRoutes: Routes = [
     PlayerBarComponent,
     RouteSelectorComponent,
     RouteSelectorComponent,
-    DeckBarComponent
+    DeckBarComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
