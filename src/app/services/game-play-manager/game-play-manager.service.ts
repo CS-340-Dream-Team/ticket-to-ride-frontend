@@ -35,6 +35,8 @@ export class GamePlayManagerService {
   private _deckSizeSubject = new Subject<number>();
   private _routeDeckSize = 20;
   private _routeDeckSizeSubject = new Subject<number>();
+  private _history: Command[] = [];
+  private _historySubject = new Subject<Command[]>();
 
 
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
@@ -99,6 +101,10 @@ export class GamePlayManagerService {
     return this._routeDeckSizeSubject;
   }
 
+  get historySubject(): Subject<Command[]> {
+    return this._historySubject;
+  }
+
   poll(serverProxy: ServerProxyService) {
     serverProxy.getGameData(this.lastCommandId).then(commands => {
       if (commands.length > 0) {
@@ -115,7 +121,6 @@ export class GamePlayManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      // FIXME implement gameplay commands
       if (command.type === 'updateSpread') {
         const spread = command.data.spread;
         const deckSize = command.data.deckSize;
@@ -140,6 +145,10 @@ export class GamePlayManagerService {
       } else if(command.type ==='discardRoutes'){
 
         //FIXME:add routes to player.
+      }
+      if (command.message) {
+        this._history.push(command);
+        this._historySubject.next(this._history);
       }
     });
   }

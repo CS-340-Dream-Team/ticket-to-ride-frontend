@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { PlayerColor } from 'src/app/types';
 
 @Component({
   selector: 'app-history-message',
@@ -8,6 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HistoryMessageComponent implements OnInit {
 
   @Input() historyText: string;
+  @Input() color: PlayerColor;
 
   constructor() { }
 

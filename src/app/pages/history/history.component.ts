@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Message, Player, Command } from 'src/app/types';
+import { Message, Player, Command, PlayerColor } from 'src/app/types';
 import { NgxAutoScroll } from 'ngx-auto-scroll';
+import { GamePlayManagerService } from 'src/app/services';
 
 @Component({
   selector: 'app-history',
@@ -10,29 +11,181 @@ import { NgxAutoScroll } from 'ngx-auto-scroll';
 export class HistoryComponent implements OnInit {
 
   history: Command[];
+  fakeHistory: Command[];
+  playerColors = {};
   showHistory: boolean;
-  currentPlayer: Player = {name:'Betty the Bot',color:1,points:0,busPieces:0,busCards:0,routeCards:0}
 
-  constructor() { 
+  constructor(private gameplayService: GamePlayManagerService) { 
     this.showHistory = false;
-    this.history = [
+    this.history = [];
+    this.playerColors['Betty the Bot'] = 1;
+    this.fakeHistory = [
       {
-        text: 'Betty the Bot Claimed a segment',
-        player: {name:'Betty the Bot',color:1,points:0,busPieces:0,busCards:0,routeCards:0},
+        type: 'drawRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot drew 3 routes'
       },
       {
-        text: 'Drew a card',
-        player: {name:'Barry the Bot',color:2,points:0,busPieces:0,busCards:0,routeCards:0},
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
       },
       {
-        text: 'Drew 3 route cards',
-        player: {name:'Bert the Bot',color:3,points:0,busPieces:0,busCards:0,routeCards:0},
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
       },
       {
-        text: 'Discarded 1 route card',
-        player: {name:'Bert the Bot',color:3,points:0,busPieces:0,busCards:0,routeCards:0},
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
       },
-    ]
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+      {
+        type: 'discardRoutes',
+        data: {},
+        player: 'Betty the Bot',
+        message: 'Betty the bot discarded 2 routes'
+      },
+    ];
+    this.gameplayService.allPlayersSubject.subscribe({
+      next: (players) => players.forEach(player => {
+        this.playerColors[player.name] = player.color;
+        console.log(JSON.stringify(this.playerColors));
+      })
+    });
+    this.gameplayService.historySubject.subscribe({
+      next: (history) => this.history = history
+    });
   }
 
   ngOnInit() {
@@ -44,6 +197,14 @@ export class HistoryComponent implements OnInit {
   
   closeHistory() {
     this.showHistory = false;
+  }
+
+  toString(command: Command) {
+    return JSON.stringify(command);
+  }
+
+  getPlayerColor(name: string) {
+    return this.playerColors[name];
   }
 
   convertDate(timestamp: number) {

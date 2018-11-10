@@ -4,4 +4,5 @@ export interface Command {
     privateData?: any;
     player?: string;
     id?: number;
+    message?: string;
 }

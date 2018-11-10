@@ -77,9 +77,6 @@ export class ChatManagerService {
         this._messages = this._messages.concat(command.data);
         this._messagesSubject.next(this._messages);
       }
-      else if (command.type === ':turn') {
-        this.gameplayService.incrementplayerTurn();
-      }
     });
   }
 }
