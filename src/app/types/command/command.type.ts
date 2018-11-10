@@ -1,5 +1,5 @@
 export interface Command {
     type: 'login' | 'updateGameList' | 'updatePlayerList' | 'updateMessageList' | 'gameStarted' |
-          'updateSpread' | 'updatePlayers' | 'chatCode';
+          'updateSpread' | 'updatePlayers' | 'incrementTurn';
     data: any;
 }

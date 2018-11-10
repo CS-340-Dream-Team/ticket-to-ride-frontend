@@ -127,6 +127,8 @@ export class GamePlayManagerService {
         this._allPlayersSubject.next(players);
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
+      } else if (command.type === 'incrementTurn') {
+        this.incrementplayerTurn();
       }
     });
   }

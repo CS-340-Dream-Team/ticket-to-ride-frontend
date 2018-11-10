@@ -77,13 +77,6 @@ export class ChatManagerService {
         this._messages = this._messages.concat(command.data);
         this._messagesSubject.next(this._messages);
       }
-      else if (command.type === 'chatCode') {
-        this.handleChatCode(command.data)
-      }
     });
-  }
-
-  private handleChatCode(chatCode: string) {
-    this.gameplayService.incrementplayerTurn();
   }
 }
