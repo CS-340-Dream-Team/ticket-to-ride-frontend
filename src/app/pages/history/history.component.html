@@ -3,7 +3,8 @@
     <div ngx-auto-scroll class="history-container">
       <ul class="history">
         <li *ngFor="let message of history">
-          <app-message [message]="message" [player]="currentPlayer" [dateString]="convertDate(message.timestamp)" class="box"></app-message>
+          {{message}}
+          <app-history-message [historyText]="message" class="box"></app-history-message>
         </li>
       </ul>
     </div>

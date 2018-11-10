@@ -1,0 +1,49 @@
+@import "../../../../variables.scss";
+
+.container {
+    border-radius: 15px;
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+li{
+    display: block;
+    clear: both;
+}
+
+p {
+    margin: 0;
+    color: rgb(212, 212, 212);
+}
+
+/* Clear floats */
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.color-0 {
+    background-color: $color-dark-background-accent;
+  }
+  
+.color-1 {
+    background-color: $color-red;
+}
+
+.color-2 {
+    background-color: $color-green;
+}
+
+.color-3 {
+    background-color: $color-blue;
+}
+
+.color-4 {
+    background-color: $color-yellow;
+}
+
+.color-5 {
+    background-color: $color-black;
+}

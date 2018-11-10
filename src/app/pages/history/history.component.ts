@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Message, Player } from 'src/app/types';
+import { Message, Player, Command } from 'src/app/types';
 import { NgxAutoScroll } from 'ngx-auto-scroll';
 
 @Component({
@@ -9,7 +9,7 @@ import { NgxAutoScroll } from 'ngx-auto-scroll';
 })
 export class HistoryComponent implements OnInit {
 
-  history: Message[];
+  history: Command[];
   showHistory: boolean;
   currentPlayer: Player = {name:'Betty the Bot',color:1,points:0,busPieces:0,busCards:0,routeCards:0}
 
@@ -17,24 +17,20 @@ export class HistoryComponent implements OnInit {
     this.showHistory = false;
     this.history = [
       {
-        messageText: 'Claimed a segment',
-        sender: {name:'Betty the Bot',color:1,points:0,busPieces:0,busCards:0,routeCards:0},
-        timestamp: 1541792127900
+        text: 'Betty the Bot Claimed a segment',
+        player: {name:'Betty the Bot',color:1,points:0,busPieces:0,busCards:0,routeCards:0},
       },
       {
-        messageText: 'Drew a card',
-        sender: {name:'Barry the Bot',color:2,points:0,busPieces:0,busCards:0,routeCards:0},
-        timestamp: 1541792557900
+        text: 'Drew a card',
+        player: {name:'Barry the Bot',color:2,points:0,busPieces:0,busCards:0,routeCards:0},
       },
       {
-        messageText: 'Drew 3 route cards',
-        sender: {name:'Bert the Bot',color:3,points:0,busPieces:0,busCards:0,routeCards:0},
-        timestamp: 1541792588900
+        text: 'Drew 3 route cards',
+        player: {name:'Bert the Bot',color:3,points:0,busPieces:0,busCards:0,routeCards:0},
       },
       {
-        messageText: 'Discarded 1 route card',
-        sender: {name:'Bert the Bot',color:3,points:0,busPieces:0,busCards:0,routeCards:0},
-        timestamp: 1541792597900
+        text: 'Discarded 1 route card',
+        player: {name:'Bert the Bot',color:3,points:0,busPieces:0,busCards:0,routeCards:0},
       },
     ]
   }
