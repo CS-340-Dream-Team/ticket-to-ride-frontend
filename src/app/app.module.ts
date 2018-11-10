@@ -34,6 +34,7 @@ import {
   ServerProxyService
 } from './services';
 import { HistoryComponent } from './pages/history/history.component';
+import { HistoryMessageComponent } from './pages/history/history-message/history-message.component';
 
 
 const appRoutes: Routes = [
@@ -72,7 +73,8 @@ const appRoutes: Routes = [
     RouteSelectorComponent,
     RouteSelectorComponent,
     DeckBarComponent,
-    HistoryComponent
+    HistoryComponent,
+    HistoryMessageComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
