@@ -5,6 +5,13 @@ import { Command, Route, Segment, Location as MapLocation, Player, BusCard } fro
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
+import TurnState, {
+  GameInitState,
+  GameOverState,
+  NotYourTurnState,
+  YourTurnState
+} from './states';
+
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +43,26 @@ export class GamePlayManagerService {
   private _routeDeckSize = 20;
   private _routeDeckSizeSubject = new Subject<number>();
 
+  private _turnState: TurnState = new GameInitState();
+
+  public setState(newState: 'init' | 'gameover' | 'yourturn' | 'notyourturn') {
+    switch (newState) {
+      case 'init':
+        this._turnState = new GameInitState();
+        break;
+      case 'gameover':
+        this._turnState = new GameOverState();
+        break;
+      case 'yourturn':
+        this._turnState = new YourTurnState();
+        break;
+      case 'notyourturn':
+        this._turnState = new NotYourTurnState();
+        break;
+      default:
+        console.warn('Unrecognized state: not switching');
+    }
+  }
 
   constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
