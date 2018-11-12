@@ -15,12 +15,10 @@ export class RouteSelectorComponent implements OnInit {
       next: (selectingRoutes) => {
         this.selectingRoutes = selectingRoutes;
         if (selectingRoutes) {
-          this.gamePlayManager.drawRoutes().then(routes => {
-            this.routes = routes;
+            this.routes = this.gamePlayManager.clientPlayer.routeCardBuffer;
             this.routes.forEach(route => {
               this.selections.push({route: route, selected: true});
             });
-          });
         }
       }
     });
