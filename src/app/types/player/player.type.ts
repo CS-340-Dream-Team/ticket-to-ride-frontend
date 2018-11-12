@@ -8,4 +8,5 @@ export interface Player {
     busPieces: number;
     busCards: BusCard[] | number; //BusCard[] if client player, number if opponent player
     routeCards: Route[] | number; //same idea as above
+    routeCardBuffer?: Route[];
 }
