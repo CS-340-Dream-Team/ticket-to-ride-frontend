@@ -148,16 +148,15 @@ export class GamePlayManagerService {
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
       }
-      else if(command.type === 'drawRoutes'){
-        if(command.player===this.clientPlayer.name)
-        {
+      else if (command.type === 'drawRoutes') {
+        if (command.player === this.clientPlayer.name) {
           this._selectingRoutes = true;
           this._selectingRoutesSubject.next(this._selectingRoutes);
         }
-        else{
+        else {
           //FIXME: update number of routes for other players.
         }
-      } else if(command.type ==='discardRoutes'){
+      } else if (command.type === 'discardRoutes') {
 
         //FIXME:add routes to player.
       }
@@ -185,7 +184,8 @@ export class GamePlayManagerService {
   }
 
   public selectBusCard(index: number) {
-    // FIXME implement
+    // Example of using state:
+    this._turnState.drawBusCard(this);
   }
 
   public getSpread(): Promise<BusCard[]> {
