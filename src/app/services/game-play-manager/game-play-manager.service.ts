@@ -26,8 +26,8 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
-  private _playerTurn = 0;
-  private _playerTurnSubject = new Subject<number>();
+  private _playerTurn: string;
+  private _playerTurnSubject = new Subject<string>();
 
   private lastCommandId = -1;
   polling = false;
@@ -120,10 +120,15 @@ export class GamePlayManagerService {
     return this._routeDeckSizeSubject;
   }
 
-  incrementplayerTurn() {
-    this._playerTurn++;
-    this._playerTurn = this._playerTurn % this._allPlayers.length;
+  incrementplayerTurn(currentTurnName: string) {
+    this._playerTurn = currentTurnName;
     this._playerTurnSubject.next(this._playerTurn);
+    if (currentTurnName === this.clientPlayer.name) {
+      this.setState("yourturn");
+    }
+    if (this._turnState instanceof YourTurnState) {
+      this.setState("notyourturn");
+    }
   }
 
   poll(serverProxy: ServerProxyService) {
@@ -142,7 +147,6 @@ export class GamePlayManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      // FIXME implement gameplay commands
       if (command.type === 'updateSpread') {
         const spread = command.data.spread;
         const deckSize = command.data.deckSize;
@@ -155,7 +159,9 @@ export class GamePlayManagerService {
         this._selectingRoutes = true;
         this._selectingRoutesSubject.next(this._selectingRoutes);
       } else if (command.type === 'incrementTurn') {
-        this.incrementplayerTurn();
+        let name = command.data['playerTurnName'];
+        console.log(name);
+        this.incrementplayerTurn(name);
       }
       else if (command.type === 'drawRoutes') {
         if (command.player === this.clientPlayer.name) {
