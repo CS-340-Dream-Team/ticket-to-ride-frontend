@@ -166,9 +166,10 @@ export class GamePlayManagerService {
         if (this.updateLastCommandID(command.id)) {
           if (command.player===this.clientPlayer.name) {
             this.clientPlayer.routeCardBuffer = command.privateData;
+            console.log('buffer');
+            console.log(this.clientPlayer.routeCardBuffer);
             this._selectingRoutes = true;
             this._selectingRoutesSubject.next(this._selectingRoutes);
-            console.log("hit drawRoutes")
           } else {
 
           }
@@ -180,11 +181,17 @@ export class GamePlayManagerService {
             this.selectingRoutesSubject.next(this._selectingRoutes);
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
-                this._allPlayers[index].routeCards += command.privateData['cardsKept'];
+                let kept = command.privateData['cardsKept'];
+                kept.forEach( card => {
+                  console.log(card);
+                });
+                console.log(this._allPlayers[index].routeCards);
+                console.log(command.privateData['cardsKept']);
+                this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
+                console.log(this._allPlayers[index].routeCards);
                 this.allPlayersSubject.next(this._allPlayers);
               }
             });
-            console.log("hit discardRoutes");
           } else {
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
@@ -205,7 +212,6 @@ export class GamePlayManagerService {
     if(commandID>this.lastCommandId)
     {
       this.lastCommandId=commandID;
-      console.log("commandID:",commandID)
       return true;
     }
       return false;

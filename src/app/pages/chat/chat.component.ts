@@ -49,6 +49,7 @@ export class ChatComponent implements OnInit {
       timestamp = this.messages[this.messages.length - 1].timestamp;
     }
     this.chatManager.addMessage({messageText: this.inputMessage, prevTimestamp: timestamp}).then(response => {
+      console.log(response);
       this.inputMessage = '';
     }).catch(res => {
       this.toastr.error(res.message);
