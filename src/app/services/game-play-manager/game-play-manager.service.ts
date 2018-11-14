@@ -122,26 +122,39 @@ export class GamePlayManagerService {
         //this._selectingRoutesSubject.next(this._selectingRoutes);
         console.log("hit updatePlayers")
       }
-      else if(command.type === 'drawRoutes'){
-        if(this.updateLastCommandID(command.id)){
-          if(command.player===this.clientPlayer.name)
-          {
+      else if (command.type === 'drawRoutes') {
+        if (this.updateLastCommandID(command.id)) {
+          if (command.player===this.clientPlayer.name) {
+            this.clientPlayer.routeCardBuffer = command.privateData;
             this._selectingRoutes = true;
             this._selectingRoutesSubject.next(this._selectingRoutes);
-            
             console.log("hit drawRoutes")
-          }
-          else{
-            //FIXME: update number of routes for other players.
+          } else {
+
           }
         }
-      } else if(command.type ==='discardRoutes'){
-        if(this.updateLastCommandID(command.id)){
-        this._selectingRoutes = false;
-        this.selectingRoutesSubject.next(this._selectingRoutes);
-        console.log("hit discardRoutes")
+      } else if (command.type === 'discardRoutes') {
+        if (this.updateLastCommandID(command.id)) {
+          if (command.player === this.clientPlayer.name) {
+            this._selectingRoutes = false;
+            this.selectingRoutesSubject.next(this._selectingRoutes);
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                this._allPlayers[index].routeCards += command.privateData['cardsKept'];
+                this.allPlayersSubject.next(this._allPlayers);
+              }
+            });
+            console.log("hit discardRoutes");
+          } else {
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                this._allPlayers[index].routeCards += command.data['numCardsKept'];
+                this.allPlayersSubject.next(this._allPlayers);
+              }
+            });
+          }
         }
-        //FIXME:add routes to player.
+        // FIXME:add routes to player.
       }
     });
   }
