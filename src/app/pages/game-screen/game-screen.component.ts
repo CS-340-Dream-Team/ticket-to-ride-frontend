@@ -16,7 +16,7 @@ export class GameScreenComponent implements OnInit {
     });
   }
 
-  public selectingRoutes = true;
+  public selectingRoutes = false;
 
   ngOnInit() {
   }

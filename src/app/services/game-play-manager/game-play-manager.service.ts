@@ -145,24 +145,59 @@ export class GamePlayManagerService {
         const players = command.data.players;
         this._allPlayers = players;
         this._allPlayersSubject.next(players);
-        this._selectingRoutes = true;
-        this._selectingRoutesSubject.next(this._selectingRoutes);
+        //this._selectingRoutes = true;
+        //this._selectingRoutesSubject.next(this._selectingRoutes);
+        console.log("hit updatePlayers")
       }
       else if (command.type === 'drawRoutes') {
-        if (command.player === this.clientPlayer.name) {
-          this._selectingRoutes = true;
-          this._selectingRoutesSubject.next(this._selectingRoutes);
-        }
-        else {
-          //FIXME: update number of routes for other players.
+
+        if (this.updateLastCommandID(command.id)) {
+          if (command.player===this.clientPlayer.name) {
+            this.clientPlayer.routeCardBuffer = command.privateData;
+            this._selectingRoutes = true;
+            this._selectingRoutesSubject.next(this._selectingRoutes);
+            console.log("hit drawRoutes")
+          } else {
+
+          }
         }
       } else if (command.type === 'discardRoutes') {
+        if (this.updateLastCommandID(command.id)) {
+          if (command.player === this.clientPlayer.name) {
+            this._selectingRoutes = false;
+            this.selectingRoutesSubject.next(this._selectingRoutes);
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                this._allPlayers[index].routeCards += command.privateData['cardsKept'];
+                this.allPlayersSubject.next(this._allPlayers);
+              }
+            });
+            console.log("hit discardRoutes");
+          } else {
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                this._allPlayers[index].routeCards += command.data['numCardsKept'];
+                this.allPlayersSubject.next(this._allPlayers);
+              }
+            });
+          }
+        }
+        // FIXME:add routes to player.
 
-        //FIXME:add routes to player.
       }
     });
   }
-
+  // if true then update data else don't
+  private updateLastCommandID(commandID:number):boolean
+  {
+    if(commandID>this.lastCommandId)
+    {
+      this.lastCommandId=commandID;
+      console.log("commandID:",commandID)
+      return true;
+    }
+      return false;
+  }
   setSegmentOwner(index: number, player: Player) {
     console.log(JSON.stringify(this._segments[index]));
     this._segments[index].owner = player;
