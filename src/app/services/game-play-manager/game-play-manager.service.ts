@@ -157,17 +157,14 @@ export class GamePlayManagerService {
         this._allPlayers = players;
         this._allPlayersSubject.next(players);
       } else if (command.type === 'incrementTurn') {
-        let name = command.data['playerTurnName'];
-        console.log(name);
-        this.incrementplayerTurn(name);
-      }
-      else if (command.type === 'drawRoutes') {
-
+        if (this.updateLastCommandID(command.id)) {
+          let name = command.data['playerTurnName'];
+          this.incrementplayerTurn(name);
+        }
+      } else if (command.type === 'drawRoutes') {
         if (this.updateLastCommandID(command.id)) {
           if (command.player===this.clientPlayer.name) {
             this.clientPlayer.routeCardBuffer = command.privateData;
-            console.log('buffer');
-            console.log(this.clientPlayer.routeCardBuffer);
             this._selectingRoutes = true;
             this._selectingRoutesSubject.next(this._selectingRoutes);
           } else {
@@ -181,14 +178,7 @@ export class GamePlayManagerService {
             this.selectingRoutesSubject.next(this._selectingRoutes);
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
-                let kept = command.privateData['cardsKept'];
-                kept.forEach( card => {
-                  console.log(card);
-                });
-                console.log(this._allPlayers[index].routeCards);
-                console.log(command.privateData['cardsKept']);
                 this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
-                console.log(this._allPlayers[index].routeCards);
                 this.allPlayersSubject.next(this._allPlayers);
               }
             });
@@ -207,17 +197,14 @@ export class GamePlayManagerService {
     });
   }
   // if true then update data else don't
-  private updateLastCommandID(commandID:number):boolean
-  {
-    if(commandID>this.lastCommandId)
-    {
+  private updateLastCommandID(commandID:number): boolean {
+    if(commandID > this.lastCommandId){
       this.lastCommandId=commandID;
       return true;
     }
       return false;
   }
   setSegmentOwner(index: number, player: Player) {
-    console.log(JSON.stringify(this._segments[index]));
     this._segments[index].owner = player;
     this.segmentSubject.next(this._segments);
   }
