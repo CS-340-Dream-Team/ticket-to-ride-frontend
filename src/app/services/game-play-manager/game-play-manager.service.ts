@@ -11,6 +11,7 @@ import TurnState, {
   NotYourTurnState,
   YourTurnState
 } from './states';
+import { AuthManagerService } from '../auth-manager/auth-manager.service';
 
 
 @Injectable({
@@ -64,8 +65,12 @@ export class GamePlayManagerService {
     }
   }
 
-  constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+  constructor(
+    private serverProxy: ServerProxyService, 
+    private toastr: ToastrService,
+    private authService: AuthManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
+    this.poll(this.serverProxy);
   }
 
   get clientPlayer() {
@@ -132,14 +137,16 @@ export class GamePlayManagerService {
   }
 
   poll(serverProxy: ServerProxyService) {
-    serverProxy.getGameData(this.lastCommandId).then(commands => {
-      if (commands.length > 0) {
-        this.lastCommandId = 0;
-        this.handleCommands(commands);
-      }
-    }).catch(res => {
-      this.toastr.error(res.message);
-    });
+    if (this.polling) {
+      serverProxy.getGameData(this.lastCommandId).then(commands => {
+        if (commands.length > 0) {
+          this.lastCommandId = 0;
+          this.handleCommands(commands);
+        }
+      }).catch(res => {
+        this.toastr.error(res.message);
+      });
+    }
     setTimeout(() => {
       this.poll(serverProxy);
     }, 3000);
@@ -147,6 +154,7 @@ export class GamePlayManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
+      console.log(command);
       if (command.type === 'updateSpread') {
         const spread = command.data.spread;
         const deckSize = command.data.deckSize;
@@ -155,6 +163,7 @@ export class GamePlayManagerService {
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
         this._allPlayers = players;
+        this.findClientPlayer();
         this._allPlayersSubject.next(players);
       } else if (command.type === 'incrementTurn') {
         if (this.updateLastCommandID(command.id)) {
@@ -253,5 +262,15 @@ export class GamePlayManagerService {
   public claimSegment(segment: Segment): void {
     this.serverProxy.claimSegment(segment)
       .then((commands: Command[]) => this.handleCommands(commands));
+  }
+
+  private findClientPlayer() {
+    this._allPlayers.forEach(player => {
+      if (player.name === this.authService.currentUser.name) {
+        this._clientPlayer = player;
+        this.clientPlayerSubject.next(player);
+        console.log(this._clientPlayer);
+      }
+    })
   }
 }

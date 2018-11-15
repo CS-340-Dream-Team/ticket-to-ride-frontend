@@ -66,7 +66,6 @@ export class GameListManagerService {
       } else if (command.type === "gameStarted") {
         this._gameStartedSubject.next(true);
         this.findClientPlayer(command);
-        this.gameplayService.poll(this.serverProxy);
         this.gameplayService.startGame();
         this.chatService.poll(this.serverProxy);
         this.polling = false;
