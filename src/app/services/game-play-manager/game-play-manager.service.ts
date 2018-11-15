@@ -31,7 +31,7 @@ export class GamePlayManagerService {
   private _playerTurnSubject = new Subject<string>();
 
   private lastCommandId = -1;
-  private polling = false;
+  public polling = false;
   private pollingTimer: any = null;
 
 
