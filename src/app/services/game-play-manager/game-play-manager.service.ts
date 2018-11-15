@@ -41,7 +41,7 @@ export class GamePlayManagerService {
   private _allPlayersSubject = new Subject<Player[]>();
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
-  private _routeDeckSize = 30;
+  private _routeDeckSize = 28;
   private _routeDeckSizeSubject = new Subject<number>();
 
   private _turnState: TurnState = new GameInitState();

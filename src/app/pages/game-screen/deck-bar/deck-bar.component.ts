@@ -11,7 +11,7 @@ export class DeckBarComponent implements OnInit {
 
   public spread: BusCard[];
   public numBuses: number;
-  public numRoutes = 30;
+  public numRoutes = 28;
 
 
   constructor(private gamePlayManager: GamePlayManagerService) {
