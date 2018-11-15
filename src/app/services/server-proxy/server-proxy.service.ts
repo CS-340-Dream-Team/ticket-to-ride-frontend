@@ -186,7 +186,7 @@ export class ServerProxyService {
           reject(err.json());
         }
       );
-    })
+    });
   }
 
   public addMessage(chatInfo: {
@@ -222,8 +222,20 @@ export class ServerProxyService {
     });
   }
 
-  public selectBusCard(index: number)/*: Promise<Command[]>*/ {
-    // FIXME implement
+  public selectBusCard(index: number): Promise<Command[]> {
+    console.log('Attempting to select bus card');
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(`${environment.BASE_URL}/play/bus/${index}`, {}, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          console.log(resJson);
+          resolve(resJson.commands);
+        }, err => {
+          reject(err.json());
+        }
+      );
+    });
   }
 
   public getSpread(): Promise<Command> {

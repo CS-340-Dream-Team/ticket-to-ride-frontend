@@ -108,6 +108,10 @@ export class GamePlayManagerService {
     return this._deckSizeSubject;
   }
 
+  get playerTurn() {
+    return this._playerTurn;
+  }
+
   get playerTurnSubject() {
     return this._playerTurnSubject;
   }
@@ -115,7 +119,7 @@ export class GamePlayManagerService {
   get allPlayers() {
     return this._allPlayers;
   }
-  
+
   get routeDeckSizeSubject(): Subject<number> {
     return this._routeDeckSizeSubject;
   }
@@ -156,29 +160,17 @@ export class GamePlayManagerService {
         const players = command.data.players;
         this._allPlayers = players;
         this._allPlayersSubject.next(players);
-<<<<<<< HEAD
-        //this._selectingRoutes = true;
-        //this._selectingRoutesSubject.next(this._selectingRoutes);
-        console.log("hit updatePlayers")
-      }
-      else if (command.type === 'drawRoutes') {
-=======
       } else if (command.type === 'incrementTurn') {
         if (this.updateLastCommandID(command.id)) {
           let name = command.data['playerTurnName'];
           this.incrementplayerTurn(name);
         }
       } else if (command.type === 'drawRoutes') {
->>>>>>> master
         if (this.updateLastCommandID(command.id)) {
           if (command.player===this.clientPlayer.name) {
             this.clientPlayer.routeCardBuffer = command.privateData;
             this._selectingRoutes = true;
             this._selectingRoutesSubject.next(this._selectingRoutes);
-<<<<<<< HEAD
-            console.log("hit drawRoutes")
-=======
->>>>>>> master
           } else {
 
           }
@@ -190,18 +182,10 @@ export class GamePlayManagerService {
             this.selectingRoutesSubject.next(this._selectingRoutes);
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
-<<<<<<< HEAD
-                this._allPlayers[index].routeCards += command.privateData['cardsKept'];
-                this.allPlayersSubject.next(this._allPlayers);
-              }
-            });
-            console.log("hit discardRoutes");
-=======
                 this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
                 this.allPlayersSubject.next(this._allPlayers);
               }
             });
->>>>>>> master
           } else {
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
@@ -211,31 +195,33 @@ export class GamePlayManagerService {
             });
           }
         }
-        // FIXME:add routes to player.
-<<<<<<< HEAD
-=======
-
->>>>>>> master
+      } else if (command.type === 'drawBusCard') {
+        if (this.updateLastCommandID(command.id)) {
+          console.log('Trying to add new card');
+          this._allPlayers.forEach((player, index) => {
+            if (player.name === command.player) {
+              if (player.name === this.clientPlayer.name) {
+                (this._allPlayers[index].busCards as BusCard[]).push({color: command.privateData['cardColor']});
+              } else {
+                (this._allPlayers[index].busCards as number) += 1;
+              }
+            }
+          });
+          this._allPlayersSubject.next(this.allPlayers);
+        }
       }
     });
   }
+
   // if true then update data else don't
-<<<<<<< HEAD
-  private updateLastCommandID(commandID:number):boolean
-  {
-    if(commandID>this.lastCommandId)
-    {
-      this.lastCommandId=commandID;
-      console.log("commandID:",commandID)
-=======
   private updateLastCommandID(commandID:number): boolean {
     if(commandID > this.lastCommandId){
       this.lastCommandId=commandID;
->>>>>>> master
       return true;
     }
       return false;
   }
+
   setSegmentOwner(index: number, player: Player) {
     this._segments[index].owner = player;
     this.segmentSubject.next(this._segments);
@@ -255,9 +241,16 @@ export class GamePlayManagerService {
       });
   }
 
-  public selectBusCard(index: number) {
+  public trySelectBusCard(index: number) {
     // Example of using state:
-    this._turnState.drawBusCard(this);
+    // this._turnState.drawBusCard(this, index); // FIXME do this once we have turns rotating properly
+    this.selectBusCard(index);
+  }
+
+  public selectBusCard(index: number) {
+    this.serverProxy.selectBusCard(index).then(commands => {
+      this.handleCommands(commands);
+    });
   }
 
   public getSpread(): Promise<BusCard[]> {

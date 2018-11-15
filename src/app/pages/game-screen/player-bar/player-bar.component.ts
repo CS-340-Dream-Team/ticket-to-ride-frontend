@@ -48,6 +48,7 @@ export class PlayerBarComponent {
         if (clientPlayerArr.length) {
           const clientPlayer = clientPlayerArr[0];
           this.routeCards = <Route[]>clientPlayer.routeCards;
+          debugger;
           this.countBusCards(<BusCard[]>clientPlayer.busCards);
         }
       }

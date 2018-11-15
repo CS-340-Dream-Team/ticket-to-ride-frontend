@@ -1,11 +1,11 @@
 <div class="deck-bar">
   <div class="face-up">
-    <div *ngFor="let card of spread">
-      <div class="card" [ngClass]="getColorClass(card)"></div>
+    <div *ngFor="let card of spread; let i = index">
+      <div class="card {{getColorClass(card)}}" [ngClass]="{clickable: isPlayerTurn()}" (click)="selectBusCard(i)"></div>
     </div>
   </div>
   <div class="face-down">
-    <div class="card face-down">
+    <div class="card face-down" [ngClass]="{clickable: isPlayerTurn()}" (click)="selectBusCard(5)">
       <p>?</p>
     </div>
     <p class="card-label">{{numBuses}}</p>

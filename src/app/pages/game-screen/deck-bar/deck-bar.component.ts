@@ -36,4 +36,12 @@ export class DeckBarComponent implements OnInit {
     return 'card-color-' + BusColor[card.color].toLowerCase();
   }
 
+  selectBusCard(index: number) {
+    this.gamePlayManager.trySelectBusCard(index);
+  }
+
+  isPlayerTurn() {
+    return this.gamePlayManager.clientPlayer.name === this.gamePlayManager.playerTurn;
+  }
+
 }
