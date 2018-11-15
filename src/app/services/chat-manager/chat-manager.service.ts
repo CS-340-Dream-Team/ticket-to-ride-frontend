@@ -53,7 +53,7 @@ export class ChatManagerService {
     });
   }
 
-  startPolling(pollingInterval: number = 1000) {
+  public startPolling(pollingInterval: number = 1000) {
     this._pollingTimer = setInterval(() => {
       this.poll(this.serverProxy);
     }, pollingInterval);
@@ -68,10 +68,12 @@ export class ChatManagerService {
       this.handleCommands(commands);
     }).catch(res => {
       this.toastr.error(res.message);
+      console.error('Stopped polling chats due to error. Refresh to try again.');
+      this.stopPolling();
     });
   }
 
-  stopPolling() {
+  public stopPolling() {
     clearInterval(this._pollingTimer);
     this._pollingTimer = null;
   }

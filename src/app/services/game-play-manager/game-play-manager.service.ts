@@ -146,7 +146,6 @@ export class GamePlayManagerService {
   }
 
   poll(serverProxy: ServerProxyService) {
-    console.trace();
     if (!this.polling) {
       return;
     }
@@ -157,6 +156,8 @@ export class GamePlayManagerService {
       }
     }).catch(res => {
       this.toastr.error(res.message);
+      console.error('Stopped polling gameData due to error. Refresh to try again.');
+      this.stopPolling();
     });
   }
 
