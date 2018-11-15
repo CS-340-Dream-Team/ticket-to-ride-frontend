@@ -10,8 +10,8 @@ import { GamePlayManagerService } from '../../../services';
 export class DeckBarComponent implements OnInit {
 
   public spread: BusCard[];
-  public numBuses = 45;
-  public numRoutes = 16;
+  public numBuses: number;
+  public numRoutes = 30;
 
 
   constructor(private gamePlayManager: GamePlayManagerService) {

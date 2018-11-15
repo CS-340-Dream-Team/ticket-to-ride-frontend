@@ -154,7 +154,6 @@ export class GamePlayManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      console.log(command);
       if (command.type === 'updateSpread') {
         const spread = command.data.spread;
         const deckSize = command.data.deckSize;
@@ -284,7 +283,6 @@ export class GamePlayManagerService {
 
   private findClientPlayer() {
     this._allPlayers.forEach(player => {
-      console.log(this.authService.currentUser);
       if (player.name === this.authService.currentUser.name) {
         this._clientPlayer = player;
         this.clientPlayerSubject.next(player);
