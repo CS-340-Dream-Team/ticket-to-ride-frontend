@@ -31,7 +31,7 @@ export class GamePlayManagerService {
   private _playerTurnSubject = new Subject<string>();
 
   private lastCommandId = -1;
-  public polling = false;
+  private polling = false;
   private pollingTimer: any = null;
 
 
@@ -138,20 +138,32 @@ export class GamePlayManagerService {
     }
   }
 
+  startPolling(pollingInterval: number = 2000) {
+    this.polling = true;
+    this.pollingTimer = setInterval(() => {
+      this.poll(this.serverProxy);
+    }, pollingInterval);
+  }
+
   poll(serverProxy: ServerProxyService) {
-    if (this.polling) {
-      serverProxy.getGameData(this.lastCommandId).then(commands => {
-        if (commands.length > 0) {
-          this.lastCommandId = 0;
-          this.handleCommands(commands);
-        }
-      }).catch(res => {
-        this.toastr.error(res.message);
-      });
+    console.trace();
+    if (!this.polling) {
+      return;
     }
-    setTimeout(() => {
-      this.poll(serverProxy);
-    }, 2000);
+    serverProxy.getGameData(this.lastCommandId).then(commands => {
+      if (commands.length > 0) {
+        this.lastCommandId = 0;
+        this.handleCommands(commands);
+      }
+    }).catch(res => {
+      this.toastr.error(res.message);
+    });
+  }
+
+  stopPolling(): void {
+    this.polling = false;
+    clearInterval(this.pollingTimer);
+    this.pollingTimer = null;
   }
 
   private handleCommands(commands: Command[]) {
@@ -303,7 +315,7 @@ export class GamePlayManagerService {
   }
 
   private _endGame(players: Player[]): void {
-    this.polling = false;
+    this.stopPolling();
     this.setState('gameover');
     console.log('GAME OVER', players);
   }
