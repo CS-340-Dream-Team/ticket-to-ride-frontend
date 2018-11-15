@@ -66,7 +66,7 @@ export class GamePlayManagerService {
   }
 
   constructor(
-    private serverProxy: ServerProxyService, 
+    private serverProxy: ServerProxyService,
     private toastr: ToastrService,
     private authService: AuthManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
@@ -120,7 +120,7 @@ export class GamePlayManagerService {
   get allPlayers() {
     return this._allPlayers;
   }
-  
+
   get routeDeckSizeSubject(): Subject<number> {
     return this._routeDeckSizeSubject;
   }
@@ -154,53 +154,60 @@ export class GamePlayManagerService {
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      if (command.type === 'updateSpread') {
-        const spread = command.data.spread;
-        const deckSize = command.data.deckSize;
-        this._spreadSubject.next(spread);
-        this._deckSizeSubject.next(deckSize);
-      } else if (command.type === 'updatePlayers') {
-        const players = command.data.players;
-        this._allPlayers = players;
-        this.findClientPlayer();
-        this._allPlayersSubject.next(players);
-      } else if (command.type === 'incrementTurn') {
-        if (this.updateLastCommandID(command.id)) {
-          let name = command.data['playerTurnName'];
-          this.incrementplayerTurn(name);
-        }
-      } else if (command.type === 'drawRoutes') {
-        if (this.updateLastCommandID(command.id)) {
-          if (command.player===this.clientPlayer.name) {
-            this.clientPlayer.routeCardBuffer = command.privateData;
-            this._selectingRoutes = true;
-            this._selectingRoutesSubject.next(this._selectingRoutes);
-          } else {
-
+      switch (command.type) {
+        case 'updateSpread':
+          const spread = command.data.spread;
+          const deckSize = command.data.deckSize;
+          this._spreadSubject.next(spread);
+          this._deckSizeSubject.next(deckSize);
+          break;
+        case 'updatePlayers':
+          const players = command.data.players;
+          this._allPlayers = players;
+          this.findClientPlayer();
+          this._allPlayersSubject.next(players);
+          break;
+        case 'incrementTurn':
+          if (this.updateLastCommandID(command.id)) {
+            let name = command.data['playerTurnName'];
+            this.incrementplayerTurn(name);
           }
-        }
-      } else if (command.type === 'discardRoutes') {
-        if (this.updateLastCommandID(command.id)) {
-          if (command.player === this.clientPlayer.name) {
-            this._selectingRoutes = false;
-            this.selectingRoutesSubject.next(this._selectingRoutes);
-            this._allPlayers.forEach((player, index) => {
-              if (player.name === command.player) {
-                this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
-                this.allPlayersSubject.next(this._allPlayers);
-              }
-            });
-          } else {
-            this._allPlayers.forEach((player, index) => {
-              if (player.name === command.player) {
-                this._allPlayers[index].routeCards += command.data['numCardsKept'];
-                this.allPlayersSubject.next(this._allPlayers);
-              }
-            });
-          }
-        }
-        // FIXME:add routes to player.
+          break;
+        case 'drawRoutes':
+          if (this.updateLastCommandID(command.id)) {
+            if (command.player===this.clientPlayer.name) {
+              this.clientPlayer.routeCardBuffer = command.privateData;
+              this._selectingRoutes = true;
+              this._selectingRoutesSubject.next(this._selectingRoutes);
+            } else {
 
+            }
+          }
+          break;
+        case 'discardRoutes':
+          if (this.updateLastCommandID(command.id)) {
+            if (command.player === this.clientPlayer.name) {
+              this._selectingRoutes = false;
+              this.selectingRoutesSubject.next(this._selectingRoutes);
+              this._allPlayers.forEach((player, index) => {
+                if (player.name === command.player) {
+                  this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
+                  this.allPlayersSubject.next(this._allPlayers);
+                }
+              });
+            } else {
+              this._allPlayers.forEach((player, index) => {
+                if (player.name === command.player) {
+                  this._allPlayers[index].routeCards += command.data['numCardsKept'];
+                  this.allPlayersSubject.next(this._allPlayers);
+                }
+              });
+            }
+          }
+          // FIXME:add routes to player.
+          break;
+        default:
+          break;
       }
     });
   }
