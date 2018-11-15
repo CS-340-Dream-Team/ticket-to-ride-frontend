@@ -31,7 +31,9 @@ export class GamePlayManagerService {
   private _playerTurnSubject = new Subject<string>();
 
   private lastCommandId = -1;
-  polling = false;
+  private polling = false;
+  private pollingTimer: any = null;
+
 
   // Game play data
   private _clientPlayer: Player;
@@ -206,6 +208,9 @@ export class GamePlayManagerService {
           }
           // FIXME:add routes to player.
           break;
+        case 'endGame':
+          this._endGame(command.data.players);
+        break;
         default:
           break;
       }
@@ -294,6 +299,12 @@ export class GamePlayManagerService {
         this._clientPlayer = player;
         this.clientPlayerSubject.next(player);
       }
-    })
+    });
+  }
+
+  private _endGame(players: Player[]): void {
+    this.polling = false;
+    this.setState('gameover');
+    console.log('GAME OVER', players);
   }
 }
