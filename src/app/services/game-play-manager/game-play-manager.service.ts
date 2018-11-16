@@ -251,6 +251,8 @@ export class GamePlayManagerService {
   public selectBusCard(index: number) {
     this.serverProxy.selectBusCard(index).then(commands => {
       this.handleCommands(commands);
+    }).catch(res => {
+      this.toastr.error(res.command.data.message);
     });
   }
 
