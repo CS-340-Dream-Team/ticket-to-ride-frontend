@@ -318,6 +318,9 @@ export class GamePlayManagerService {
   private _endGame(players: Player[]): void {
     this.stopPolling();
     this.setState('gameover');
-    console.log('GAME OVER', players);
+    this._allPlayers = players;
+    this._allPlayersSubject.next(players);
+    this.currentGame.ended = true;
+    this._currentGameSubject.next(this.currentGame);
   }
 }

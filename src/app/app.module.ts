@@ -33,6 +33,7 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
+import { GameOverComponent } from './game-over/game-over.component';
 
 
 const appRoutes: Routes = [
@@ -70,7 +71,8 @@ const appRoutes: Routes = [
     PlayerBarComponent,
     RouteSelectorComponent,
     RouteSelectorComponent,
-    DeckBarComponent
+    DeckBarComponent,
+    GameOverComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
