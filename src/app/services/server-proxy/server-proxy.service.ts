@@ -223,7 +223,6 @@ export class ServerProxyService {
   }
 
   public selectBusCard(index: number): Promise<Command[]> {
-    console.log('Attempting to select bus card');
     return new Promise<any>((resolve, reject) => {
       this.http.post(`${environment.BASE_URL}/play/bus/${index}`, {}, this.generateHttpOptions())
       .subscribe(

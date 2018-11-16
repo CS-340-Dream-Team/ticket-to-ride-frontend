@@ -199,7 +199,6 @@ export class GamePlayManagerService {
         }
       } else if (command.type === 'drawBusCard') {
         if (this.updateLastCommandID(command.id)) {
-          console.log('Trying to add new card');
           this._allPlayers.forEach((player, index) => {
             if (player.name === command.player) {
               if (player.name === this.clientPlayer.name) {
