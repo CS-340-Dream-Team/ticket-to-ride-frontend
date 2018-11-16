@@ -5,6 +5,14 @@ import { Command, Route, Segment, Location as MapLocation, Player, BusCard } fro
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
+import TurnState, {
+  GameInitState,
+  GameOverState,
+  NotYourTurnState,
+  YourTurnState
+} from './states';
+import { AuthManagerService } from '../auth-manager/auth-manager.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +27,8 @@ export class GamePlayManagerService {
   private _segmentSubject = new Subject<Segment[]>();
   private _selectingRoutes = false;
   private _selectingRoutesSubject = new Subject<boolean>();
-  private _playerTurn = 0;
-  private _playerTurnSubject = new Subject<number>();
+  private _playerTurn: string;
+  private _playerTurnSubject = new Subject<string>();
 
   private lastCommandId = -1;
   polling = false;
@@ -33,14 +41,38 @@ export class GamePlayManagerService {
   private _allPlayersSubject = new Subject<Player[]>();
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
-  private _routeDeckSize = 20;
+  private _routeDeckSize = 28;
   private _routeDeckSizeSubject = new Subject<number>();
   private _history: Command[] = [];
   private _historySubject = new Subject<Command[]>();
 
+  private _turnState: TurnState = new GameInitState();
 
-  constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+  public setState(newState: 'init' | 'gameover' | 'yourturn' | 'notyourturn') {
+    switch (newState) {
+      case 'init':
+        this._turnState = new GameInitState();
+        break;
+      case 'gameover':
+        this._turnState = new GameOverState();
+        break;
+      case 'yourturn':
+        this._turnState = new YourTurnState();
+        break;
+      case 'notyourturn':
+        this._turnState = new NotYourTurnState();
+        break;
+      default:
+        console.warn('Unrecognized state: not switching');
+    }
+  }
+
+  constructor(
+    private serverProxy: ServerProxyService, 
+    private toastr: ToastrService,
+    private authService: AuthManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
+    this.poll(this.serverProxy);
   }
 
   get clientPlayer() {
@@ -87,16 +119,10 @@ export class GamePlayManagerService {
     return this._playerTurnSubject;
   }
 
-  incrementplayerTurn() {
-    this._playerTurn++;
-    this._playerTurn = this._playerTurn % this._allPlayers.length;
-    this._playerTurnSubject.next(this._playerTurn);
-  }  
-
   get allPlayers() {
     return this._allPlayers;
   }
-
+  
   get routeDeckSizeSubject(): Subject<number> {
     return this._routeDeckSizeSubject;
   }
@@ -105,18 +131,31 @@ export class GamePlayManagerService {
     return this._historySubject;
   }
 
+  incrementplayerTurn(currentTurnName: string) {
+    this._playerTurn = currentTurnName;
+    this._playerTurnSubject.next(this._playerTurn);
+    if (currentTurnName === this.clientPlayer.name) {
+      this.setState("yourturn");
+    }
+    if (this._turnState instanceof YourTurnState) {
+      this.setState("notyourturn");
+    }
+  }
+
   poll(serverProxy: ServerProxyService) {
-    serverProxy.getGameData(this.lastCommandId).then(commands => {
-      if (commands.length > 0) {
-        this.lastCommandId = 0;
-        this.handleCommands(commands);
-      }
-    }).catch(res => {
-      this.toastr.error(res.message);
-    });
+    if (this.polling) {
+      serverProxy.getGameData(this.lastCommandId).then(commands => {
+        if (commands.length > 0) {
+          this.lastCommandId = 0;
+          this.handleCommands(commands);
+        }
+      }).catch(res => {
+        this.toastr.error(res.message);
+      });
+    }
     setTimeout(() => {
       this.poll(serverProxy);
-    }, 3000);
+    }, 2000);
   }
 
   private handleCommands(commands: Command[]) {
@@ -129,32 +168,60 @@ export class GamePlayManagerService {
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
         this._allPlayers = players;
+        this.findClientPlayer();
         this._allPlayersSubject.next(players);
-        this._selectingRoutes = true;
-        this._selectingRoutesSubject.next(this._selectingRoutes);
-      }
-      else if(command.type === 'drawRoutes'){
-        if(command.player===this.clientPlayer.name)
-        {
-          this._selectingRoutes = true;
-          this._selectingRoutesSubject.next(this._selectingRoutes);
+      } else if (command.type === 'incrementTurn') {
+        if (this.updateLastCommandID(command.id)) {
+          let name = command.data['playerTurnName'];
+          this.incrementplayerTurn(name);
         }
-        else{
-          //FIXME: update number of routes for other players.
-        }
-      } else if(command.type ==='discardRoutes'){
+      } else if (command.type === 'drawRoutes') {
+        if (this.updateLastCommandID(command.id)) {
+          if (command.player===this.clientPlayer.name) {
+            this.clientPlayer.routeCardBuffer = command.privateData;
+            this._selectingRoutes = true;
+            this._selectingRoutesSubject.next(this._selectingRoutes);
+          } else {
 
-        //FIXME:add routes to player.
+          }
+        }
+      } else if (command.type === 'discardRoutes') {
+        if (this.updateLastCommandID(command.id)) {
+          if (command.player === this.clientPlayer.name) {
+            this._selectingRoutes = false;
+            this.selectingRoutesSubject.next(this._selectingRoutes);
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
+                this.allPlayersSubject.next(this._allPlayers);
+              }
+            });
+          } else {
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                this._allPlayers[index].routeCards += command.data['numCardsKept'];
+                this.allPlayersSubject.next(this._allPlayers);
+              }
+            });
+          }
+        }
       }
-      if (command.message) {
+      if (command.message && command.message !== "unknown") {
         this._history.push(command);
         this._historySubject.next(this._history);
+        this.toastr.info(command.message);
       }
     });
   }
-
+  // if true then update data else don't
+  private updateLastCommandID(commandID:number): boolean {
+    if(commandID > this.lastCommandId){
+      this.lastCommandId=commandID;
+      return true;
+    }
+      return false;
+  }
   setSegmentOwner(index: number, player: Player) {
-    console.log(JSON.stringify(this._segments[index]));
     this._segments[index].owner = player;
     this.segmentSubject.next(this._segments);
   }
@@ -173,8 +240,29 @@ export class GamePlayManagerService {
       });
   }
 
+  public getFullGame() {
+    if (this.isRefreshing()) {
+      return this.serverProxy.getFullGame().then(command => {
+        let data = command.data;
+        this._clientPlayer = data.clientPlayer;
+        this._clientPlayerSubject.next(data.clientPlayer);
+        this._allPlayers = data.players;
+        this._allPlayersSubject.next(data.players);
+        this._deckSizeSubject.next(data.busDeckSize);
+        this._routeDeckSize = data.routeDeckSize;
+        this._routeDeckSizeSubject.next(data.routeDeckSize);
+        this._spreadSubject.next(data.spread);
+        this.incrementplayerTurn(data.turn);
+        this._history = data.history;
+        this._historySubject.next(data.history);
+        this.lastCommandId = data.id;
+      });
+    }
+  }
+
   public selectBusCard(index: number) {
-    // FIXME implement
+    // Example of using state:
+    this._turnState.drawBusCard(this);
   }
 
   public getSpread(): Promise<BusCard[]> {
@@ -202,5 +290,18 @@ export class GamePlayManagerService {
   public claimSegment(segment: Segment): void {
     this.serverProxy.claimSegment(segment)
       .then((commands: Command[]) => this.handleCommands(commands));
+  }
+
+  private findClientPlayer() {
+    this._allPlayers.forEach(player => {
+      if (player.name === this.authService.currentUser.name) {
+        this._clientPlayer = player;
+        this.clientPlayerSubject.next(player);
+      }
+    })
+  }
+
+  private isRefreshing() {
+    return !this.authService.currentUser;
   }
 }

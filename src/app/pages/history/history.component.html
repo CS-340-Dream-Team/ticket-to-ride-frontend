@@ -2,8 +2,8 @@
   <div class="container" >
     <div ngx-auto-scroll class="history-container">
       <ul class="history">
-        <li *ngFor="let command of fakeHistory">
-          <app-history-message [historyText]="command.message" [color]="getPlayerColor(command.player)" class="box"></app-history-message>
+        <li *ngFor="let command of history">
+          <app-history-message [historyText]="command.message" [color]="getPlayerColor(command)" class="box"></app-history-message>
           <!-- TODO: Change above to command.message -->
         </li>
       </ul>

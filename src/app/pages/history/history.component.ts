@@ -18,169 +18,10 @@ export class HistoryComponent implements OnInit {
   constructor(private gameplayService: GamePlayManagerService) { 
     this.showHistory = false;
     this.history = [];
-    this.playerColors['Betty the Bot'] = 1;
-    this.fakeHistory = [
-      {
-        type: 'drawRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot drew 3 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-      {
-        type: 'discardRoutes',
-        data: {},
-        player: 'Betty the Bot',
-        message: 'Betty the bot discarded 2 routes'
-      },
-    ];
+    // this.playerColors['Betty the Bot'] = 1;
     this.gameplayService.allPlayersSubject.subscribe({
       next: (players) => players.forEach(player => {
         this.playerColors[player.name] = player.color;
-        console.log(JSON.stringify(this.playerColors));
       })
     });
     this.gameplayService.historySubject.subscribe({
@@ -203,8 +44,14 @@ export class HistoryComponent implements OnInit {
     return JSON.stringify(command);
   }
 
-  getPlayerColor(name: string) {
-    return this.playerColors[name];
+  getPlayerColor(command: Command) {
+    if (command.type === "incrementTurn") {
+      let data = command.data as {"playerTurnName": string}
+      return this.playerColors[data.playerTurnName];
+    } else {
+      let name = command.player;
+      return this.playerColors[name];
+    }
   }
 
   convertDate(timestamp: number) {
