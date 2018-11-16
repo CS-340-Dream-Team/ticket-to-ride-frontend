@@ -33,7 +33,7 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
-import { GameOverComponent } from './game-over/game-over.component';
+import { GameOverComponent } from './pages/game-play/game-over/game-over.component';
 
 
 const appRoutes: Routes = [
