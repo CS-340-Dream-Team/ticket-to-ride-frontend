@@ -90,7 +90,7 @@ export class PlayerBarComponent {
   }
 
   isTurn(player: Player) {
-    if (player.name === this.playerTurn) {
+    if (player.name === this.gamePlayManager.playerTurn) {
       return true;
     }
     return false;

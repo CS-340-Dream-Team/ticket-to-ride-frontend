@@ -152,10 +152,12 @@ export class GamePlayManagerService {
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
       if (command.type === 'updateSpread') {
-        const spread = command.data.spread;
-        const deckSize = command.data.deckSize;
-        this._spreadSubject.next(spread);
-        this._deckSizeSubject.next(deckSize);
+        if (this.updateLastCommandID(command.id)) {
+          const spread = command.data.spread;
+          const deckSize = command.data.deckSize;
+          this._spreadSubject.next(spread);
+          this._deckSizeSubject.next(deckSize);
+        }
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
         this._allPlayers = players;
