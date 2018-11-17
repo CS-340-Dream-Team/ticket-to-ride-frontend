@@ -1,0 +1,7 @@
+ttr.carter.works {
+    root /root/ticket-to-ride/ticket-to-ride-frontend/dist/ticket-to-ride-frontend
+    gzip
+    tls {
+        dns cloudflare
+    }
+}

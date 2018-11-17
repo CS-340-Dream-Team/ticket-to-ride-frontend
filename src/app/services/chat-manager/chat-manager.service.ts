@@ -15,6 +15,7 @@ export class ChatManagerService {
   private _messages: Message[];
   private _messageNotification: number;
   private _messageNotificationSubject = new Subject<number>();
+  private _pollingTimer: any;
 
   constructor(
     private serverProxy: ServerProxyService,
@@ -52,6 +53,12 @@ export class ChatManagerService {
     });
   }
 
+  public startPolling(pollingInterval: number = 1000) {
+    this._pollingTimer = setInterval(() => {
+      this.poll(this.serverProxy);
+    }, pollingInterval);
+  }
+
   poll(serverProxy: ServerProxyService) {
     let timestamp = 0;
     if (this._messages.length > 0) {
@@ -61,10 +68,14 @@ export class ChatManagerService {
       this.handleCommands(commands);
     }).catch(res => {
       this.toastr.error(res.message);
+      console.error('Stopped polling chats due to error. Refresh to try again.');
+      this.stopPolling();
     });
-    setTimeout(() => {
-      this.poll(serverProxy);
-    }, 1000);
+  }
+
+  public stopPolling() {
+    clearInterval(this._pollingTimer);
+    this._pollingTimer = null;
   }
 
   private handleCommands(commands: Command[]) {

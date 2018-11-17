@@ -1,4 +1,5 @@
-<div *ngIf="showChat" > 
+<div class="background"></div>
+<div *ngIf="showChat" >
   <div class="container" >
     <div ngx-auto-scroll class="chat-container">
       <ul class="messages">
@@ -13,15 +14,11 @@
   </div>
 
   <div (click)="closeChat()">
-    <button class="chat-button">
-      <i class="material-icons">close</i>
-    </button>
+    <button class="chat-button"><i class="material-icons">close</i></button>
   </div>
-</div> 
+</div>
 
 <div *ngIf="!showChat" (click)="openChat()">
   <div *ngIf="messageNotification > 0" class="notification">{{messageNotification}}</div>
-  <button class="chat-button">
-    <i class="material-icons">message</i>
-  </button>
+  <button class="chat-button"><i class="material-icons">message</i></button>
 </div>

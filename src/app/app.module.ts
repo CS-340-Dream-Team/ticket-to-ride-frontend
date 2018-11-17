@@ -35,6 +35,7 @@ import {
 } from './services';
 import { HistoryComponent } from './pages/history/history.component';
 import { HistoryMessageComponent } from './pages/history/history-message/history-message.component';
+import { GameOverComponent } from './pages/game-play/game-over/game-over.component';
 
 
 const appRoutes: Routes = [
@@ -74,7 +75,8 @@ const appRoutes: Routes = [
     RouteSelectorComponent,
     DeckBarComponent,
     HistoryComponent,
-    HistoryMessageComponent
+    HistoryMessageComponent,
+    GameOverComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module
