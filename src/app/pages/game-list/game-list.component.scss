@@ -1,28 +1,28 @@
-.game-list-background {
-    background-image: url("../../../assets/images/Downtown_Provo.jpg");
-    background-size: cover;
-    filter: blur(2px);
-    display: block;
-    height: 800px;
-    left: 0;
-    position: fixed;
-    right: 0;
-    z-index: -1;
+.provo-background {
+  background-image: url("../../../assets/images/Downtown_Provo.jpg");
+  background-size: cover;
+  filter: blur(2px);
+  display: block;
+  height: 100vh;
+  z-index: -1;
 }
+
+$border-radius: 10px;
 
 .list-lobby-container {
     display: flex;
     flex-direction: row;
+
     background: rgba(255, 255, 255, 0.60);
-    border-radius: 3px;
+    border-radius: $border-radius;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-    top: 10px;
-    left: 0;
     position: fixed;
-    margin: 10px 20px;
-    right: 0;
-    padding: 0 10px;
-    height: 93vh;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 32px);
+    box-sizing: border-box;
+    margin: 16px;
+    height: calc(100vh - 32px);
 }
 
 .game-list-content {
@@ -58,7 +58,7 @@
     background-color: grey;
     margin: 0px auto 24px;
     width: 58%;
-    border-radius: 10px;
+    border-radius: $border-radius;
     line-height: 0em;
     height: 70px;
     font-family: 'Hind Madurai', sans-serif;
@@ -74,7 +74,7 @@
     width: 70%;
     height: 60%;
     background-color: black;
-    border-radius: 10px;
+    border-radius: $border-radius;
 }
 
 .game-list-container > p {
