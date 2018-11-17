@@ -1,3 +1,5 @@
+@import "../../../variables.scss";
+
 .provo-background {
   background-image: url("../../../assets/images/Downtown_Provo.jpg");
   background-size: cover;
@@ -15,7 +17,7 @@ $border-radius: 10px;
 
     background: rgba(255, 255, 255, 0.60);
     border-radius: $border-radius;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    @include elevation(4);
     position: fixed;
     top: 0;
     left: 0;
@@ -55,12 +57,14 @@ $border-radius: 10px;
     text-align: center;
     font-size: 24px;
     padding: 8px;
-    background-color: grey;
+    background-color: $color-light-accent;
+    @include elevation(2);
     margin: 0px auto 24px;
     width: 58%;
     border-radius: $border-radius;
     line-height: 0em;
     height: 70px;
+    transition: font-size 0.1s;
     font-family: 'Hind Madurai', sans-serif;
 }
 
@@ -73,14 +77,15 @@ $border-radius: 10px;
     margin: 0 auto;
     width: 70%;
     height: 60%;
-    background-color: black;
+    background-color: $color-dark-background;
     border-radius: $border-radius;
+    @include elevation(2);
 }
 
 .game-list-container > p {
     font-family: 'Hind Madurai', sans-serif;
     text-align: center;
-    color: white;
+    color: $color-light-text;
 }
 
 .list-item {

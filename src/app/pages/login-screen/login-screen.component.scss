@@ -1,3 +1,5 @@
+@import "../../../variables.scss";
+
 .provo-background {
     background-image: url("../../../assets/images/Downtown_Provo.jpg");
     background-size: cover;
@@ -10,7 +12,7 @@ $border-radius: 10px;
  .content {
     background: rgba(255, 255, 255, 0.60);
     border-radius: $border-radius;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    @include elevation(4);
     position: fixed;
     top: 0;
     left: 0;
@@ -27,7 +29,7 @@ $border-radius: 10px;
  .page-title {
     font-family: 'Hind Madurai', sans-serif;
     text-align: center;
-    color: white;
+    color: $color-light-text;
     font-size: 32px;
     padding: 8px;
     line-height: 0;
@@ -36,7 +38,8 @@ $border-radius: 10px;
     text-align: center;
     font-size: 24px;
     padding: 8px;
-    background-color: grey;
+    background-color: $color-light-accent;
+    @include elevation(2);
     margin: 0px auto 24px;
     width: 58%;
     border-radius: $border-radius;
@@ -53,7 +56,8 @@ $border-radius: 10px;
 
 .login-container {
     margin-top: 100px;
-    background-color: black;
+    background-color: $color-dark-background;
+    @include elevation(2);
     border-radius: $border-radius;
     overflow: hidden;
     position: relative;
