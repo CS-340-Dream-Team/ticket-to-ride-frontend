@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0;
@@ -51,33 +53,33 @@ a {
 
 // Color classes
 .purple-background {
-    background-color: purple;
+    background-color: $color-purple;
 }
 
 .orange-background {
-    background-color: orange;
+    background-color: $color-orange;
 }
 
 .blue-background {
-    background-color: blue;
+    background-color: $color-blue;
 }
 
 .yellow-background {
-    background-color: yellow;
+    background-color: $color-yellow;
 }
 
 .white-background {
-    background-color: white;
+    background-color: $color-white;
 }
 
 .black-background {
-    background-color: black;
+    background-color: $color-black;
 }
 
 .red-background {
-    background-color: red;
+    background-color: $color-red;
 }
 
 .green-background {
-    background-color: green;
+    background-color: $color-green;
 }
