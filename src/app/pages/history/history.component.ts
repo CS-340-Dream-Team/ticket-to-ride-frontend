@@ -29,8 +29,8 @@ export class HistoryComponent implements OnInit {
     this.gameplayService.historySubject.subscribe({
       next: (history) => {
         this.history = history;
-        this.toastNewHistory();
         this.prevId = this.history[this.history.length - 1].id;
+        this.toastNewHistory();
       }
     });
   }
@@ -50,6 +50,7 @@ export class HistoryComponent implements OnInit {
     this.history.forEach(command => {
       if (command.id > this.prevId) {
         this.toastr.info(command.message, '', {
+          // positionClass: 'toast-bottom-left'
           // toastClass: 'color-' + this.getPlayerColor(command)
           // toastClass: "{ background-color: red }"
           // toastClass: "color-0"

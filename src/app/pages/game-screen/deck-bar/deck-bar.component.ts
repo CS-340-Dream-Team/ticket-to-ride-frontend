@@ -41,7 +41,9 @@ export class DeckBarComponent implements OnInit {
   }
 
   isPlayerTurn() {
-    return this.gamePlayManager.clientPlayer.name === this.gamePlayManager.playerTurn;
+    if (this.gamePlayManager.clientPlayer) {
+      return this.gamePlayManager.clientPlayer.name === this.gamePlayManager.playerTurn;
+    }
   }
 
 }
