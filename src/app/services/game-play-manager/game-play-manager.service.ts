@@ -209,7 +209,6 @@ export class GamePlayManagerService {
       if (command.message && command.message !== "unknown") {
         this._history.push(command);
         this._historySubject.next(this._history);
-        this.toastr.info(command.message);
       }
     });
   }
