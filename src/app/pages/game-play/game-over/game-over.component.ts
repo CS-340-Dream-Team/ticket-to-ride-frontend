@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./game-over.component.scss']
 })
 export class GameOverComponent implements OnInit {
-  private _stats: GameOverStat[] = [];
+  _stats: GameOverStat[] = [];
 
   constructor(private gamePlayManagerService: GamePlayManagerService, private router: Router, private glms: GameListManagerService) {
     gamePlayManagerService.gameOverStatsSubject.subscribe({
