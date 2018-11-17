@@ -19,8 +19,9 @@ import { AuthManagerService } from '../auth-manager/auth-manager.service';
 })
 export class GamePlayManagerService {
 
-  currentGame: Game = null;
-  _currentGameSubject = new Subject<Game | null>();
+
+  private _gameOver: boolean = false;
+  private _gameOverSubject: Subject<boolean> = new Subject<boolean>();
   private _locations: MapLocation[] = [];
   private _locationSubject = new Subject<MapLocation[]>();
   private _segments: Array<Segment> = [];
@@ -91,8 +92,8 @@ export class GamePlayManagerService {
     return this._allPlayersSubject;
   }
 
-  get currentGameSubject() {
-    return this._currentGameSubject;
+  get gameOverSubject(): Subject<boolean> {
+    return this._gameOverSubject;
   }
 
   get locationSubject(): Subject<MapLocation[]> {
@@ -320,7 +321,7 @@ export class GamePlayManagerService {
     this.setState('gameover');
     this._allPlayers = players;
     this._allPlayersSubject.next(players);
-    this.currentGame.ended = true;
-    this._currentGameSubject.next(this.currentGame);
+    this._gameOver = true;
+    this._gameOverSubject.next(this._gameOver);
   }
 }

@@ -1,0 +1,141 @@
+@import "../../../../variables.scss";
+
+.dimmer {
+  background: #000;
+  opacity: 0.9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.dialog-container {
+  display: flex;
+  justify-content: center;
+}
+
+.dialog {
+  background-color: $color-light-accent;
+  font-family: 'Hind Madurai', sans-serif;
+  width: 900px;
+  border-radius: 10px;
+  z-index: 2000;
+  position: fixed;
+  padding-bottom: 16px;
+  top: calc(50% - 165px);
+  left: calc(50% - 350px);
+}
+
+.dialog-title {
+  font-size: 24px;
+  text-align: center;
+  line-height: 0;
+  margin: 30px;
+}
+
+.table {
+  width: 90%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  font-size: 1.1em;
+  color: $color-light-text;
+  white-space: nowrap;
+  table-layout: fixed;
+
+  .table-header {
+    background-color: $color-dark-background-accent;
+    font-size: 1.2em;
+  }
+
+  .row:nth-child(even) {
+    background-color: $color-dark-background-accent;
+  }
+
+  .cell {
+    text-align: center;
+    width: min-content;
+  }
+
+  .winner::before {
+    display: inline-block;
+    position: absolute;
+    left: 2.5%;
+    text-transform: uppercase;
+    color: $color-yellow;
+    content: 'Winner';
+    font-weight: bold;
+    transform: rotate(-25deg);
+  }
+
+  tbody {
+    position: relative;
+  }
+
+  .player {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    > * {
+      margin-right: auto;
+    }
+
+    .player-color {
+      width: 16px;
+      height: 16px;
+      &.purple {
+        background-color: $color-purple;
+      }
+      &.white {
+        background-color: $color-white;
+      }
+      &.blue {
+        background-color: $color-blue;
+      }
+      &.yellow {
+        background-color: $color-yellow;
+      }
+      &.orange {
+        background-color: $color-orange;
+      }
+      &.black {
+        background-color: $color-black;
+      }
+      &.red {
+        background-color: $color-red;
+      }
+      &.green {
+        background-color: $color-green;
+      }
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+
+  button {
+    display: block;
+    color: black;
+    background-color: $color-light-accent;
+    transition: background-color 0.25s, border 0.25s, color 0.25s;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-size: 1.1em;
+    text-transform: uppercase;
+
+    &:hover:enabled {
+      cursor: pointer;
+      background-color: darken($color-green, 5%);
+      color: $color-light-text;
+      border-color: darken($color-green, 5%);
+    }
+  }
+}
