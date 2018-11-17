@@ -1,0 +1,32 @@
+<div class="dimmer"></div>
+<div class="dialog-container">
+  <div class="dialog">
+    <h4 class="dialog-title">Game Over</h4>
+    <table class="table">
+      <thead class="table-header">
+        <tr>
+          <th class="cell">Player</th>
+          <th class="cell">Points Gained</th>
+          <th class="cell">Points Lost</th>
+          <th class="cell">Total Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row" *ngFor="let stat of _stats">
+          <td class="cell">
+            <div class="player" [ngClass]="{'winner': stat.winner}">
+              <div class="player-color" [ngClass]="[ stat.color.toLowerCase() ]"></div>
+              <div class="player-name">{{ stat.name }}</div>
+            </div>
+          </td>
+          <td class="cell">{{ stat.pointsGained }}</td>
+          <td class="cell">{{ stat.pointsLost }}</td>
+          <td class="cell">{{ stat.totalPoints }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <footer class="footer">
+      <button class="link" (click)="_exit()">Exit</button>
+    </footer>
+  </div>
+</div>

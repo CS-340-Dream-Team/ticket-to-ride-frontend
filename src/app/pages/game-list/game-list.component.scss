@@ -1,28 +1,30 @@
-.game-list-background {
-    background-image: url("../../../assets/images/Downtown_Provo.jpg");
-    background-size: cover;
-    filter: blur(2px);
-    display: block;
-    height: 800px;
-    left: 0;
-    position: fixed;
-    right: 0;
-    z-index: -1;
+@import "../../../variables.scss";
+
+.provo-background {
+  background-image: url("../../../assets/images/Downtown_Provo.jpg");
+  background-size: cover;
+  filter: blur(2px);
+  display: block;
+  height: 100vh;
+  z-index: -1;
 }
+
+$border-radius: 10px;
 
 .list-lobby-container {
     display: flex;
     flex-direction: row;
+
     background: rgba(255, 255, 255, 0.60);
-    border-radius: 3px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-    top: 10px;
-    left: 0;
+    border-radius: $border-radius;
+    @include elevation(4);
     position: fixed;
-    margin: 10px 20px;
-    right: 0;
-    padding: 0 10px;
-    height: 93vh;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 32px);
+    box-sizing: border-box;
+    margin: 16px;
+    height: calc(100vh - 32px);
 }
 
 .game-list-content {
@@ -55,12 +57,14 @@
     text-align: center;
     font-size: 24px;
     padding: 8px;
-    background-color: grey;
+    background-color: $color-light-accent;
+    @include elevation(2);
     margin: 0px auto 24px;
     width: 58%;
-    border-radius: 10px;
+    border-radius: $border-radius;
     line-height: 0em;
     height: 70px;
+    transition: font-size 0.1s;
     font-family: 'Hind Madurai', sans-serif;
 }
 
@@ -73,14 +77,15 @@
     margin: 0 auto;
     width: 70%;
     height: 60%;
-    background-color: black;
-    border-radius: 10px;
+    background-color: $color-dark-background;
+    border-radius: $border-radius;
+    @include elevation(2);
 }
 
 .game-list-container > p {
     font-family: 'Hind Madurai', sans-serif;
     text-align: center;
-    color: white;
+    color: $color-light-text;
 }
 
 .list-item {

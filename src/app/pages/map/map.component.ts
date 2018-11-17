@@ -26,7 +26,7 @@ export class MapComponent implements OnInit {
         next: (segments) => this._renderSegments(segments)
       })
       gamePlayManager.getFullGame();
-      gamePlayManager.polling = true;
+      gamePlayManager.startPolling();
     }
 
 	ngOnInit() {

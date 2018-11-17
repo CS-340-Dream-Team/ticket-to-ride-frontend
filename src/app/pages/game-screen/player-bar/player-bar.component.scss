@@ -11,25 +11,25 @@
     i {
         position: relative;
         bottom: -3px;
-        
+
         &.star {
             color: yellow;
             margin-left: 2px;
         }
-        
+
         &.pin {
             color: darkred;
             margin-left: -4px;
         }
     }
-    
-    
+
+
     .name-bar {
         border-left: 5px solid;
         margin: 8px 0;
         padding: 10px 0 10px 5px;
         background-color: $color-dark-background-accent;
-        
+
         .player-name {
             width: 100px;
             white-space: nowrap;
@@ -46,11 +46,11 @@
             right: 8px;
             top: 9px;
             display: flex;
-            
+
             .stat {
                 margin-left: 10px;
                 flex-basis: 1;
-                
+
                 .wild-card-icon {
                     width: 25px;
                     height: auto;
@@ -61,21 +61,22 @@
                     position: relative;
                 }
             }
-            
+
         }
-        
+
     }
-    
+
     .current-player-info {
         background-color: $color-dark-background;
-        
+        color: $color-light-text;
+
         ul {
             list-style: none;
             margin-block-start: 0;
             margin-block-end: 0;
             padding-inline-start: 20px;
         }
-        
+
         table {
             font-size: 12pt;
             color: $color-light-text;
@@ -89,19 +90,19 @@
     .red-left-border {
         border-color: red !important;
     }
-    
+
     .green-left-border {
         border-color: green;
     }
-    
+
     .blue-left-border {
         border-color: blue;
     }
-    
+
     .yellow-left-border {
         border-color: yellow;
     }
-    
+
     .black-left-border {
         border-color: black;
     }
