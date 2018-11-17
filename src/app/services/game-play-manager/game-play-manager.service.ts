@@ -183,12 +183,6 @@ export class GamePlayManagerService {
             this._deckSizeSubject.next(deckSize);
           }
           break;
-        // case 'updatePlayers':
-        //   const players = command.data.players;
-        //   this._allPlayers = players;
-        //   this.findClientPlayer();
-        //   this._allPlayersSubject.next(players);
-        //   break;
         case 'incrementTurn':
           if (this.updateLastCommandID(command.id)) {
             let name = command.data['playerTurnName'];
