@@ -336,9 +336,13 @@ export class GamePlayManagerService {
     });
   }
 
-  public drawRoutes(): Promise<Route[]> {
-    return this.serverProxy.drawRoutes().then(command => {
-      return command['privateData'];
+  public tryDrawRoutes() {
+    this._turnState.drawRouteCards(this);
+  }
+
+  public drawRoutes() {
+    this.serverProxy.drawRoutes().then(command => {
+      this.handleCommands(command);
     });
   }
 

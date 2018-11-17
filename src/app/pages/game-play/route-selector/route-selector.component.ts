@@ -17,6 +17,7 @@ export class RouteSelectorComponent implements OnInit {
         this.minNumber = this.gamePlayManager.getMinRoutesNumber();
         if (selectingRoutes) {
           this.routes = this.gamePlayManager.clientPlayer.routeCardBuffer;
+          this.selections = [];
           this.routes.forEach(route => {
             this.selections.push({route: route, selected: true});
           });

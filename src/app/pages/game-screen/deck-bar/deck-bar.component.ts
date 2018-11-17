@@ -44,4 +44,7 @@ export class DeckBarComponent implements OnInit {
     return this.gamePlayManager.clientPlayer.name === this.gamePlayManager.playerTurn;
   }
 
+  selectRouteCards() {
+    this.gamePlayManager.tryDrawRoutes();
+  }
 }
