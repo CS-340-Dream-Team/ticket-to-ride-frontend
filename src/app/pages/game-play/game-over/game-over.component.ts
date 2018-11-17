@@ -20,7 +20,7 @@ export class GameOverComponent implements OnInit {
   ngOnInit() {
   }
 
-  private _exit(): void {
+  _exit(): void {
     this.router.navigate(['/game-list']);
     this.glms.setCurrentGame(null);
   }
