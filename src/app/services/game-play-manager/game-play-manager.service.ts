@@ -188,6 +188,13 @@ export class GamePlayManagerService {
           const players = command.data.players;
           this._allPlayers = players;
           this.findClientPlayer();
+          players.forEach(player => {
+            if (player.name !== this._clientPlayer.name) {
+              player.routeCards = 0;
+            } else {
+              player.routeCards = [];
+            }
+          });
           this._allPlayersSubject.next(players);
           break;
         case 'incrementTurn':
