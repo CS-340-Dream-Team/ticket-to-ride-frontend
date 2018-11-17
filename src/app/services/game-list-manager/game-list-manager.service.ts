@@ -112,7 +112,7 @@ export class GameListManagerService {
   }
 
   startGame(game: Game) {
-    this.toastr.info(`Started Game '${game.name}' with ${game.numPlayers}`);
+    this.toastr.info(`Started '${game.name}' with ${game.numPlayers} players`);
     this.serverProxy.startGame(game).then(commands => {
       this.handleCommands(commands);
     })
