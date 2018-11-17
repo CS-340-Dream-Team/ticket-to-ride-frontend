@@ -3,7 +3,7 @@
   <div class="dialog">
     <p class="close-button" (click)="close()">x</p>
     <h6 class="dialog-title">Create Game</h6>
-    <input #gameName class="name-input" placeholder="Game Name">
+    <input maxlength="20" #gameName class="name-input" placeholder="Game Name">
     <button class="submit-button" 
       (click)="submit(gameName.value)"
       [disabled]="gameName.value.length == 0">Ready!</button>
