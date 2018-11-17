@@ -49,7 +49,6 @@ export class HistoryComponent implements OnInit {
   toastNewHistory() {
     this.history.forEach(command => {
       if (command.id > this.prevId) {
-        console.log('color-' + this.getPlayerColor(command));
         this.toastr.info(command.message, '', {
           // toastClass: 'color-' + this.getPlayerColor(command)
           // toastClass: "{ background-color: red }"
