@@ -46,4 +46,7 @@ export class DeckBarComponent implements OnInit {
     }
   }
 
+  selectRouteCards() {
+    this.gamePlayManager.tryDrawRoutes();
+  }
 }
