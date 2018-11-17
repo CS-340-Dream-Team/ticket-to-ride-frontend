@@ -144,6 +144,15 @@ export class GamePlayManagerService {
     }
   }
 
+  getMinRoutesNumber() {
+    if (this._turnState instanceof YourTurnState) {
+      return 1;
+    } else if (this._turnState instanceof GameInitState) {
+      return 2;
+    }
+    return 0;
+  }
+
   startPolling(pollingInterval: number = 2000) {
     this.polling = true;
     this.pollingTimer = setInterval(() => {

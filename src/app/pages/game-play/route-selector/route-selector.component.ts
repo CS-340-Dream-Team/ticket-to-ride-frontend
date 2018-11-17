@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Route } from '../../../types';
 import { GamePlayManagerService } from '../../../services';
 
@@ -14,17 +14,19 @@ export class RouteSelectorComponent implements OnInit {
     gamePlayManager.selectingRoutesSubject.subscribe({
       next: (selectingRoutes) => {
         this.selectingRoutes = selectingRoutes;
+        this.minNumber = this.gamePlayManager.getMinRoutesNumber();
         if (selectingRoutes) {
-            this.routes = this.gamePlayManager.clientPlayer.routeCardBuffer;
-            this.routes.forEach(route => {
-              this.selections.push({route: route, selected: true});
-            });
+          this.routes = this.gamePlayManager.clientPlayer.routeCardBuffer;
+          this.routes.forEach(route => {
+            this.selections.push({route: route, selected: true});
+          });
         }
       }
     });
   }
 
   private selectingRoutes = false;
+  public minNumber: number;
   public routes: Route[];
   public selections: RouteSelection[] = [];
 
@@ -46,8 +48,8 @@ export class RouteSelectorComponent implements OnInit {
 
   submitButtonText() {
     const numSelected = this.numSelected();
-    if (numSelected <= 1) {
-      return 'You must keep at least 2 routes';
+    if (numSelected < this.minNumber) {
+      return `You must keep at least ${this.minNumber} routes`;
     }
     return `Keep ${numSelected} route` + (numSelected === 1 ? '' : 's');
   }
@@ -64,7 +66,7 @@ export class RouteSelectorComponent implements OnInit {
     });
     this.gamePlayManager.selectRoutes(finalRoutes, rejectedRoutes);
   }
- }
+}
 
 interface RouteSelection {
   route: Route;
