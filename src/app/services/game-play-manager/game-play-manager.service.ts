@@ -117,6 +117,10 @@ export class GamePlayManagerService {
     return this._deckSizeSubject;
   }
 
+  get playerTurn() {
+    return this._playerTurn;
+  }
+
   get playerTurnSubject() {
     return this._playerTurnSubject;
   }
@@ -173,10 +177,12 @@ export class GamePlayManagerService {
     commands.forEach(command => {
       switch (command.type) {
         case 'updateSpread':
-          const spread = command.data.spread;
-          const deckSize = command.data.deckSize;
-          this._spreadSubject.next(spread);
-          this._deckSizeSubject.next(deckSize);
+          if (this.updateLastCommandID(command.id)) {
+            const spread = command.data.spread;
+            const deckSize = command.data.deckSize;
+            this._spreadSubject.next(spread);
+            this._deckSizeSubject.next(deckSize);
+          }
           break;
         case 'updatePlayers':
           const players = command.data.players;
@@ -199,6 +205,20 @@ export class GamePlayManagerService {
             } else {
 
             }
+          }
+          break;
+        case 'drawBusCard':
+          if (this.updateLastCommandID(command.id)) {
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                if (player.name === this.clientPlayer.name) {
+                  (this._allPlayers[index].busCards as BusCard[]).push({color: command.privateData['cardColor']});
+                } else {
+                  (this._allPlayers[index].busCards as number) += 1;
+                }
+              }
+            });
+            this._allPlayersSubject.next(this.allPlayers);
           }
           break;
         case 'discardRoutes':
@@ -231,6 +251,7 @@ export class GamePlayManagerService {
       }
     });
   }
+
   // if true then update data else don't
   private updateLastCommandID(commandID:number): boolean {
     if(commandID > this.lastCommandId){
@@ -239,6 +260,7 @@ export class GamePlayManagerService {
     }
       return false;
   }
+
   setSegmentOwner(index: number, player: Player) {
     this._segments[index].owner = player;
     this.segmentSubject.next(this._segments);
@@ -276,9 +298,18 @@ export class GamePlayManagerService {
     }
   }
 
-  public selectBusCard(index: number) {
+  public trySelectBusCard(index: number) {
     // Example of using state:
-    this._turnState.drawBusCard(this);
+    // this._turnState.drawBusCard(this, index); // FIXME do this once we have turns rotating properly
+    this.selectBusCard(index);
+  }
+
+  public selectBusCard(index: number) {
+    this.serverProxy.selectBusCard(index).then(commands => {
+      this.handleCommands(commands);
+    }).catch(res => {
+      this.toastr.error(res.command.data.message);
+    });
   }
 
   public getSpread(): Promise<BusCard[]> {

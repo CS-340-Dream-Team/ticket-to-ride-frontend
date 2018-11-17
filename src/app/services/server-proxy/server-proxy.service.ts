@@ -186,7 +186,7 @@ export class ServerProxyService {
           reject(err.json());
         }
       );
-    })
+    });
   }
 
   public getFullGame(): Promise<any> {
@@ -237,8 +237,19 @@ export class ServerProxyService {
     });
   }
 
-  public selectBusCard(index: number)/*: Promise<Command[]>*/ {
-    // FIXME implement
+  public selectBusCard(index: number): Promise<Command[]> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(`${environment.BASE_URL}/play/bus/${index}`, {}, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          console.log(resJson);
+          resolve(resJson.commands);
+        }, err => {
+          reject(err.json());
+        }
+      );
+    });
   }
 
   public getSpread(): Promise<Command> {
