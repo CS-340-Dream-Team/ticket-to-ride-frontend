@@ -52,9 +52,7 @@ export class HistoryComponent implements OnInit {
 
   toastNewHistory() {
     if (this.numNewItems !== this.history.length) {
-      console.log('not equal');
       let start = this.history.length - this.numNewItems;
-      console.log(start);
       for (let i = start; i < this.history.length; i++) {
         this.toastr.info(this.history[i].message);      
       }

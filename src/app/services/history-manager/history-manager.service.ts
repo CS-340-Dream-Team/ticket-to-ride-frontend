@@ -25,7 +25,6 @@ export class HistoryManagerService {
     let num = 0;
     commands.forEach(command => {
       if (command.message && command.message !== 'unknown') {
-        console.log(command);
         this._history.push(command);
         num++;
       }
