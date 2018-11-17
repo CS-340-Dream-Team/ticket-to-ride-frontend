@@ -65,8 +65,6 @@ export class GameListManagerService {
         this.currentGame.numPlayers = command.data.playerList.length;
       } else if (command.type === "gameStarted") {
         this._gameStartedSubject.next(true);
-        this.findClientPlayer(command);
-        this.gameplayService.poll(this.serverProxy);
         this.gameplayService.startGame();
         this.chatService.poll(this.serverProxy);
         this.polling = false;
@@ -78,15 +76,6 @@ export class GameListManagerService {
         }
       });
     });
-  }
-
-  findClientPlayer(command: Command) {
-    command.data.game.playersJoined.forEach(player => {
-      if (player.name === this.authService.currentUser.name) {
-        this.gameplayService.clientPlayer = player;
-        this.gameplayService.clientPlayerSubject.next(player);
-      }
-    })
   }
 
   setCurrentGame(game: Game | null) {

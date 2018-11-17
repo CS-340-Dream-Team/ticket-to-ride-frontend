@@ -189,6 +189,21 @@ export class ServerProxyService {
     });
   }
 
+  public getFullGame(): Promise<any> {
+    const url = `play`;
+    return new Promise<any>((resolve, reject) => {
+      this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
+      .subscribe(
+        (res: Response) => {
+          const resJson = res.json();
+          resolve(resJson.command);
+        }, err => {
+          reject(err.json());
+        }
+      )
+    })
+  }
+
   public addMessage(chatInfo: {
     messageText: string;
     prevTimestamp: number;

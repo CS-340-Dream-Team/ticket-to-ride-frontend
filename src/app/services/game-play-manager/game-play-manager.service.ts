@@ -11,6 +11,7 @@ import TurnState, {
   NotYourTurnState,
   YourTurnState
 } from './states';
+import { AuthManagerService } from '../auth-manager/auth-manager.service';
 
 
 @Injectable({
@@ -40,7 +41,7 @@ export class GamePlayManagerService {
   private _allPlayersSubject = new Subject<Player[]>();
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
-  private _routeDeckSize = 20;
+  private _routeDeckSize = 28;
   private _routeDeckSizeSubject = new Subject<number>();
 
   private _turnState: TurnState = new GameInitState();
@@ -64,8 +65,12 @@ export class GamePlayManagerService {
     }
   }
 
-  constructor(private serverProxy: ServerProxyService, private toastr: ToastrService) {
+  constructor(
+    private serverProxy: ServerProxyService, 
+    private toastr: ToastrService,
+    private authService: AuthManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
+    this.poll(this.serverProxy);
   }
 
   get clientPlayer() {
@@ -136,17 +141,19 @@ export class GamePlayManagerService {
   }
 
   poll(serverProxy: ServerProxyService) {
-    serverProxy.getGameData(this.lastCommandId).then(commands => {
-      if (commands.length > 0) {
-        this.lastCommandId = 0;
-        this.handleCommands(commands);
-      }
-    }).catch(res => {
-      this.toastr.error(res.message);
-    });
+    if (this.polling) {
+      serverProxy.getGameData(this.lastCommandId).then(commands => {
+        if (commands.length > 0) {
+          this.lastCommandId = 0;
+          this.handleCommands(commands);
+        }
+      }).catch(res => {
+        this.toastr.error(res.message);
+      });
+    }
     setTimeout(() => {
       this.poll(serverProxy);
-    }, 3000);
+    }, 2000);
   }
 
   private handleCommands(commands: Command[]) {
@@ -161,6 +168,7 @@ export class GamePlayManagerService {
       } else if (command.type === 'updatePlayers') {
         const players = command.data.players;
         this._allPlayers = players;
+        this.findClientPlayer();
         this._allPlayersSubject.next(players);
       } else if (command.type === 'incrementTurn') {
         if (this.updateLastCommandID(command.id)) {
@@ -242,6 +250,24 @@ export class GamePlayManagerService {
       });
   }
 
+  public getFullGame() {
+    if (!this.authService.currentUser) {
+      return this.serverProxy.getFullGame().then(command => {
+        let data = command.data;
+        this._clientPlayer = data.clientPlayer;
+        this._clientPlayerSubject.next(data.clientPlayer);
+        this._allPlayers = data.players;
+        this._allPlayersSubject.next(data.players);
+        this._deckSizeSubject.next(data.busDeckSize);
+        this._routeDeckSize = data.routeDeckSize;
+        this._routeDeckSizeSubject.next(data.routeDeckSize);
+        this._spreadSubject.next(data.spread);
+        this.incrementplayerTurn(data.turn);
+        this.lastCommandId = command.data.id;
+      });
+    }
+  }
+
   public trySelectBusCard(index: number) {
     // Example of using state:
     // this._turnState.drawBusCard(this, index); // FIXME do this once we have turns rotating properly
@@ -281,5 +307,14 @@ export class GamePlayManagerService {
   public claimSegment(segment: Segment): void {
     this.serverProxy.claimSegment(segment)
       .then((commands: Command[]) => this.handleCommands(commands));
+  }
+
+  private findClientPlayer() {
+    this._allPlayers.forEach(player => {
+      if (player.name === this.authService.currentUser.name) {
+        this._clientPlayer = player;
+        this.clientPlayerSubject.next(player);
+      }
+    })
   }
 }
