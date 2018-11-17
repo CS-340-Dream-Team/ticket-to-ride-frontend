@@ -8,6 +8,6 @@
         {{route.route.name}}: {{route.route.start.name}} to {{route.route.end.name}} &mdash; {{route.route.points}} points
       </button>
     </div>
-    <button [disabled]="numSelected() <= 1" (click)="makeFinalSelection()" class="submit-button">{{submitButtonText()}}</button>
+    <button [disabled]="numSelected() < minNumber" (click)="makeFinalSelection()" class="submit-button">{{submitButtonText()}}</button>
   </div>
 </div>

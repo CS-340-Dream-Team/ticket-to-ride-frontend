@@ -244,6 +244,8 @@ export class GamePlayManagerService {
               this.selectingRoutesSubject.next(this._selectingRoutes);
               this._allPlayers.forEach((player, index) => {
                 if (player.name === command.player) {
+                  this._routeDeckSize -= command.data['numCardsKept'];
+                  this._routeDeckSizeSubject.next(this._routeDeckSize);
                   this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
                   this.allPlayersSubject.next(this._allPlayers);
                 }
@@ -251,6 +253,8 @@ export class GamePlayManagerService {
             } else {
               this._allPlayers.forEach((player, index) => {
                 if (player.name === command.player) {
+                  this._routeDeckSize -= command.data['numCardsKept'];
+                  this._routeDeckSizeSubject.next(this._routeDeckSize);
                   this._allPlayers[index].routeCards += command.data['numCardsKept'];
                   this.allPlayersSubject.next(this._allPlayers);
                 }
@@ -343,6 +347,8 @@ export class GamePlayManagerService {
   public drawRoutes() {
     this.serverProxy.drawRoutes().then(command => {
       this.handleCommands(command);
+    }).catch(res => {
+      this.toastr.error(res.command.data.message);
     });
   }
 
