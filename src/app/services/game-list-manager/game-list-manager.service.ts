@@ -100,7 +100,7 @@ export class GameListManagerService {
       this.handleCommands(commands);
     }).catch(res => {
       this.toastr.error(res.message);
-    });;
+    });
   }
 
   joinGame(game: Game) {

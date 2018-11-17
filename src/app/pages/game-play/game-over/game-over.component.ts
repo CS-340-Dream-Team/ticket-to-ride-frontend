@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
-import { GamePlayManagerService } from 'src/app/services';
+import { GamePlayManagerService, GameListManagerService } from 'src/app/services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-over',
@@ -9,8 +10,8 @@ import { GamePlayManagerService } from 'src/app/services';
 })
 export class GameOverComponent implements OnInit {
   private _stats: GameOverStat[] = [];
-  constructor(private gamePlayManagerService: GamePlayManagerService) {
 
+  constructor(private gamePlayManagerService: GamePlayManagerService, private router: Router, private glms: GameListManagerService) {
     gamePlayManagerService.gameOverStatsSubject.subscribe({
       next: (stats) => this._stats = stats
     })
@@ -19,4 +20,8 @@ export class GameOverComponent implements OnInit {
   ngOnInit() {
   }
 
+  private _exit(): void {
+    this.router.navigate(['/game-list']);
+    this.glms.setCurrentGame(null);
+  }
 }

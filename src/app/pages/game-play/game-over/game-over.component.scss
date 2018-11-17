@@ -120,10 +120,11 @@
   justify-content: center;
   margin-top: 8px;
 
-  button {
+  .link {
     display: block;
     color: black;
     background-color: $color-light-accent;
+    text-decoration: none;
     transition: background-color 0.25s, border 0.25s, color 0.25s;
     border: 2px solid black;
     border-radius: 5px;
