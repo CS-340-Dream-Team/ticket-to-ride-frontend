@@ -177,7 +177,6 @@ export class GamePlayManagerService {
     commands.forEach(command => {
       switch (command.type) {
         case 'updateSpread':
-<<<<<<< HEAD
           if (this.updateLastCommandID(command.id)) {
             const spread = command.data.spread;
             const deckSize = command.data.deckSize;
@@ -197,25 +196,6 @@ export class GamePlayManagerService {
             this.incrementplayerTurn(name);
           }
           break;
-=======
-          const spread = command.data.spread;
-          const deckSize = command.data.deckSize;
-          this._spreadSubject.next(spread);
-          this._deckSizeSubject.next(deckSize);
-          break;
-        case 'updatePlayers':
-          const players = command.data.players;
-          this._allPlayers = players;
-          this.findClientPlayer();
-          this._allPlayersSubject.next(players);
-          break;
-        case 'incrementTurn':
-          if (this.updateLastCommandID(command.id)) {
-            let name = command.data['playerTurnName'];
-            this.incrementplayerTurn(name);
-          }
-          break;
->>>>>>> master
         case 'drawRoutes':
           if (this.updateLastCommandID(command.id)) {
             if (command.player===this.clientPlayer.name) {
@@ -225,7 +205,6 @@ export class GamePlayManagerService {
             } else {
 
             }
-<<<<<<< HEAD
           }
           break;
         case 'drawBusCard':
@@ -240,8 +219,6 @@ export class GamePlayManagerService {
               }
             });
             this._allPlayersSubject.next(this.allPlayers);
-=======
->>>>>>> master
           }
           break;
         case 'discardRoutes':
