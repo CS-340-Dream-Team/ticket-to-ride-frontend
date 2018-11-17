@@ -29,7 +29,9 @@ export class HistoryComponent implements OnInit {
     this.gameplayService.historySubject.subscribe({
       next: (history) => {
         this.history = history;
-        this.prevId = this.history[this.history.length - 1].id;
+        if (this.history.length > 0) {
+          this.prevId = this.history[this.history.length - 1].id;
+        }
         this.toastNewHistory();
       }
     });
