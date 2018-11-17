@@ -14,8 +14,8 @@ export class GameScreenComponent implements OnInit {
         this.selectingRoutes = selectingRoutes;
       }
     });
-    gamePlayManager.gameOverSubject.subscribe({
-      next: (gameOver) => this.gameOver = gameOver
+    gamePlayManager.gameOverStatsSubject.subscribe({
+      next: (stats) => this.gameOver = stats.length > 0
     })
   }
 

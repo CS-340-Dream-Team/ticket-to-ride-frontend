@@ -12,6 +12,7 @@ import TurnState, {
   YourTurnState
 } from './states';
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
+import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 
 
 @Injectable({
@@ -20,8 +21,8 @@ import { AuthManagerService } from '../auth-manager/auth-manager.service';
 export class GamePlayManagerService {
 
 
-  private _gameOver: boolean = false;
-  private _gameOverSubject: Subject<boolean> = new Subject<boolean>();
+  private _gameOverStats: GameOverStat[] = [];
+  private _gameOverStatsSubject: Subject<GameOverStat[]> = new Subject<GameOverStat[]>();
   private _locations: MapLocation[] = [];
   private _locationSubject = new Subject<MapLocation[]>();
   private _segments: Array<Segment> = [];
@@ -92,8 +93,8 @@ export class GamePlayManagerService {
     return this._allPlayersSubject;
   }
 
-  get gameOverSubject(): Subject<boolean> {
-    return this._gameOverSubject;
+  get gameOverStatsSubject(): Subject<GameOverStat[]> {
+    return this._gameOverStatsSubject;
   }
 
   get locationSubject(): Subject<MapLocation[]> {
@@ -223,7 +224,7 @@ export class GamePlayManagerService {
           // FIXME:add routes to player.
           break;
         case 'endGame':
-          this._endGame(command.data.players);
+          this._endGame(command.data.stats);
         break;
         default:
           break;
@@ -316,12 +317,10 @@ export class GamePlayManagerService {
     });
   }
 
-  private _endGame(players: Player[]): void {
+  private _endGame(stats: GameOverStat[]): void {
     this.stopPolling();
     this.setState('gameover');
-    this._allPlayers = players;
-    this._allPlayersSubject.next(players);
-    this._gameOver = true;
-    this._gameOverSubject.next(this._gameOver);
+    this._gameOverStats = stats;
+    this._gameOverStatsSubject.next(this._gameOverStats);
   }
 }

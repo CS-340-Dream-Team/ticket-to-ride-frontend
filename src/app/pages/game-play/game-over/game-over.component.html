@@ -12,27 +12,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="row">
+        <tr class="row" *ngFor="let stat of _stats">
           <td class="cell">
-            <div class="player winner">
-              <div class="player-color green"></div>
-              <div class="player-name">Betty the Bot</div>
+            <div class="player" ngClass="{'winner': stat.winner}">
+              <div class="player-color" ngClass="[ stat.color ]"></div>
+              <div class="player-name">{{ stat.name }}</div>
             </div>
           </td>
-          <td class="cell">3</td>
-          <td class="cell">5</td>
-          <td class="cell">-2</td>
-        </tr>
-        <tr class="row">
-          <td class="cell">
-            <div class="player">
-              <div class="player-color blue"></div>
-              <div class="player-name">Frankie the Friend</div>
-            </div>
-          </td>
-          <td class="cell">50</td>
-          <td class="cell">75</td>
-          <td class="cell">-25</td>
+          <td class="cell">{{ stat.pointsGained }}</td>
+          <td class="cell">{{ stat.pointsLost }}</td>
+          <td class="cell">{{ stat.totalPoints }}</td>
         </tr>
       </tbody>
     </table>
