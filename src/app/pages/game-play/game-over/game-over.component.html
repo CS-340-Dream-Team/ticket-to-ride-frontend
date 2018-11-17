@@ -14,8 +14,8 @@
       <tbody>
         <tr class="row" *ngFor="let stat of _stats">
           <td class="cell">
-            <div class="player" ngClass="{'winner': stat.winner}">
-              <div class="player-color" ngClass="[ stat.color ]"></div>
+            <div class="player" [ngClass]="{'winner': stat.winner}">
+              <div class="player-color" [ngClass]="[ stat.color.toLowerCase() ]"></div>
               <div class="player-name">{{ stat.name }}</div>
             </div>
           </td>
