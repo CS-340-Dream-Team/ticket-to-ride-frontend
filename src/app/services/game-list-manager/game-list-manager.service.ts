@@ -20,8 +20,7 @@ export class GameListManagerService {
     private chatService: ChatManagerService,
     private authService: AuthManagerService) {
     if (!this.polling) {
-      this.polling = true;
-      this.poll(serverProxy);
+      this.startPolling();
     }
   }
 
@@ -39,6 +38,14 @@ export class GameListManagerService {
   games: Game[] = [];
   currentGame: Game = null;
   polling = false;
+  private _pollingTimer: any;
+
+  public startPolling(pollingInterval: number = 3000) {
+    this.polling = true;
+    this._pollingTimer = setInterval(() => {
+      this.poll(this.serverProxy);
+    }, pollingInterval);
+  }
 
   private poll(serverProxy: ServerProxyService) {
     if (!this.polling) {
@@ -48,10 +55,15 @@ export class GameListManagerService {
       this.handleCommands(commands);
     }).catch(res => {
       this.toastr.error(res.message);
+      console.error('Stopped polling gamesList due to error. Refresh to try again.');
+      this.stopPolling();
     });
-    setTimeout(() => {
-      this.poll(serverProxy);
-    }, 3000);
+  }
+
+  public stopPolling() {
+    this.polling = false;
+    clearInterval(this._pollingTimer);
+    this._pollingTimer = false;
   }
 
   private handleCommands(commands: Command[]) {
@@ -66,8 +78,8 @@ export class GameListManagerService {
       } else if (command.type === "gameStarted") {
         this._gameStartedSubject.next(true);
         this.gameplayService.startGame();
-        this.chatService.poll(this.serverProxy);
-        this.polling = false;
+        this.chatService.startPolling();
+        this.stopPolling();
       }
       this.games.forEach(game => {
         if (game.id === activeID && game !== this.currentGame) {
@@ -88,7 +100,7 @@ export class GameListManagerService {
       this.handleCommands(commands);
     }).catch(res => {
       this.toastr.error(res.message);
-    });;
+    });
   }
 
   joinGame(game: Game) {
@@ -96,14 +108,11 @@ export class GameListManagerService {
       this.handleCommands(commands);
     }).catch(res => {
       this.toastr.error(res.message);
-    });;
+    });
   }
 
-  // TODO: Move this to the game running service
   startGame(game: Game) {
-    console.warn(
-      "Remember to move this logic into the same service that handles game logic"
-    );
+    this.toastr.info(`Started '${game.name}' with ${game.numPlayers} players`);
     this.serverProxy.startGame(game).then(commands => {
       this.handleCommands(commands);
     })

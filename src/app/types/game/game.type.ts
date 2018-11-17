@@ -6,4 +6,5 @@ export interface Game {
     name: string;
     numPlayers: number;
     id: number;
+    ended: boolean;
 }

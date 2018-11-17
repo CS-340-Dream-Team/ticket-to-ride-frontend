@@ -1,3 +1,5 @@
+@import "../../../../variables.scss";
+
 .title {
   font-family: "Abril Fatface", cursive;
   text-align: center;
@@ -10,12 +12,13 @@
   justify-content: center;
   margin: 8px 0;
   width: 100%;
-  background-color: black;
+  background-color: $color-dark-background;
   border-radius: 10px;
   font-family: "Hind Madurai", sans-serif;
   text-align: center;
   color: white;
   padding: 8px 0;
+  @include elevation(2);
 }
 
 .player + .player {

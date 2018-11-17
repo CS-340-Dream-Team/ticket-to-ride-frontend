@@ -12,6 +12,8 @@ import TurnState, {
   YourTurnState
 } from './states';
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
+import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Injectable({
@@ -19,8 +21,9 @@ import { AuthManagerService } from '../auth-manager/auth-manager.service';
 })
 export class GamePlayManagerService {
 
-  currentGame: Game = null;
-  _currentGameSubject = new Subject<Game | null>();
+
+  private _gameOverStats: GameOverStat[] = [];
+  private _gameOverStatsSubject: Subject<GameOverStat[]> = new Subject<GameOverStat[]>();
   private _locations: MapLocation[] = [];
   private _locationSubject = new Subject<MapLocation[]>();
   private _segments: Array<Segment> = [];
@@ -31,7 +34,9 @@ export class GamePlayManagerService {
   private _playerTurnSubject = new Subject<string>();
 
   private lastCommandId = -1;
-  polling = false;
+  private polling = false;
+  private pollingTimer: any = null;
+
 
   // Game play data
   private _clientPlayer: Player;
@@ -66,7 +71,7 @@ export class GamePlayManagerService {
   }
 
   constructor(
-    private serverProxy: ServerProxyService, 
+    private serverProxy: ServerProxyService,
     private toastr: ToastrService,
     private authService: AuthManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
@@ -89,8 +94,8 @@ export class GamePlayManagerService {
     return this._allPlayersSubject;
   }
 
-  get currentGameSubject() {
-    return this._currentGameSubject;
+  get gameOverStatsSubject(): Subject<GameOverStat[]> {
+    return this._gameOverStatsSubject;
   }
 
   get locationSubject(): Subject<MapLocation[]> {
@@ -140,84 +145,110 @@ export class GamePlayManagerService {
     }
   }
 
+  startPolling(pollingInterval: number = 2000) {
+    this.polling = true;
+    this.pollingTimer = setInterval(() => {
+      this.poll(this.serverProxy);
+    }, pollingInterval);
+  }
+
   poll(serverProxy: ServerProxyService) {
-    if (this.polling) {
-      serverProxy.getGameData(this.lastCommandId).then(commands => {
-        if (commands.length > 0) {
-          this.lastCommandId = 0;
-          this.handleCommands(commands);
-        }
-      }).catch(res => {
-        this.toastr.error(res.message);
-      });
+    if (!this.polling) {
+      return;
     }
-    setTimeout(() => {
-      this.poll(serverProxy);
-    }, 2000);
+    serverProxy.getGameData(this.lastCommandId).then(commands => {
+      if (commands.length > 0) {
+        this.lastCommandId = 0;
+        this.handleCommands(commands);
+      }
+    }).catch(res => {
+      this.toastr.error(res.message);
+      console.error('Stopped polling gameData due to error. Refresh to try again.');
+      this.stopPolling();
+    });
+  }
+
+  stopPolling(): void {
+    this.polling = false;
+    clearInterval(this.pollingTimer);
+    this.pollingTimer = null;
   }
 
   private handleCommands(commands: Command[]) {
     commands.forEach(command => {
-      if (command.type === 'updateSpread') {
-        if (this.updateLastCommandID(command.id)) {
-          const spread = command.data.spread;
-          const deckSize = command.data.deckSize;
-          this._spreadSubject.next(spread);
-          this._deckSizeSubject.next(deckSize);
-        }
-      } else if (command.type === 'updatePlayers') {
-        const players = command.data.players;
-        this._allPlayers = players;
-        this.findClientPlayer();
-        this._allPlayersSubject.next(players);
-      } else if (command.type === 'incrementTurn') {
-        if (this.updateLastCommandID(command.id)) {
-          let name = command.data['playerTurnName'];
-          this.incrementplayerTurn(name);
-        }
-      } else if (command.type === 'drawRoutes') {
-        if (this.updateLastCommandID(command.id)) {
-          if (command.player===this.clientPlayer.name) {
-            this.clientPlayer.routeCardBuffer = command.privateData;
-            this._selectingRoutes = true;
-            this._selectingRoutesSubject.next(this._selectingRoutes);
-          } else {
+      switch (command.type) {
+        case 'updateSpread':
+          if (this.updateLastCommandID(command.id)) {
+            const spread = command.data.spread;
+            const deckSize = command.data.deckSize;
+            this._spreadSubject.next(spread);
+            this._deckSizeSubject.next(deckSize);
+          }
+          break;
+        case 'updatePlayers':
+          const players = command.data.players;
+          this._allPlayers = players;
+          this.findClientPlayer();
+          this._allPlayersSubject.next(players);
+          break;
+        case 'incrementTurn':
+          if (this.updateLastCommandID(command.id)) {
+            let name = command.data['playerTurnName'];
+            this.incrementplayerTurn(name);
+          }
+          break;
+        case 'drawRoutes':
+          if (this.updateLastCommandID(command.id)) {
+            if (command.player===this.clientPlayer.name) {
+              this.clientPlayer.routeCardBuffer = command.privateData;
+              this._selectingRoutes = true;
+              this._selectingRoutesSubject.next(this._selectingRoutes);
+            } else {
 
-          }
-        }
-      } else if (command.type === 'discardRoutes') {
-        if (this.updateLastCommandID(command.id)) {
-          if (command.player === this.clientPlayer.name) {
-            this._selectingRoutes = false;
-            this.selectingRoutesSubject.next(this._selectingRoutes);
-            this._allPlayers.forEach((player, index) => {
-              if (player.name === command.player) {
-                this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
-                this.allPlayersSubject.next(this._allPlayers);
-              }
-            });
-          } else {
-            this._allPlayers.forEach((player, index) => {
-              if (player.name === command.player) {
-                this._allPlayers[index].routeCards += command.data['numCardsKept'];
-                this.allPlayersSubject.next(this._allPlayers);
-              }
-            });
-          }
-        }
-      } else if (command.type === 'drawBusCard') {
-        if (this.updateLastCommandID(command.id)) {
-          this._allPlayers.forEach((player, index) => {
-            if (player.name === command.player) {
-              if (player.name === this.clientPlayer.name) {
-                (this._allPlayers[index].busCards as BusCard[]).push({color: command.privateData['cardColor']});
-              } else {
-                (this._allPlayers[index].busCards as number) += 1;
-              }
             }
-          });
-          this._allPlayersSubject.next(this.allPlayers);
-        }
+          }
+          break;
+        case 'drawBusCard':
+          if (this.updateLastCommandID(command.id)) {
+            this._allPlayers.forEach((player, index) => {
+              if (player.name === command.player) {
+                if (player.name === this.clientPlayer.name) {
+                  (this._allPlayers[index].busCards as BusCard[]).push({color: command.privateData['cardColor']});
+                } else {
+                  (this._allPlayers[index].busCards as number) += 1;
+                }
+              }
+            });
+            this._allPlayersSubject.next(this.allPlayers);
+          }
+          break;
+        case 'discardRoutes':
+          if (this.updateLastCommandID(command.id)) {
+            if (command.player === this.clientPlayer.name) {
+              this._selectingRoutes = false;
+              this.selectingRoutesSubject.next(this._selectingRoutes);
+              this._allPlayers.forEach((player, index) => {
+                if (player.name === command.player) {
+                  this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
+                  this.allPlayersSubject.next(this._allPlayers);
+                }
+              });
+            } else {
+              this._allPlayers.forEach((player, index) => {
+                if (player.name === command.player) {
+                  this._allPlayers[index].routeCards += command.data['numCardsKept'];
+                  this.allPlayersSubject.next(this._allPlayers);
+                }
+              });
+            }
+          }
+          // FIXME:add routes to player.
+          break;
+        case 'endGame':
+          this._endGame(command.data.stats);
+        break;
+        default:
+          break;
       }
     });
   }
@@ -315,6 +346,13 @@ export class GamePlayManagerService {
         this._clientPlayer = player;
         this.clientPlayerSubject.next(player);
       }
-    })
+    });
+  }
+
+  private _endGame(stats: GameOverStat[]): void {
+    this.stopPolling();
+    this.setState('gameover');
+    this._gameOverStats = stats;
+    this._gameOverStatsSubject.next(this._gameOverStats);
   }
 }

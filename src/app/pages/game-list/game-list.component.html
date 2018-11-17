@@ -1,5 +1,5 @@
-<div class="game-list-background"></div>
-<app-create-game-dialog 
+<div class="provo-background"></div>
+<app-create-game-dialog
     *ngIf="createGameMenuOpen"
     (newGameNameEvent)='newGameTitle($event)'
     (closeEvent)='closeDialog($event)'
@@ -22,9 +22,9 @@
       </div>
     </div>
   </div>
-  <app-lobby 
-    class="lobby-container" 
-    *ngIf="!canSelectGame()" 
+  <app-lobby
+    class="lobby-container"
+    *ngIf="!canSelectGame()"
     [game]="selectedGame"
-    (closeEvent)="deselectGame()"></app-lobby> 
+    (closeEvent)="deselectGame()"></app-lobby>
 </div>

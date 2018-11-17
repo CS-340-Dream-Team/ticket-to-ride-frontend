@@ -1,7 +1,7 @@
 export interface Command {
     type: 'login' | 'updateGameList' | 'updatePlayerList' | 'updateMessageList' | 'gameStarted' |
-          'updateSpread' | 'updatePlayers' | 'drawRoutes' |'discardRoutes' | 'incrementTurn' 
-            | 'drawBusCard';
+          'updateSpread' | 'updatePlayers' | 'drawRoutes' |'discardRoutes' | 'incrementTurn' | 'endGame'
+          | 'drawBusCards';
     data: any;
     privateData?:any;
     player?:string

@@ -1,5 +1,5 @@
 .dimmer {
-    background: #000;
+  background: #000;
 	opacity: 0.9;
 	position: fixed;
 	top: 0;
@@ -12,12 +12,16 @@
 .dialog-container {
     display: flex;
     justify-content: center;
+    position: fixed;
+    top: calc(20vh);
+    left: calc(50vw - 200px);
+    z-index: 2;
 }
 
 .dialog {
     background-color: lightgray;
     width: 400px;
-    height: 235px;
+    min-height: 235px;
     border-radius: 10px;
     z-index:2;
     margin-top: 115px;
@@ -26,6 +30,7 @@
 .dialog-title {
     font-size: 24px;
     text-align: center;
+    margin: 1em 0;
     font-family: 'Hind Madurai', sans-serif;
 }
 
@@ -44,14 +49,12 @@
 .submit-button:hover {
     cursor: pointer;
 }
-
-.close-button {
-    float: right;
-    padding-right: 13px;
-    line-height: 0em;
-}
-
-.close-button:hover {
-    text-decoration: underline;
+.close-button-container {
+  width: 100%;
+  display: flex;
+  > * {
+    padding: 8px 8px 0 0;
+    margin-left: auto;
     cursor: pointer;
+  }
 }
