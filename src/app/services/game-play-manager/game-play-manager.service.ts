@@ -139,7 +139,7 @@ export class GamePlayManagerService {
     if (currentTurnName === this.clientPlayer.name) {
       this.setState("yourturn");
     }
-    if (this._turnState instanceof YourTurnState) {
+    else if (this._turnState instanceof YourTurnState) {
       this.setState("notyourturn");
     }
   }
@@ -307,8 +307,7 @@ export class GamePlayManagerService {
 
   public trySelectBusCard(index: number) {
     // Example of using state:
-    // this._turnState.drawBusCard(this, index); // FIXME do this once we have turns rotating properly
-    this.selectBusCard(index);
+    this._turnState.drawBusCard(this, index);
   }
 
   public selectBusCard(index: number) {
