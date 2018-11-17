@@ -246,6 +246,20 @@ export class GamePlayManagerService {
         case 'endGame':
           this._endGame(command.data.stats);
         break;
+        case 'drawTen':
+        if (this.updateLastCommandID(command.id)) {
+          this._allPlayers.forEach((player, index) => {
+            if (player.name === command.player) {
+              if (player.name === this.clientPlayer.name) {
+                (this._allPlayers[index].busCards as BusCard[]).push(...command.privateData['cards']);
+              } else {
+                (this._allPlayers[index].busCards as number) += 10;
+              }
+            }
+          });
+          this._allPlayersSubject.next(this.allPlayers);
+        }
+        break;
         default:
           break;
       }
