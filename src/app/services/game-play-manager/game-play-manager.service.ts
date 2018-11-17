@@ -139,9 +139,18 @@ export class GamePlayManagerService {
     if (currentTurnName === this.clientPlayer.name) {
       this.setState("yourturn");
     }
-    if (this._turnState instanceof YourTurnState) {
+    else if (this._turnState instanceof YourTurnState) {
       this.setState("notyourturn");
     }
+  }
+
+  getMinRoutesNumber() {
+    if (this._turnState instanceof YourTurnState) {
+      return 1;
+    } else if (this._turnState instanceof GameInitState) {
+      return 2;
+    }
+    return 0;
   }
 
   startPolling(pollingInterval: number = 2000) {
@@ -188,6 +197,13 @@ export class GamePlayManagerService {
           const players = command.data.players;
           this._allPlayers = players;
           this.findClientPlayer();
+          players.forEach(player => {
+            if (player.name !== this._clientPlayer.name) {
+              player.routeCards = 0;
+            } else {
+              player.routeCards = [];
+            }
+          });
           this._allPlayersSubject.next(players);
           break;
         case 'incrementTurn':
@@ -228,6 +244,8 @@ export class GamePlayManagerService {
               this.selectingRoutesSubject.next(this._selectingRoutes);
               this._allPlayers.forEach((player, index) => {
                 if (player.name === command.player) {
+                  this._routeDeckSize -= command.data['numCardsKept'];
+                  this._routeDeckSizeSubject.next(this._routeDeckSize);
                   this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
                   this.allPlayersSubject.next(this._allPlayers);
                 }
@@ -235,6 +253,8 @@ export class GamePlayManagerService {
             } else {
               this._allPlayers.forEach((player, index) => {
                 if (player.name === command.player) {
+                  this._routeDeckSize -= command.data['numCardsKept'];
+                  this._routeDeckSizeSubject.next(this._routeDeckSize);
                   this._allPlayers[index].routeCards += command.data['numCardsKept'];
                   this.allPlayersSubject.next(this._allPlayers);
                 }
@@ -314,8 +334,7 @@ export class GamePlayManagerService {
 
   public trySelectBusCard(index: number) {
     // Example of using state:
-    // this._turnState.drawBusCard(this, index); // FIXME do this once we have turns rotating properly
-    this.selectBusCard(index);
+    this._turnState.drawBusCard(this, index);
   }
 
   public selectBusCard(index: number) {
@@ -335,9 +354,15 @@ export class GamePlayManagerService {
     });
   }
 
-  public drawRoutes(): Promise<Route[]> {
-    return this.serverProxy.drawRoutes().then(command => {
-      return command['privateData'];
+  public tryDrawRoutes() {
+    this._turnState.drawRouteCards(this);
+  }
+
+  public drawRoutes() {
+    this.serverProxy.drawRoutes().then(command => {
+      this.handleCommands(command);
+    }).catch(res => {
+      this.toastr.error(res.command.data.message);
     });
   }
 

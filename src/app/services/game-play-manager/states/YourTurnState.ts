@@ -5,6 +5,8 @@ export class YourTurnState extends TurnState {
     public drawBusCard(gamePlayManagerService: GamePlayManagerService, index: number) {
         gamePlayManagerService.selectBusCard(index);
     }
-    public drawRouteCards(gamePlayManagerService: GamePlayManagerService) { }
+    public drawRouteCards(gamePlayManagerService: GamePlayManagerService) { 
+        gamePlayManagerService.drawRoutes();
+    }
     public claimSegment(gamePlayManagerService: GamePlayManagerService) { }
 }

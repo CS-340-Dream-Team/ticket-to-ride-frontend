@@ -243,7 +243,6 @@ export class ServerProxyService {
       .subscribe(
         (res: Response) => {
           const resJson = res.json();
-          console.log(resJson);
           resolve(resJson.commands);
         }, err => {
           reject(err.json());
