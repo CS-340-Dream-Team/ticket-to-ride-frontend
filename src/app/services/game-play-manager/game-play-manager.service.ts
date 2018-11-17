@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command, Route, Segment, Location as MapLocation, Player, BusCard } from '../../types';
 import { Subject } from 'rxjs';
@@ -13,6 +12,7 @@ import TurnState, {
 } from './states';
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
+import { HistoryManagerService } from '../history-manager/history-manager.service';
 
 
 @Injectable({
@@ -41,14 +41,11 @@ export class GamePlayManagerService {
   private _clientPlayer: Player;
   private _allPlayers: Player[];
   private _clientPlayerSubject = new Subject<Player>();
-  private _opponentPlayers: Player[];
   private _allPlayersSubject = new Subject<Player[]>();
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
   private _routeDeckSize = 28;
   private _routeDeckSizeSubject = new Subject<number>();
-  private _history: Command[] = [];
-  private _historySubject = new Subject<Command[]>();
 
   private _turnState: TurnState = new GameInitState();
 
@@ -74,7 +71,7 @@ export class GamePlayManagerService {
   constructor(
     private serverProxy: ServerProxyService,
     private toastr: ToastrService,
-    private authService: AuthManagerService) {
+    private historyService: HistoryManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
     this.poll(this.serverProxy);
   }
@@ -133,10 +130,6 @@ export class GamePlayManagerService {
 
   get routeDeckSizeSubject(): Subject<number> {
     return this._routeDeckSizeSubject;
-  }
-
-  get historySubject(): Subject<Command[]> {
-    return this._historySubject;
   }
 
   incrementplayerTurn(currentTurnName: string) {
@@ -255,11 +248,8 @@ export class GamePlayManagerService {
         default:
           break;
       }
-      if (command.message && command.message !== "unknown") {
-        this._history.push(command);
-        this._historySubject.next(this._history);
-      }
     });
+    this.historyService.addItems(commands);
   }
 
   // if true then update data else don't
@@ -291,7 +281,6 @@ export class GamePlayManagerService {
   }
 
   public getFullGame() {
-    // if (this.isRefreshing()) {
       return this.serverProxy.getFullGame().then(command => {
         let data = command.data;
         this._clientPlayer = data.clientPlayer;
@@ -303,11 +292,9 @@ export class GamePlayManagerService {
         this._routeDeckSizeSubject.next(data.routeDeckSize);
         this._spreadSubject.next(data.spread);
         this.incrementplayerTurn(data.turn);
-        this._history = data.history;
-        this._historySubject.next(data.history);
+        this.historyService.addItems(data.history);
         this.lastCommandId = data.id;
       });
-    // }
   }
 
   public trySelectBusCard(index: number) {
@@ -351,23 +338,10 @@ export class GamePlayManagerService {
       .then((commands: Command[]) => this.handleCommands(commands));
   }
 
-  private findClientPlayer() {
-    this._allPlayers.forEach(player => {
-      if (player.name === this.authService.currentUser.name) {
-        this._clientPlayer = player;
-        this.clientPlayerSubject.next(player);
-      }
-    });
-  }
-
   private _endGame(stats: GameOverStat[]): void {
     this.stopPolling();
     this.setState('gameover');
     this._gameOverStats = stats;
     this._gameOverStatsSubject.next(this._gameOverStats);
-  }
-
-  private isRefreshing() {
-    return !this.authService.currentUser;
   }
 }

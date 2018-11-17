@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Message, Player, Command, PlayerColor } from 'src/app/types';
-import { NgxAutoScroll } from 'ngx-auto-scroll';
+import { Command } from 'src/app/types';
 import { GamePlayManagerService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
+import { HistoryManagerService } from 'src/app/services/history-manager/history-manager.service';
 
 
 @Component({
@@ -13,25 +13,27 @@ import { ToastrService } from 'ngx-toastr';
 export class HistoryComponent implements OnInit {
 
   history: Command[];
-  prevId: number;
+  numNewItems: number;
   playerColors = {};
   showHistory: boolean;
 
-  constructor(private gameplayService: GamePlayManagerService, private toastr: ToastrService) { 
+  constructor(
+    private gameplayService: GamePlayManagerService,
+    private historyService: HistoryManagerService, 
+    private toastr: ToastrService) { 
     this.showHistory = false;
     this.history = [];
-    this.prevId = -1;
     this.gameplayService.allPlayersSubject.subscribe({
       next: (players) => players.forEach(player => {
         this.playerColors[player.name] = player.color;
       })
     });
-    this.gameplayService.historySubject.subscribe({
-      next: (history) => {
-        this.history = history;
-        if (this.history.length > 0) {
-          this.prevId = this.history[this.history.length - 1].id;
-        }
+    this.historyService.numNewItemsSubject.subscribe({
+      next: (numNewItems) => this.numNewItems = numNewItems
+    })
+    this.historyService.historySubject.subscribe({
+      next: (newHistory) => {
+        this.history = newHistory;
         this.toastNewHistory();
       }
     });
@@ -49,16 +51,14 @@ export class HistoryComponent implements OnInit {
   }
 
   toastNewHistory() {
-    this.history.forEach(command => {
-      if (command.id > this.prevId) {
-        this.toastr.info(command.message, '', {
-          // positionClass: 'toast-bottom-left'
-          // toastClass: 'color-' + this.getPlayerColor(command)
-          // toastClass: "{ background-color: red }"
-          // toastClass: "color-0"
-        });
+    if (this.numNewItems !== this.history.length) {
+      console.log('not equal');
+      let start = this.history.length - this.numNewItems;
+      console.log(start);
+      for (let i = start; i < this.history.length; i++) {
+        this.toastr.info(this.history[i].message);      
       }
-    });
+    }
   }
 
   toString(command: Command) {

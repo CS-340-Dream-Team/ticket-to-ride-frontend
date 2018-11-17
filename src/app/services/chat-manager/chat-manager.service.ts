@@ -84,6 +84,7 @@ export class ChatManagerService {
       this._messageNotificationSubject.next(this._messageNotification);
     }
     commands.forEach(command => {
+      console.log('getting messages');
       if (command.type === 'updateMessageList') {
         this._messages = this._messages.concat(command.data);
         this._messagesSubject.next(this._messages);
