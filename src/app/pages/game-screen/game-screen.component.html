@@ -1,6 +1,6 @@
 <div class="game-screen">
   <div class="spread">
-      <app-deck-bar></app-deck-bar>
+    <app-deck-bar></app-deck-bar>
   </div>
   <div class="side-bar">
     <app-player-bar>
@@ -9,6 +9,7 @@
   <app-map class="map"></app-map>
   <app-chat class="chat"></app-chat>
   <app-history class="history"></app-history>
-  </div>
+</div>
 <app-route-selector [hidden]="!selectingRoutes"></app-route-selector>
-<app-game-over [hidden]="!gameOver" ></app-game-over>
+<app-game-over [hidden]="!gameOver"></app-game-over>
+<app-claim-segment [hidden]="false"></app-claim-segment>
