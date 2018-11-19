@@ -9,9 +9,10 @@
       </ul>
     </div>
     <form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
-      <input #input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message" autocomplete="off">
+      <input maxlength="150" #input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message" autocomplete="off">
     </form>
   </div>
+
   <div (click)="closeChat()">
     <button class="chat-button"><i class="material-icons">close</i></button>
   </div>

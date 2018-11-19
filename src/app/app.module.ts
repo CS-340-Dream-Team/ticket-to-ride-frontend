@@ -33,6 +33,8 @@ import {
   GamePlayManagerService,
   ServerProxyService
 } from './services';
+import { HistoryComponent } from './pages/history/history.component';
+import { HistoryMessageComponent } from './pages/history/history-message/history-message.component';
 import { GameOverComponent } from './pages/game-play/game-over/game-over.component';
 
 
@@ -72,6 +74,8 @@ const appRoutes: Routes = [
     RouteSelectorComponent,
     RouteSelectorComponent,
     DeckBarComponent,
+    HistoryComponent,
+    HistoryMessageComponent,
     GameOverComponent
   ],
   imports: [

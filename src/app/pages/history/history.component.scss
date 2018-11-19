@@ -1,38 +1,31 @@
 @import "../../../variables.scss";
 
-.background {
-  background-color: gray;
-  background-size: cover;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-}
-
 .container {
   border-radius: 15px;
   overflow: hidden;
   position: fixed;
   bottom: 70px;
-  right: 30px;
+  right: 5px;
+  height: 580px;
   width: 280px;
   padding: 5px 5px;
-  background: $color-light-background;
-  @include elevation(3);
+  background: $color-dark-background;
+  box-shadow: 1px 2px rgba(48, 48, 48, 0.3);
 }
 
 button {
   outline: none;
 }
 
-.chat-button {
+.history-button {
   height: 50px;
   width: 50px;
   border-radius: 50%;
   position: fixed;
   bottom: 18px;
-  right: 85px;
-  background: $color-green;
-  color: $color-light-text;
+  right: 30px;
+  background: $color-red;
+  color: white;
   border: none;
 }
 
@@ -42,21 +35,21 @@ button {
   border-radius: 50%;
   position: fixed;
   bottom: 47px;
-  right: 120px;
+  right: 45px;
   background: $color-red;
-  color: $color-light-text;
+  color: white;
   text-align: center;
   border: none;
   z-index: 1;
 }
 
-.chat-container {
-  height: 300px;
-  width: 400px;
+.history-container {
+  height: 580px;
+  width: 280px;
   overflow: auto;
 }
 
-.chat-container .message {
+.history-container .message {
   border-bottom: solid 1px #ccc;
   padding: 20px;
 }
@@ -78,11 +71,9 @@ button {
   display: none;
 }
 
-.messages {
+.history {
   list-style-type: none;
   padding: 0px;
 }
 
-input:focus {
-  outline: none;
-}
+

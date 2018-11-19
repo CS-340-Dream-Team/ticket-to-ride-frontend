@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Game } from '../../types/game/game.type';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
 import { Command, Route, Segment, Location as MapLocation, Player, BusCard } from '../../types';
 import { Subject } from 'rxjs';
@@ -13,6 +12,7 @@ import TurnState, {
 } from './states';
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
+import { HistoryManagerService } from '../history-manager/history-manager.service';
 
 
 @Injectable({
@@ -41,7 +41,6 @@ export class GamePlayManagerService {
   private _clientPlayer: Player;
   private _allPlayers: Player[];
   private _clientPlayerSubject = new Subject<Player>();
-  private _opponentPlayers: Player[];
   private _allPlayersSubject = new Subject<Player[]>();
   private _spreadSubject = new Subject<BusCard[]>();
   private _deckSizeSubject = new Subject<number>();
@@ -72,7 +71,7 @@ export class GamePlayManagerService {
   constructor(
     private serverProxy: ServerProxyService,
     private toastr: ToastrService,
-    private authService: AuthManagerService) {
+    private historyService: HistoryManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
     this.poll(this.serverProxy);
   }
@@ -193,19 +192,6 @@ export class GamePlayManagerService {
             this._deckSizeSubject.next(deckSize);
           }
           break;
-        case 'updatePlayers':
-          const players = command.data.players;
-          this._allPlayers = players;
-          this.findClientPlayer();
-          players.forEach(player => {
-            if (player.name !== this._clientPlayer.name) {
-              player.routeCards = 0;
-            } else {
-              player.routeCards = [];
-            }
-          });
-          this._allPlayersSubject.next(players);
-          break;
         case 'incrementTurn':
           if (this.updateLastCommandID(command.id)) {
             let name = command.data['playerTurnName'];
@@ -284,6 +270,7 @@ export class GamePlayManagerService {
           break;
       }
     });
+    this.historyService.addItems(commands);
   }
 
   // if true then update data else don't
@@ -315,7 +302,6 @@ export class GamePlayManagerService {
   }
 
   public getFullGame() {
-    if (!this.authService.currentUser) {
       return this.serverProxy.getFullGame().then(command => {
         let data = command.data;
         this._clientPlayer = data.clientPlayer;
@@ -327,9 +313,9 @@ export class GamePlayManagerService {
         this._routeDeckSizeSubject.next(data.routeDeckSize);
         this._spreadSubject.next(data.spread);
         this.incrementplayerTurn(data.turn);
-        this.lastCommandId = command.data.id;
+        this.historyService.addItems(data.history);
+        this.lastCommandId = data.id;
       });
-    }
   }
 
   public trySelectBusCard(index: number) {
@@ -376,15 +362,6 @@ export class GamePlayManagerService {
   public claimSegment(segment: Segment): void {
     this.serverProxy.claimSegment(segment)
       .then((commands: Command[]) => this.handleCommands(commands));
-  }
-
-  private findClientPlayer() {
-    this._allPlayers.forEach(player => {
-      if (player.name === this.authService.currentUser.name) {
-        this._clientPlayer = player;
-        this.clientPlayerSubject.next(player);
-      }
-    });
   }
 
   private _endGame(stats: GameOverStat[]): void {
