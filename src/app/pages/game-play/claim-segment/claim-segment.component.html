@@ -29,7 +29,7 @@
         </span>
       </div>
       <div class="validation-warning" [ngStyle]="{'opacity': isValid ? 0 : 1}">
-        You need {{ cardDelta }} {{ needFewerCards > 0 ? 'less' : 'more' }} card{{ cardDelta === 1 ? '' : 's' }}.
+        You need {{ cardDelta }} {{ needFewerCards ? 'less' : 'more' }} card{{ cardDelta === 1 ? '' : 's' }}.
       </div>
     </main>
     <footer class="footer">
