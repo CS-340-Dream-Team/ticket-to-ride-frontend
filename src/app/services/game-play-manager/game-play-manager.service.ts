@@ -69,7 +69,7 @@ export class GamePlayManagerService {
   }
 
   constructor(
-    private serverProxy: ServerProxyService,
+    public serverProxy: ServerProxyService,
     private toastr: ToastrService,
     private historyService: HistoryManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
@@ -181,7 +181,7 @@ export class GamePlayManagerService {
     this.pollingTimer = null;
   }
 
-  private handleCommands(commands: Command[]) {
+  public handleCommands(commands: Command[]) {
     commands.forEach(command => {
       switch (command.type) {
         case 'updateSpread':
@@ -360,8 +360,7 @@ export class GamePlayManagerService {
   }
 
   public claimSegment(segment: Segment): void {
-    this.serverProxy.claimSegment(segment)
-      .then((commands: Command[]) => this.handleCommands(commands));
+    this._turnState.claimSegment(this, segment);
   }
 
   private _endGame(stats: GameOverStat[]): void {
