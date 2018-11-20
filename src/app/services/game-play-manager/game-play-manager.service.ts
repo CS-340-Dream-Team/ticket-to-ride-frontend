@@ -72,7 +72,7 @@ export class GamePlayManagerService {
 
   constructor(
     public serverProxy: ServerProxyService,
-    private toastr: ToastrService,
+    public toastr: ToastrService,
     private historyService: HistoryManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
     this.poll(this.serverProxy);
