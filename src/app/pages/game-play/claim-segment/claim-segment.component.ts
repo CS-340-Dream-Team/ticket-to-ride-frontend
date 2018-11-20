@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Segment, BusColor } from 'src/app/types';
+import { Segment, BusColor, Player } from 'src/app/types';
 import { GamePlayManagerService } from 'src/app/services';
 
 
@@ -14,6 +14,8 @@ export class ClaimSegmentComponent implements OnInit {
 
   regularColorCount: number = 0;
   wildColorCount: number = 0;
+  private _player: Player = null;
+  private _playerCards: { [color: string]: number } = {};
   selectedColor: BusColor = BusColor.Red;
 
   segment: Segment = {
@@ -37,21 +39,55 @@ export class ClaimSegmentComponent implements OnInit {
     color: BusColor.Rainbow
   }
 
+  public _busColorToString(b: BusColor): string {
+    return BusColor[b]
+  }
+
+  public _stringToBusColor(s: string): BusColor {
+    return BusColor[s];
+  }
+
   get segmentColor(): string {
-    return BusColor[this.segment.color];
+    return this._busColorToString(this.segment.color);
   }
 
   get selectedColorStr(): string {
-    return BusColor[this.selectedColor];
+    console.log(this._busColorToString(this.selectedColor));
+    return this._busColorToString(this.selectedColor);
   }
 
   set selectedColorStr(value: string) {
-    console.log(value);
-    this.selectedColor = BusColor[value];
+    this.selectedColor = this._stringToBusColor(value);
+    console.log(value, this.selectedColor);
   }
 
   get playerHasWilds(): boolean {
-    return true;
+    const rainbow: string = this._busColorToString(BusColor.Rainbow);
+    return this.playerCards[rainbow] > 0;
+  }
+
+  get playerCards(): {[color: string]: number} {
+    if (Object.keys(this._playerCards).length > 0) {
+      return this._playerCards;
+    }
+    const cards: { [color: string]: number } = {};
+    if (!Array.isArray(this._player.busCards)) {
+      return cards;
+    }
+
+    for (const card of this._player.busCards) {
+      const color: string = this._busColorToString(card.color);
+      if (!cards[color]) {
+        cards[color] = 0;
+      }
+      cards[color] += 1;
+    }
+    this._playerCards = cards;
+    return cards;
+  }
+
+  get colorsPlayerHas(): string[] {
+    return Object.keys(this.playerCards).filter(color => color !== this._busColorToString(BusColor.Rainbow));
   }
 
   get cardDelta(): number {
@@ -66,8 +102,12 @@ export class ClaimSegmentComponent implements OnInit {
     return this.cardsLeftToSet > 0;
   }
 
-  get isValid(): boolean {
+  get hasCorrectTotal(): boolean {
     return this.regularColorCount + this.wildColorCount === this.segment.length;
+  }
+
+  get isValid(): boolean {
+    return this.hasCorrectTotal;
   }
 
   constructor(private gpms: GamePlayManagerService) {
@@ -77,9 +117,19 @@ export class ClaimSegmentComponent implements OnInit {
     this.gpms.segmentBeingClaimedSubject.subscribe({
       next: (s) => this.segment = s
     })
+    this.gpms.clientPlayerSubject.subscribe({
+      next: (p) => this._player = p
+    });
    }
 
   ngOnInit() {
   }
 
+  public exit(): void {
+    this.gpms.segmentBeingClaimed = null;
+  }
+
+  public confirm(): void {
+    this.gpms.claimSegment(this.segment);
+  }
 }

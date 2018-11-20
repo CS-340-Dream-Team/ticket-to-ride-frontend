@@ -10,14 +10,7 @@
           <input type="number" name="regular-count" [(ngModel)]="regularColorCount" step="1" min="0" [max]="segment.length - wildColorCount">
         </span>
         <select class="regular-color" name="regular-color" [disabled]="segmentColor !== 'Rainbow'" [(ngModel)]="selectedColorStr">
-          <option value="Red">Red</option>
-          <option value="Orage">Orange</option>
-          <option value="Yellow">Yellow</option>
-          <option value="Green">Green</option>
-          <option value="Blue">Blue</option>
-          <option value="Purple">Purple</option>
-          <option value="Black">Black</option>
-          <option value="White">White</option>
+          <option *ngFor="let color of colorsPlayerHas" [value]="_stringToBusColor(color)">{{ color }}</option>
         </select>
         card{{ regularColorCount === 1 ? '' : 's' }}
         <span *ngIf="playerHasWilds">
@@ -29,7 +22,9 @@
         </span>
       </div>
       <div class="validation-warning" [ngStyle]="{'opacity': isValid ? 0 : 1}">
-        You need {{ cardDelta }} {{ needFewerCards ? 'less' : 'more' }} card{{ cardDelta === 1 ? '' : 's' }}.
+        <div *ngIf="!hasCorrectTotal">
+          You need {{ cardDelta }} {{ needFewerCards ? 'less' : 'more' }} card{{ cardDelta === 1 ? '' : 's' }}.
+        </div>
       </div>
     </main>
     <footer class="footer">
