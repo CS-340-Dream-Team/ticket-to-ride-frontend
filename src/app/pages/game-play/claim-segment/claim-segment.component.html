@@ -1,6 +1,40 @@
 <div class="dimmer"></div>
 <div class="dialog-container">
   <div class="dialog">
-    <h4 class="dialog-title">Game Over</h4>
+    <h4 class="dialog-title">Claim "{{ segment.start.name }} — {{ segment.end.name }}"</h4>
+    <h5 class="dialog-subtitle">Length {{ segment.length }}</h5>
+    <main class="main">
+      <div>
+        Use
+        <span class="count regular-count">
+          <input type="number" name="regular-count" [(ngModel)]="regularColorCount" step="1" min="0" [max]="segment.length - wildColorCount">
+        </span>
+        <select class="regular-color" name="regular-color" [disabled]="segmentColor !== 'Rainbow'" [(ngModel)]="selectedColorStr">
+          <option value="Red">Red</option>
+          <option value="Orage">Orange</option>
+          <option value="Yellow">Yellow</option>
+          <option value="Green">Green</option>
+          <option value="Blue">Blue</option>
+          <option value="Purple">Purple</option>
+          <option value="Black">Black</option>
+          <option value="White">White</option>
+        </select>
+        card{{ regularColorCount === 1 ? '' : 's' }}
+        <span *ngIf="playerHasWilds">
+          and
+          <span class="count wild-count">
+            <input type="number" name="regular-count" [(ngModel)]="wildColorCount" step="1" min="0" [max]="segment.length - regularColorCount">
+          </span>
+          wild cards.
+        </span>
+      </div>
+      <div class="validation-warning" [ngStyle]="{'opacity': isValid ? 0 : 1}">
+        You need {{ cardDelta }} {{ needFewerCards > 0 ? 'less' : 'more' }} card{{ cardDelta === 1 ? '' : 's' }}.
+      </div>
+    </main>
+    <footer class="footer">
+      <button class="link">Cancel</button>
+      <button class="link primary-link" [disabled]="!isValid">Confirm</button>
+    </footer>
   </div>
 </div>
