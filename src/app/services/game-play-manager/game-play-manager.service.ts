@@ -31,7 +31,9 @@ export class GamePlayManagerService {
   private _selectingRoutesSubject = new Subject<boolean>();
   private _playerTurn: string;
   private _playerTurnSubject = new Subject<string>();
+  private _segmentBeingClaimedSubject: Subject<Segment> = new Subject<Segment>();
 
+  private _segmentBeingClaimed: Segment = null;
   private lastCommandId = -1;
   private polling = false;
   private pollingTimer: any = null;
@@ -130,6 +132,19 @@ export class GamePlayManagerService {
 
   get routeDeckSizeSubject(): Subject<number> {
     return this._routeDeckSizeSubject;
+  }
+
+  get segmentBeingClaimedSubject(): Subject<Segment> {
+    return this._segmentBeingClaimedSubject;
+  }
+
+  get segmentBeingClaimed(): Segment {
+    return this._segmentBeingClaimed;
+  }
+
+  set segmentBeingClaimed(s: Segment) {
+    this._segmentBeingClaimed = s;
+    this._segmentBeingClaimedSubject.next(s);
   }
 
   incrementplayerTurn(currentTurnName: string) {
@@ -357,6 +372,10 @@ export class GamePlayManagerService {
       this._selectingRoutes = false;
       this.selectingRoutesSubject.next(this._selectingRoutes);
     });
+  }
+
+  public openClaimSegmentModal(s: Segment): void {
+    this._turnState.openClaimSegmentModal(this, s);
   }
 
   public claimSegment(segment: Segment): void {

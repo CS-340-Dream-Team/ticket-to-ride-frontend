@@ -37,7 +37,7 @@ export class MapComponent implements OnInit {
   }
 
   private _claimSegment(segment: Segment) {
-    this.gamePlayManager.claimSegment(segment);
+    this.gamePlayManager.openClaimSegmentModal(segment);
   }
 
   private _constructLine(segment: Segment): { line: Polyline<LineString | MultiLineString, any>, toolTip: string} {

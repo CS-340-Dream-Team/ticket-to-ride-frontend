@@ -6,4 +6,5 @@ export class GameOverState extends TurnState {
     public drawBusCard(gamePlayManagerService: GamePlayManagerService, index: number) { }
     public drawRouteCards(gamePlayManagerService: GamePlayManagerService) { }
     public claimSegment(gamePlayManagerService: GamePlayManagerService, segment: Segment) { }
+    public openClaimSegmentModal(gamePlayManagerService: GamePlayManagerService, s: Segment): void { }
 }

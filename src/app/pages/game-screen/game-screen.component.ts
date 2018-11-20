@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GamePlayManagerService } from '../../services';
+import { Segment } from 'src/app/types';
 
 @Component({
   selector: 'app-game-screen',
@@ -16,11 +17,16 @@ export class GameScreenComponent implements OnInit {
     });
     gamePlayManager.gameOverStatsSubject.subscribe({
       next: (stats) => this.gameOver = stats.length > 0
+    });
+    gamePlayManager.segmentBeingClaimedSubject.subscribe({
+      next: (s) => this.segmentBeingClaimed = Boolean(s)
     })
+
   }
 
-  public selectingRoutes = false;
-  public gameOver = false;
+  public selectingRoutes: Boolean = false;
+  public gameOver: Boolean = false;
+  public segmentBeingClaimed: Boolean = false;
 
   ngOnInit() {
   }

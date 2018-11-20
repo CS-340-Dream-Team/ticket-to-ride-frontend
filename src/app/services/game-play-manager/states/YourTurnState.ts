@@ -12,4 +12,7 @@ export class YourTurnState extends TurnState {
     public claimSegment(gamePlayManagerService: GamePlayManagerService, segment: Segment) {
       gamePlayManagerService.serverProxy.claimSegment(segment).then((commands: Command[]) => gamePlayManagerService.handleCommands(commands));
     }
+    public openClaimSegmentModal(gamePlayManagerService: GamePlayManagerService, s: Segment): void {
+      gamePlayManagerService.segmentBeingClaimed = s;
+    }
 }

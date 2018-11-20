@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Segment, BusColor } from 'src/app/types';
+import { GamePlayManagerService } from 'src/app/services';
 
 
 
@@ -15,7 +16,7 @@ export class ClaimSegmentComponent implements OnInit {
   wildColorCount: number = 0;
   selectedColor: BusColor = BusColor.Red;
 
-  readonly segment: Segment = {
+  segment: Segment = {
     id: 1,
     start: {
       name: 'Baseball Stadium',
@@ -69,10 +70,13 @@ export class ClaimSegmentComponent implements OnInit {
     return this.regularColorCount + this.wildColorCount === this.segment.length;
   }
 
-  constructor() {
+  constructor(private gpms: GamePlayManagerService) {
     this.regularColorCount = this.segment.length;
     this.wildColorCount = 0;
     this.selectedColor = this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
+    this.gpms.segmentBeingClaimedSubject.subscribe({
+      next: (s) => this.segment = s
+    })
    }
 
   ngOnInit() {
