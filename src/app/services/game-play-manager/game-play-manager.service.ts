@@ -281,6 +281,13 @@ export class GamePlayManagerService {
           this._allPlayersSubject.next(this.allPlayers);
         }
         break;
+        case 'claimSegment':
+          const { segmentId, name } = <any>command;
+          const segment: Segment = this._segments.find(s => s.id === segmentId);
+          segment.owner = name;
+          this._segmentSubject.next(this._segments);
+          this.segmentBeingClaimed = null;
+        break;
         default:
           break;
       }
