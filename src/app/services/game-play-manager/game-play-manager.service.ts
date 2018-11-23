@@ -378,8 +378,8 @@ export class GamePlayManagerService {
     this._turnState.openClaimSegmentModal(this, s);
   }
 
-  public claimSegment(segment: Segment): void {
-    this._turnState.claimSegment(this, segment);
+  public claimSegment(segment: Segment, cards: BusCard[]): void {
+    this._turnState.claimSegment(this, segment, cards);
   }
 
   private _endGame(stats: GameOverStat[]): void {
@@ -387,5 +387,14 @@ export class GamePlayManagerService {
     this.setState('gameover');
     this._gameOverStats = stats;
     this._gameOverStatsSubject.next(this._gameOverStats);
+  }
+
+  public removeBusCardFromPlayer(player: Player, card: BusCard): void {
+    if (!Array.isArray(player.busCards)) {
+      player.busCards -= 1;
+      return;
+    }
+    const indexToDelete: number = player.busCards.findIndex((c: BusCard) => c.color === card.color);
+    player.busCards = player.busCards.splice(indexToDelete, 1);
   }
 }

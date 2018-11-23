@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Segment, BusColor, Player } from 'src/app/types';
+import { Segment, BusColor, Player, BusCard } from 'src/app/types';
 import { GamePlayManagerService } from 'src/app/services';
 
 
@@ -130,6 +130,14 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   public confirm(): void {
-    this.gpms.claimSegment(this.segment);
+    const cards: BusCard[] = [];
+    for (const [color, quantity] of Object.entries(this.playerCards)) {
+      const card: BusCard = { color: BusColor[color] };
+      for (let i = 0; i < quantity; ++i) {
+        cards.push(card);
+      }
+    }
+    // collect the cards
+    this.gpms.claimSegment(this.segment, cards);
   }
 }
