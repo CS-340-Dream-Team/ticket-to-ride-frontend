@@ -52,7 +52,6 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   get selectedColorStr(): string {
-    console.log(this._busColorToString(this.selectedColor));
     return this._busColorToString(this.selectedColor);
   }
 
