@@ -298,7 +298,7 @@ export class GamePlayManagerService {
         }
         break;
         case 'claimSegment':
-          const { segmentId, name } = <any>command;
+          const { segmentId, name } = command.data;
           const segment: Segment = this._segments.find(s => s.id === segmentId);
           segment.owner = name;
           this._segmentSubject.next(this._segments);
