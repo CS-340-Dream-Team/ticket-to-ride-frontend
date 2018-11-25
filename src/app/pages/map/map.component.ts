@@ -48,7 +48,7 @@ export class MapComponent implements OnInit {
     ];
     let toolTip: string = `Length: ${segment.length}`;
     const options: PolylineOptions = {
-      color: segment.color.toString() === 'any' ? 'grey' : segment.color.toString(),
+      color: segment.color === BusColor.Rainbow ? 'grey' : BusColor[segment.color],
       opacity: 1,
       stroke: true,
     }

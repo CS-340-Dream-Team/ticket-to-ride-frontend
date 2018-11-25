@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
-import { Command, Route, Segment, Location as MapLocation, Player, BusCard } from '../../types';
+import { Command, Route, Segment, Location as MapLocation, Player, BusCard, BusColor } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,11 +15,21 @@ import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 import { HistoryManagerService } from '../history-manager/history-manager.service';
 
 
+const busColorStringToEnumMap: Object = {
+  any: BusColor.Rainbow,
+  red: BusColor.Red,
+  orange: BusColor.Orange,
+  yellow: BusColor.Yellow,
+  green: BusColor.Green,
+  blue: BusColor.Blue,
+  purple: BusColor.Purple,
+  black: BusColor.Black,
+  white: BusColor.White
+}
 @Injectable({
   providedIn: 'root'
 })
 export class GamePlayManagerService {
-
 
   private _gameOverStats: GameOverStat[] = [];
   private _gameOverStatsSubject: Subject<GameOverStat[]> = new Subject<GameOverStat[]>();
@@ -317,7 +327,10 @@ export class GamePlayManagerService {
     this.serverProxy.getMapData()
       .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
         this._locations = locations;
-        this._segments = segments;
+        this._segments = segments.map(s => {
+          s.color = busColorStringToEnumMap[s.color];
+          return s;
+        });
         this.locationSubject.next(this._locations);
         this.segmentSubject.next(this._segments);
       });

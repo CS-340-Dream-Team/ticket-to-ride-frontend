@@ -1,6 +1,6 @@
 import TurnState from './TurnState';
 import { GamePlayManagerService } from '../game-play-manager.service';
-import { Segment, Command, BusCard, Player } from 'src/app/types';
+import { Segment, Command, BusCard, Player, BusColor } from 'src/app/types';
 
 export class YourTurnState extends TurnState {
     public drawBusCard(gamePlayManagerService: GamePlayManagerService, index: number) {
@@ -19,12 +19,12 @@ export class YourTurnState extends TurnState {
       });
     }
     public openClaimSegmentModal(gamePlayManagerService: GamePlayManagerService, s: Segment): void {
-      const segmentColor = s.color;
+      const segmentColor: BusColor = s.color;
       const playerCards = gamePlayManagerService.clientPlayer.busCards;
       if (!Array.isArray(playerCards)) {
         return;
       }
-      const playerColorCount = playerCards.filter(card => card.color === segmentColor).length;
+      const playerColorCount = playerCards.filter(card => card.color === segmentColor || card.color === BusColor.Rainbow).length;
       if (playerColorCount < s.length) {
         // player doesn't have enough
         gamePlayManagerService.toastr.info("You don't have enough cards for that!");
