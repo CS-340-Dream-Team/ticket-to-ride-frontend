@@ -157,6 +157,10 @@ export class GamePlayManagerService {
     this._segmentBeingClaimedSubject.next(s);
   }
 
+  public showInfoToast(msg: string) {
+    this.toastr.info(msg);
+  }
+
   incrementplayerTurn(currentTurnName: string) {
     this._playerTurn = currentTurnName;
     this._playerTurnSubject.next(this._playerTurn);
