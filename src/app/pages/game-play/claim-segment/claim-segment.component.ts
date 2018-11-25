@@ -57,7 +57,6 @@ export class ClaimSegmentComponent implements OnInit {
 
   set selectedColorStr(value: string) {
     this.selectedColor = this._stringToBusColor(value);
-    console.log(value, this.selectedColor);
   }
 
   get playerHasWilds(): boolean {
@@ -130,13 +129,13 @@ export class ClaimSegmentComponent implements OnInit {
 
   public confirm(): void {
     const cards: BusCard[] = [];
-    for (const [color, quantity] of Object.entries(this.playerCards)) {
-      const card: BusCard = { color: BusColor[color] };
-      for (let i = 0; i < quantity; ++i) {
-        cards.push(card);
-      }
-    }
     // collect the cards
+    for (let i = 0; i < this.regularColorCount; ++i) {
+      cards.push({ color: this.selectedColor });
+    }
+    for (let i = 0; i < this.wildColorCount; ++i) {
+      cards.push({ color: BusColor.Rainbow });
+    }
     this.gpms.claimSegment(this.segment, cards);
   }
 }
