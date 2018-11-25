@@ -239,7 +239,9 @@ export class GamePlayManagerService {
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
                 if (player.name === this.clientPlayer.name) {
-                  (this._allPlayers[index].busCards as BusCard[]).push({color: command.privateData['cardColor']});
+                  const newBusCard: BusCard = {color: command.privateData['cardColor']};
+                  (this._clientPlayer.busCards as BusCard[]).push(newBusCard);
+                  (this._allPlayers[index].busCards as BusCard[]).push(newBusCard);
                 } else {
                   (this._allPlayers[index].busCards as number) += 1;
                 }
