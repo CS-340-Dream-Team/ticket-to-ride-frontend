@@ -7,6 +7,7 @@ import {
   Route
 } from 'src/app/types';
 import { GamePlayManagerService } from 'src/app/services';
+import getPlayerCardCounts from 'src/app/utils/player-card-counts';
 
 @Component({
   selector: 'app-player-bar',
@@ -73,15 +74,7 @@ export class PlayerBarComponent {
    * @param clientPlayer the client player
    */
   private countBusCards(busCards: BusCard[]) {
-    this.busCardCounts.red = busCards.filter(card => card.color === BusColor.Red).length;
-    this.busCardCounts.orange = busCards.filter(card => card.color === BusColor.Orange).length;
-    this.busCardCounts.yellow = busCards.filter(card => card.color === BusColor.Yellow).length;
-    this.busCardCounts.green = busCards.filter(card => card.color === BusColor.Green).length;
-    this.busCardCounts.blue = busCards.filter(card => card.color === BusColor.Blue).length;
-    this.busCardCounts.purple = busCards.filter(card => card.color === BusColor.Purple).length;
-    this.busCardCounts.black = busCards.filter(card => card.color === BusColor.Black).length;
-    this.busCardCounts.white = busCards.filter(card => card.color === BusColor.White).length;
-    this.busCardCounts.rainbow = busCards.filter(card => card.color === BusColor.Rainbow).length;
+    this.busCardCounts = getPlayerCardCounts(busCards);
   }
 
   public isCurrentPlayer(player) {

@@ -36,6 +36,7 @@ import {
 import { HistoryComponent } from './pages/history/history.component';
 import { HistoryMessageComponent } from './pages/history/history-message/history-message.component';
 import { GameOverComponent } from './pages/game-play/game-over/game-over.component';
+import { ClaimSegmentComponent } from './pages/game-play/claim-segment/claim-segment.component';
 
 
 const appRoutes: Routes = [
@@ -76,7 +77,8 @@ const appRoutes: Routes = [
     DeckBarComponent,
     HistoryComponent,
     HistoryMessageComponent,
-    GameOverComponent
+    GameOverComponent,
+    ClaimSegmentComponent
   ],
   imports: [
     BrowserAnimationsModule, // required animations module

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { environment } from '../../../environments/environment';
 
-import { Game, Command, User, Route, Segment, Location as MapLocation } from '../../types';
+import { Game, Command, User, Route, Segment, Location as MapLocation, BusCard } from '../../types';
 import { Message } from '../../types/message/message.type';
 import { resolve, reject } from 'q';
 
@@ -293,11 +293,12 @@ export class ServerProxyService {
     });
   }
 
-  public claimSegment(segment: Segment) : Promise<Command[]> {
-    const url: string = `${environment.BASE_URL}/segment/${segment.id}/claim`;
-    return this.http.post(url, {}, this.generateHttpOptions())
+  public claimSegment(segment: Segment, cards: BusCard[]) : Promise<Command[]> {
+    const url: string = `${environment.BASE_URL}/play/segment`;
+    return this.http.post(url, { segmentId: segment.id, cards }, this.generateHttpOptions())
       .toPromise()
-      .then((response: Response) => response.json().command)
+      .then((response: Response) => response.json().commands)
+      .catch(res => [res.json().command])
   }
 
   private _saveToLocalStorage(key: string, value: string): void {

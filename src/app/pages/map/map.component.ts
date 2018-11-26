@@ -37,7 +37,7 @@ export class MapComponent implements OnInit {
   }
 
   private _claimSegment(segment: Segment) {
-    this.gamePlayManager.claimSegment(segment);
+    this.gamePlayManager.openClaimSegmentModal(segment);
   }
 
   private _constructLine(segment: Segment): { line: Polyline<LineString | MultiLineString, any>, toolTip: string} {
@@ -48,7 +48,7 @@ export class MapComponent implements OnInit {
     ];
     let toolTip: string = `Length: ${segment.length}`;
     const options: PolylineOptions = {
-      color: segment.color.toString() === 'any' ? 'grey' : segment.color.toString(),
+      color: segment.color === BusColor.Rainbow ? 'grey' : BusColor[segment.color],
       opacity: 1,
       stroke: true,
     }
@@ -101,7 +101,7 @@ export class MapComponent implements OnInit {
       line
         .addTo(this._mapController)
         .bindTooltip(toolTip)
-        .on('dblclick', () => {
+        .on('click', () => {
           this._claimSegment(segment);
         });
         if (segment.pair && segment.pair <= index + 1) {

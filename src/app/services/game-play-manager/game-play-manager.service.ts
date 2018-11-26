@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServerProxyService } from '../server-proxy/server-proxy.service';
-import { Command, Route, Segment, Location as MapLocation, Player, BusCard } from '../../types';
+import { Command, Route, Segment, Location as MapLocation, Player, BusCard, BusColor } from '../../types';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,13 +13,30 @@ import TurnState, {
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 import { HistoryManagerService } from '../history-manager/history-manager.service';
+const pointMapping : { [key:number]:number; } = {
+  1: 1,
+  2: 2,
+  3: 4,
+  4: 7,
+  5: 10,
+  6: 15
+};
 
-
+const busColorStringToEnumMap: Object = {
+  any: BusColor.Rainbow,
+  red: BusColor.Red,
+  orange: BusColor.Orange,
+  yellow: BusColor.Yellow,
+  green: BusColor.Green,
+  blue: BusColor.Blue,
+  purple: BusColor.Purple,
+  black: BusColor.Black,
+  white: BusColor.White
+}
 @Injectable({
   providedIn: 'root'
 })
 export class GamePlayManagerService {
-
 
   private _gameOverStats: GameOverStat[] = [];
   private _gameOverStatsSubject: Subject<GameOverStat[]> = new Subject<GameOverStat[]>();
@@ -31,7 +48,9 @@ export class GamePlayManagerService {
   private _selectingRoutesSubject = new Subject<boolean>();
   private _playerTurn: string;
   private _playerTurnSubject = new Subject<string>();
+  private _segmentBeingClaimedSubject: Subject<Segment> = new Subject<Segment>();
 
+  private _segmentBeingClaimed: Segment = null;
   private lastCommandId = -1;
   private polling = false;
   private pollingTimer: any = null;
@@ -69,8 +88,8 @@ export class GamePlayManagerService {
   }
 
   constructor(
-    private serverProxy: ServerProxyService,
-    private toastr: ToastrService,
+    public serverProxy: ServerProxyService,
+    public toastr: ToastrService,
     private historyService: HistoryManagerService) {
     this._routeDeckSizeSubject.next(this._routeDeckSize);
     this.poll(this.serverProxy);
@@ -132,6 +151,23 @@ export class GamePlayManagerService {
     return this._routeDeckSizeSubject;
   }
 
+  get segmentBeingClaimedSubject(): Subject<Segment> {
+    return this._segmentBeingClaimedSubject;
+  }
+
+  get segmentBeingClaimed(): Segment {
+    return this._segmentBeingClaimed;
+  }
+
+  set segmentBeingClaimed(s: Segment) {
+    this._segmentBeingClaimed = s;
+    this._segmentBeingClaimedSubject.next(s);
+  }
+
+  public showInfoToast(msg: string) {
+    this.toastr.info(msg);
+  }
+
   incrementplayerTurn(currentTurnName: string) {
     this._playerTurn = currentTurnName;
     this._playerTurnSubject.next(this._playerTurn);
@@ -181,7 +217,7 @@ export class GamePlayManagerService {
     this.pollingTimer = null;
   }
 
-  private handleCommands(commands: Command[]) {
+  public handleCommands(commands: Command[]) {
     commands.forEach(command => {
       switch (command.type) {
         case 'updateSpread':
@@ -204,8 +240,6 @@ export class GamePlayManagerService {
               this.clientPlayer.routeCardBuffer = command.privateData;
               this._selectingRoutes = true;
               this._selectingRoutesSubject.next(this._selectingRoutes);
-            } else {
-
             }
           }
           break;
@@ -214,7 +248,10 @@ export class GamePlayManagerService {
             this._allPlayers.forEach((player, index) => {
               if (player.name === command.player) {
                 if (player.name === this.clientPlayer.name) {
-                  (this._allPlayers[index].busCards as BusCard[]).push({color: command.privateData['cardColor']});
+                  const newBusCard: BusCard = {color: command.privateData['cardColor']};
+                  (this._clientPlayer.busCards as BusCard[]).push(newBusCard);
+                  this._clientPlayerSubject.next(this._clientPlayer);
+                  (this._allPlayers[index].busCards as BusCard[]).push(newBusCard);
                 } else {
                   (this._allPlayers[index].busCards as number) += 1;
                 }
@@ -266,8 +303,19 @@ export class GamePlayManagerService {
           this._allPlayersSubject.next(this.allPlayers);
         }
         break;
+        case 'claimSegment':
+          if (this.updateLastCommandID(command.id)) {
+            const { segmentId, name } = command.data;
+            const segment: Segment = this._segments.find(s => s.id === segmentId);
+            this.markSegmentClaimed(segment);
+            this.segmentBeingClaimed = null;
+          }
+        break;
+        case 'showError':
+          this.toastError(command.data.message);
+        break;
         default:
-          break;
+        break;
       }
     });
     this.historyService.addItems(commands);
@@ -295,10 +343,21 @@ export class GamePlayManagerService {
     this.serverProxy.getMapData()
       .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
         this._locations = locations;
-        this._segments = segments;
+        if (this._segments.length === 0) {
+          this.mapSegmentColors(segments);
+        } else {
+          this.mapSegmentColors(this._segments);
+        }
         this.locationSubject.next(this._locations);
         this.segmentSubject.next(this._segments);
       });
+  }
+
+  private mapSegmentColors(segments: Segment[]) {
+    this._segments = segments.map(s => {
+      s.color = busColorStringToEnumMap[s.color];
+      return s;
+    });
   }
 
   public getFullGame() {
@@ -315,6 +374,7 @@ export class GamePlayManagerService {
         this.incrementplayerTurn(data.turn);
         this.historyService.addItems(data.history);
         this.lastCommandId = data.id;
+        this._segments = data.segments as Segment[];
       });
   }
 
@@ -359,9 +419,28 @@ export class GamePlayManagerService {
     });
   }
 
-  public claimSegment(segment: Segment): void {
-    this.serverProxy.claimSegment(segment)
-      .then((commands: Command[]) => this.handleCommands(commands));
+  public openClaimSegmentModal(s: Segment): void {
+    this._turnState.openClaimSegmentModal(this, s);
+  }
+
+  public claimSegment(segment: Segment, cards: BusCard[]): void {
+    this._turnState.claimSegment(this, segment, cards);
+  }
+
+  public markSegmentClaimed(segment: Segment): void {
+    this._segments.forEach( s => {
+      if (s.id === segment.id) {
+        s.owner = this._clientPlayer;
+      }
+    });
+    for (let player of this._allPlayers) {
+      if (player.name === segment.owner.name) {
+        player.busPieces -= segment.length;
+        player.points += pointMapping[segment.length];
+        this._allPlayersSubject.next(this._allPlayers);
+      }
+    }
+    this._segmentSubject.next(this._segments);
   }
 
   private _endGame(stats: GameOverStat[]): void {
@@ -370,4 +449,27 @@ export class GamePlayManagerService {
     this._gameOverStats = stats;
     this._gameOverStatsSubject.next(this._gameOverStats);
   }
+
+  public removeBusCardFromPlayer(player: Player, card: BusCard): void {
+    if (!Array.isArray(player.busCards)) {
+      player.busCards -= 1;
+      return;
+    }
+    const indexToDelete: number = player.busCards.findIndex((c: BusCard) => c.color === card.color);
+    if (indexToDelete === -1 ){
+      throw Error(`Card of color ${card.color} not found!`);
+    }
+    player.busCards.splice(indexToDelete, 1);
+    this._allPlayers.forEach( p => {
+      if (p.name === player.name) {
+        p.busCards = player.busCards;
+      }
+    });
+    this._allPlayersSubject.next(this._allPlayers);
+  }
+
+  public toastError(error: string) {
+    this.toastr.error(error);
+  }
+
 }
