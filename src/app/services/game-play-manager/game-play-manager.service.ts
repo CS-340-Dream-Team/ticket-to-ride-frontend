@@ -426,6 +426,12 @@ export class GamePlayManagerService {
         s.owner = this._clientPlayer;
       }
     });
+    for (let player of this._allPlayers) {
+      if (player.name === segment.owner.name) {
+        player.busPieces -= segment.length;
+        this._allPlayersSubject.next(this._allPlayers);
+      }
+    }
     this._segmentSubject.next(this._segments);
   }
 
