@@ -19,25 +19,14 @@ export class ClaimSegmentComponent implements OnInit {
   private _player: Player = null;
   selectedColor: BusColor = BusColor.Red;
 
-  segment: Segment = {
-    id: 1,
-    start: {
-      name: 'Baseball Stadium',
-      latLong: {
-        lat: 40.254821,
-        long: -111.651125
-      }
-    },
-    end: {
-      name: 'LaVell Edwards Stadium',
-      latLong: {
-        lat: 40.257536,
-        long: -111.654664
-      }
-    },
-    length: 1,
-    pair: 2,
-    color: BusColor.Rainbow
+  segment: Segment = null;
+
+  public display(s: Segment, p: Player) {
+    this._player = p;
+    this.segment = s;
+    this.regularColorCount = 0;
+    this.wildColorCount = 0;
+    this.selectedColor = this.segment && this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
   }
 
   public _busColorToString(b: BusColor): string {
@@ -92,18 +81,7 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   constructor(private gpms: GamePlayManagerService) {
-    this.regularColorCount = 0;
-    this.wildColorCount = 0;
-    this.selectedColor = this.segment && this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
-    this.gpms.segmentBeingClaimedSubject.subscribe({
-      next: (s) => this.segment = s
-    })
-    this.gpms.clientPlayerSubject.subscribe({
-      next: (p) => this._player = p
-    });
-   }
 
-  ngOnInit() {
   }
 
   public exit(): void {
