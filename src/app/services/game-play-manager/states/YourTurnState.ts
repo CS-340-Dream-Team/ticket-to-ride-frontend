@@ -17,6 +17,7 @@ export class YourTurnState extends TurnState {
         for (const card of c) {
           gamePlayManagerService.removeBusCardFromPlayer(player, card);
         }
+        gamePlayManagerService.markSegmentClaimed(segment);
       });
     }
     public openClaimSegmentModal(gamePlayManagerService: GamePlayManagerService, s: Segment): void {

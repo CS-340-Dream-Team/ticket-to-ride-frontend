@@ -410,6 +410,15 @@ export class GamePlayManagerService {
     this._turnState.claimSegment(this, segment, cards);
   }
 
+  public markSegmentClaimed(segment: Segment): void {
+    this._segments.forEach( s => {
+      if (s.id === segment.id) {
+        s.owner = this._clientPlayer;
+      }
+    });
+    this._segmentSubject.next(this._segments);
+  }
+
   private _endGame(stats: GameOverStat[]): void {
     this.stopPolling();
     this.setState('gameover');
@@ -423,7 +432,13 @@ export class GamePlayManagerService {
       return;
     }
     const indexToDelete: number = player.busCards.findIndex((c: BusCard) => c.color === card.color);
-    player.busCards = player.busCards.splice(indexToDelete, 1);
+    player.busCards.splice(indexToDelete, 1);
+    this._allPlayers.forEach( p => {
+      if (p.name === player.name) {
+        p.busCards = player.busCards;
+      }
+    });
+    this._allPlayersSubject.next(this._allPlayers);
   }
 
 }
