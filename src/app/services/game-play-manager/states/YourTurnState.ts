@@ -11,7 +11,9 @@ export class YourTurnState extends TurnState {
         gamePlayManagerService.drawRoutes();
     }
     public claimSegment(gamePlayManagerService: GamePlayManagerService, segment: Segment, c: BusCard[]) {
+      console.log('claiming segment');
       gamePlayManagerService.serverProxy.claimSegment(segment, c).then((commands: Command[]) => gamePlayManagerService.handleCommands(commands)).then(() => {
+        console.log('returned from claiming');
         // subtract the cards from the current player's inventory
         const player: Player = gamePlayManagerService.clientPlayer;
         for (const card of c) {

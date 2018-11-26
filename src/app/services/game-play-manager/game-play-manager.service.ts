@@ -211,6 +211,8 @@ export class GamePlayManagerService {
   }
 
   public handleCommands(commands: Command[]) {
+    console.log('handling commands');
+    console.log(commands);
     commands.forEach(command => {
       console.log(command.type);
       switch (command.type) {
