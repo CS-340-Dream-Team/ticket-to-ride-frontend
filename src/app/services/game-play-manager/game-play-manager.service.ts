@@ -211,10 +211,7 @@ export class GamePlayManagerService {
   }
 
   public handleCommands(commands: Command[]) {
-    console.log('handling commands');
-    console.log(commands);
     commands.forEach(command => {
-      console.log(command.type);
       switch (command.type) {
         case 'updateSpread':
           if (this.updateLastCommandID(command.id)) {
@@ -301,11 +298,13 @@ export class GamePlayManagerService {
         }
         break;
         case 'claimSegment':
-          const { segmentId, name } = command.data;
-          const segment: Segment = this._segments.find(s => s.id === segmentId);
-          segment.owner = name;
-          this._segmentSubject.next(this._segments);
-          this.segmentBeingClaimed = null;
+          if (this.updateLastCommandID(command.id)) {
+            const { segmentId, name } = command.data;
+            const segment: Segment = this._segments.find(s => s.id === segmentId);
+            segment.owner = name;
+            this._segmentSubject.next(this._segments);
+            this.segmentBeingClaimed = null;
+          }
         break;
         default:
         break;
@@ -427,7 +426,4 @@ export class GamePlayManagerService {
     player.busCards = player.busCards.splice(indexToDelete, 1);
   }
 
-  public toastError(message: string) {
-    this.toastr.error(message);
-  }
 }

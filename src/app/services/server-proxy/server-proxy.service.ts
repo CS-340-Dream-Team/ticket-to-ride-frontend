@@ -297,7 +297,7 @@ export class ServerProxyService {
     const url: string = `${environment.BASE_URL}/play/segment`;
     return this.http.post(url, { segmentId: segment.id, cards }, this.generateHttpOptions())
       .toPromise()
-      .then((response: Response) => response.json().command)
+      .then((response: Response) => response.json().commands)
   }
 
   private _saveToLocalStorage(key: string, value: string): void {
