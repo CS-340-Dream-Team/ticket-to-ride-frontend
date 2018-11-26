@@ -101,7 +101,7 @@ export class MapComponent implements OnInit {
       line
         .addTo(this._mapController)
         .bindTooltip(toolTip)
-        .on('dblclick', () => {
+        .on('click', () => {
           this._claimSegment(segment);
         });
         if (segment.pair && segment.pair <= index + 1) {
