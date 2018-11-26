@@ -13,7 +13,14 @@ import TurnState, {
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 import { HistoryManagerService } from '../history-manager/history-manager.service';
-
+const pointMapping : { [key:number]:number; } = {
+  1: 1,
+  2: 2,
+  3: 4,
+  4: 7,
+  5: 10,
+  6: 15
+};
 
 const busColorStringToEnumMap: Object = {
   any: BusColor.Rainbow,
@@ -429,6 +436,7 @@ export class GamePlayManagerService {
     for (let player of this._allPlayers) {
       if (player.name === segment.owner.name) {
         player.busPieces -= segment.length;
+        player.points += pointMapping[segment.length];
         this._allPlayersSubject.next(this._allPlayers);
       }
     }
