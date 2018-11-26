@@ -307,6 +307,9 @@ export class GamePlayManagerService {
         case 'showError':
           this.toastError(command.data.message);
         break;
+        case 'lastRound':
+        if (this.updateLastCommandID(command.id)) {
+        }
         default:
         break;
       }
