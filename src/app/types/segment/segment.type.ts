@@ -8,6 +8,6 @@ export interface Segment {
 	end: Location;
 	color: BusColor;
 	length: number;
-	owner?: Player | null;
+	owner?: Player;
 	pair?: number;
 }
