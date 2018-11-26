@@ -48,7 +48,7 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   get segmentColor(): string {
-    return this._busColorToString(this.segment.color);
+    return this._busColorToString(this.segment ? this.segment.color : BusColor.Rainbow);
   }
 
   get selectedColorStr(): string {
@@ -69,6 +69,9 @@ export class ClaimSegmentComponent implements OnInit {
       return this._playerCards;
     }
     const cards: { [color: string]: number } = {};
+    if (!this._player) {
+      return {};
+    }
     if (!Array.isArray(this._player.busCards)) {
       return cards;
     }
@@ -93,7 +96,7 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   get cardsLeftToSet(): number {
-    return this.regularColorCount + this.wildColorCount - this.segment.length;
+    return this.regularColorCount + this.wildColorCount - (this.segment ? this.segment.length : 0);
   }
 
   get needFewerCards(): boolean {
@@ -101,7 +104,7 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   get hasCorrectTotal(): boolean {
-    return this.regularColorCount + this.wildColorCount === this.segment.length;
+    return this.segment && this.regularColorCount + this.wildColorCount === this.segment.length;
   }
 
   get isValid(): boolean {
@@ -109,9 +112,9 @@ export class ClaimSegmentComponent implements OnInit {
   }
 
   constructor(private gpms: GamePlayManagerService) {
-    this.regularColorCount = this.segment.length;
+    this.regularColorCount = this.segment ? this.segment.length : 0;
     this.wildColorCount = 0;
-    this.selectedColor = this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
+    this.selectedColor = this.segment && this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
     this.gpms.segmentBeingClaimedSubject.subscribe({
       next: (s) => this.segment = s
     })
