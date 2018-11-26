@@ -233,8 +233,6 @@ export class GamePlayManagerService {
               this.clientPlayer.routeCardBuffer = command.privateData;
               this._selectingRoutes = true;
               this._selectingRoutesSubject.next(this._selectingRoutes);
-            } else {
-
             }
           }
           break;
@@ -245,6 +243,7 @@ export class GamePlayManagerService {
                 if (player.name === this.clientPlayer.name) {
                   const newBusCard: BusCard = {color: command.privateData['cardColor']};
                   (this._clientPlayer.busCards as BusCard[]).push(newBusCard);
+                  this._clientPlayerSubject.next(this._clientPlayer);
                   (this._allPlayers[index].busCards as BusCard[]).push(newBusCard);
                 } else {
                   (this._allPlayers[index].busCards as number) += 1;
