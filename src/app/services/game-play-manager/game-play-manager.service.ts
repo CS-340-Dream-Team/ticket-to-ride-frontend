@@ -301,8 +301,7 @@ export class GamePlayManagerService {
           if (this.updateLastCommandID(command.id)) {
             const { segmentId, name } = command.data;
             const segment: Segment = this._segments.find(s => s.id === segmentId);
-            segment.owner = name;
-            this._segmentSubject.next(this._segments);
+            this.markSegmentClaimed(segment);
             this.segmentBeingClaimed = null;
           }
         break;
