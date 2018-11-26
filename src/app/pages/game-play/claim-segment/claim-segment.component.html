@@ -1,6 +1,6 @@
-<div *ngIf="_player && segment">
+<div *ngIf="segment">
 <div class="dimmer"></div>
-<div class="dialog-container" *ngIf="segment">
+<div class="dialog-container">
   <div class="dialog">
     <h4 class="dialog-title">Claim "{{ segment.start.name }} — {{ segment.end.name }}"</h4>
     <h5 class="dialog-subtitle">Length {{ segment.length }}</h5>
