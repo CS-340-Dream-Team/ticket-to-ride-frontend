@@ -212,6 +212,7 @@ export class GamePlayManagerService {
 
   public handleCommands(commands: Command[]) {
     commands.forEach(command => {
+      console.log(command.type);
       switch (command.type) {
         case 'updateSpread':
           if (this.updateLastCommandID(command.id)) {
@@ -304,8 +305,11 @@ export class GamePlayManagerService {
           this._segmentSubject.next(this._segments);
           this.segmentBeingClaimed = null;
         break;
+        case 'showError':
+          this.toastr.error(command.data.message);
+        break;
         default:
-          break;
+        break;
       }
     });
     this.historyService.addItems(commands);

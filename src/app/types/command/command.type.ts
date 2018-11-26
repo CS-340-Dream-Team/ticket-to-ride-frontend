@@ -12,6 +12,7 @@ export interface Command {
 		| "endGame"
 		| "drawBusCard"
 		| "drawTen"
+		| "showError"
 		| "claimSegment";
 	data: any;
 	privateData?: any;

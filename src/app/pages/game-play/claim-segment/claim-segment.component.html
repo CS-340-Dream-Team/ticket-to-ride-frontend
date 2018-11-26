@@ -1,3 +1,4 @@
+<div *ngIf="_player && segment">
 <div class="dimmer"></div>
 <div class="dialog-container">
   <div class="dialog">
@@ -32,4 +33,5 @@
       <button class="link primary-link" (click)="confirm()" [disabled]="!isValid">Confirm</button>
     </footer>
   </div>
+</div>
 </div>
