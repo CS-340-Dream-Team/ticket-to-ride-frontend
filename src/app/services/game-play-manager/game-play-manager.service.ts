@@ -13,7 +13,14 @@ import TurnState, {
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 import { HistoryManagerService } from '../history-manager/history-manager.service';
-
+const pointMapping : { [key:number]:number; } = {
+  1: 1,
+  2: 2,
+  3: 4,
+  4: 7,
+  5: 10,
+  6: 15
+};
 
 const busColorStringToEnumMap: Object = {
   any: BusColor.Rainbow,
@@ -432,6 +439,7 @@ export class GamePlayManagerService {
     for (let player of this._allPlayers) {
       if (player.name === segment.owner.name) {
         player.busPieces -= segment.length;
+        player.points += pointMapping[segment.length];
         this._allPlayersSubject.next(this._allPlayers);
       }
     }
@@ -451,6 +459,9 @@ export class GamePlayManagerService {
       return;
     }
     const indexToDelete: number = player.busCards.findIndex((c: BusCard) => c.color === card.color);
+    if (indexToDelete === -1 ){
+      throw Error(`Card of color ${card.color} not found!`);
+    }
     player.busCards.splice(indexToDelete, 1);
     this._allPlayers.forEach( p => {
       if (p.name === player.name) {

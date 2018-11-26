@@ -11,8 +11,7 @@ import capitalize from 'src/app/utils/capitalize';
   templateUrl: './claim-segment.component.html',
   styleUrls: ['./claim-segment.component.scss']
 })
-export class ClaimSegmentComponent implements OnInit {
-
+export class ClaimSegmentComponent {
 
   regularColorCount: number = 0;
   wildColorCount: number = 0;
