@@ -304,6 +304,9 @@ export class GamePlayManagerService {
             this.segmentBeingClaimed = null;
           }
         break;
+        case 'showError':
+          this.toastError(command.data.message);
+        break;
         default:
         break;
       }
@@ -446,6 +449,10 @@ export class GamePlayManagerService {
       }
     });
     this._allPlayersSubject.next(this._allPlayers);
+  }
+
+  public toastError(error: string) {
+    this.toastr.error(error);
   }
 
 }

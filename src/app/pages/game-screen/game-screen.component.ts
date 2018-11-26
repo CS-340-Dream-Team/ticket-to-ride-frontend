@@ -25,7 +25,9 @@ export class GameScreenComponent implements OnInit {
       next: (stats) => this.gameOver = stats.length > 0
     });
     this.gamePlayManager.segmentBeingClaimedSubject.subscribe({
-      next: (s) => this.segmentClaimModal.display(s, gamePlayManager.clientPlayer)
+      next: (s) => {
+        this.segmentClaimModal.display(s, gamePlayManager.clientPlayer);
+      }
     });
   }
 

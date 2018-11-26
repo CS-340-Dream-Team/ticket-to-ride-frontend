@@ -26,7 +26,9 @@ export class ClaimSegmentComponent implements OnInit {
     this.segment = s;
     this.regularColorCount = 0;
     this.wildColorCount = 0;
-    this.selectedColor = this.segment && this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
+    if (s) {
+      this.selectedColor = this.segment && this.segment.color === BusColor.Rainbow ? BusColor.Red : this.segment.color;
+    }
   }
 
   public _busColorToString(b: BusColor): string {

@@ -298,6 +298,7 @@ export class ServerProxyService {
     return this.http.post(url, { segmentId: segment.id, cards }, this.generateHttpOptions())
       .toPromise()
       .then((response: Response) => response.json().commands)
+      .catch(res => [res.json().command])
   }
 
   private _saveToLocalStorage(key: string, value: string): void {
