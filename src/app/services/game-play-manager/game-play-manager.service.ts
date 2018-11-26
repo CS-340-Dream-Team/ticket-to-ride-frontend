@@ -334,7 +334,7 @@ export class GamePlayManagerService {
     this.serverProxy.getMapData()
       .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
         this._locations = locations;
-        this._segments = segments.map(s => {
+        this._segments = this._segments.map(s => {
           s.color = busColorStringToEnumMap[s.color];
           return s;
         });
@@ -357,6 +357,7 @@ export class GamePlayManagerService {
         this.incrementplayerTurn(data.turn);
         this.historyService.addItems(data.history);
         this.lastCommandId = data.id;
+        this._segments = data.segments as Segment[];
       });
   }
 

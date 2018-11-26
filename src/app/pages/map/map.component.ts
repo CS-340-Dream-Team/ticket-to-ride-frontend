@@ -23,7 +23,9 @@ export class MapComponent implements OnInit {
         next: (locations) => this._renderLocations(locations)
       })
       gamePlayManager.segmentSubject.subscribe({
-        next: (segments) => this._renderSegments(segments)
+        next: (segments) => {
+          this._renderSegments(segments);
+        }
       })
       gamePlayManager.getFullGame();
       gamePlayManager.startPolling();
