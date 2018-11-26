@@ -84,6 +84,9 @@ export class ClaimSegmentComponent implements OnInit {
 
   }
 
+  ngOnInit() {
+  }
+
   public exit(): void {
     this.regularColorCount = 0;
     this.wildColorCount = 0;

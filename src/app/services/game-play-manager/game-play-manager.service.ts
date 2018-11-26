@@ -333,13 +333,21 @@ export class GamePlayManagerService {
     this.serverProxy.getMapData()
       .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
         this._locations = locations;
-        this._segments = this._segments.map(s => {
-          s.color = busColorStringToEnumMap[s.color];
-          return s;
-        });
+        if (this._segments.length === 0) {
+          this.mapSegmentColors(segments);
+        } else {
+          this.mapSegmentColors(this._segments);
+        }
         this.locationSubject.next(this._locations);
         this.segmentSubject.next(this._segments);
       });
+  }
+
+  private mapSegmentColors(segments: Segment[]) {
+    this._segments = segments.map(s => {
+      s.color = busColorStringToEnumMap[s.color];
+      return s;
+    });
   }
 
   public getFullGame() {
