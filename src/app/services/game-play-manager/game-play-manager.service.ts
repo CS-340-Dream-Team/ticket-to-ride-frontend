@@ -456,6 +456,9 @@ export class GamePlayManagerService {
       return;
     }
     const indexToDelete: number = player.busCards.findIndex((c: BusCard) => c.color === card.color);
+    if (indexToDelete === -1 ){
+      throw Error(`Card of color ${card.color} not found!`);
+    }
     player.busCards.splice(indexToDelete, 1);
     this._allPlayers.forEach( p => {
       if (p.name === player.name) {
