@@ -307,9 +307,6 @@ export class GamePlayManagerService {
           this._segmentSubject.next(this._segments);
           this.segmentBeingClaimed = null;
         break;
-        case 'showError':
-          this.toastr.error(command.data.message);
-        break;
         default:
         break;
       }
@@ -428,5 +425,9 @@ export class GamePlayManagerService {
     }
     const indexToDelete: number = player.busCards.findIndex((c: BusCard) => c.color === card.color);
     player.busCards = player.busCards.splice(indexToDelete, 1);
+  }
+
+  public toastError(message: string) {
+    this.toastr.error(message);
   }
 }
