@@ -257,7 +257,7 @@ export class GamePlayManagerService {
                 }
               }
             });
-            this._allPlayersSubject.next(this.allPlayers);
+            this._allPlayersSubject.next(this._allPlayers);
           }
           break;
         case 'discardRoutes':
@@ -270,6 +270,7 @@ export class GamePlayManagerService {
                   this._routeDeckSize -= command.data['numCardsKept'];
                   this._routeDeckSizeSubject.next(this._routeDeckSize);
                   this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
+                  this._clientPlayer.routeCards = this._allPlayers[index].routeCards;
                   this.allPlayersSubject.next(this._allPlayers);
                 }
               });
