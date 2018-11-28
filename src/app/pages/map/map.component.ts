@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { map, Map, tileLayer, LatLng, marker, latLng, Icon, icon, polyline, point, PolylineOptions, LatLngExpression, Polyline, Layer, Tooltip } from "leaflet";
 import { GamePlayManagerService } from "src/app/services";
-import { Segment, Location as MapLocation, BusColor } from "src/app/types";
+import { Segment, Location as MapLocation, BusColor, PlayerColor } from "src/app/types";
 import { LineString, MultiLineString } from "geojson";
 import 'leaflet-polylineoffset';
 
@@ -54,12 +54,23 @@ export class MapComponent implements OnInit {
     }
     if (segment.owner) {
       toolTip += `, Claimed by ${segment.owner.name}`;
-      options.opacity = 0.5;
+      options.dashArray='15,10'
+      options.color= this._playerColorToString(segment.owner.color)
     }
     const leafletLine: Polyline<LineString | MultiLineString, any> = polyline(line, options);
     return { line: leafletLine, toolTip }
   }
-
+  private _playerColorToString(playerColor:PlayerColor):string{
+    let pc_map={
+      0:'grey',
+      1:'red',
+      2:'green',
+      3:'blue',
+      4:'yellow',
+      5:'black'
+    }
+    return pc_map[playerColor]
+  }
   private _initMap(): void {
     const hbllLocation: LatLng = new LatLng(40.248157, -111.649150);
     const defaultZoomLevel: number = 16;
