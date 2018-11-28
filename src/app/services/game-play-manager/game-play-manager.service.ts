@@ -257,7 +257,7 @@ export class GamePlayManagerService {
                 }
               }
             });
-            this._allPlayersSubject.next(this.allPlayers);
+            this._allPlayersSubject.next(this._allPlayers);
           }
           break;
         case 'discardRoutes':
@@ -270,6 +270,7 @@ export class GamePlayManagerService {
                   this._routeDeckSize -= command.data['numCardsKept'];
                   this._routeDeckSizeSubject.next(this._routeDeckSize);
                   this._allPlayers[index].routeCards = (this._allPlayers[index].routeCards as Route[]).concat(command.privateData['cardsKept']);
+                  this._clientPlayer.routeCards = this._allPlayers[index].routeCards;
                   this.allPlayersSubject.next(this._allPlayers);
                 }
               });
@@ -305,10 +306,16 @@ export class GamePlayManagerService {
         break;
         case 'claimSegment':
           if (this.updateLastCommandID(command.id)) {
-            const { segmentId, name } = command.data;
+            const { segmentId } = command.data;
+            const cards: BusCard[] = command.privateData.cards;
             const segment: Segment = this._segments.find(s => s.id === segmentId);
             this.markSegmentClaimed(segment);
             this.segmentBeingClaimed = null;
+            if (cards) {
+              for (const card of cards) {
+                this.removeBusCardFromPlayer(this.clientPlayer, card);
+              }
+            }
           }
         break;
         case 'showError':
