@@ -305,10 +305,16 @@ export class GamePlayManagerService {
         break;
         case 'claimSegment':
           if (this.updateLastCommandID(command.id)) {
-            const { segmentId, name } = command.data;
+            const { segmentId } = command.data;
+            const cards: BusCard[] = command.privateData.cards;
             const segment: Segment = this._segments.find(s => s.id === segmentId);
             this.markSegmentClaimed(segment);
             this.segmentBeingClaimed = null;
+            if (cards) {
+              for (const card of cards) {
+                this.removeBusCardFromPlayer(this.clientPlayer, card);
+              }
+            }
           }
         break;
         case 'showError':
