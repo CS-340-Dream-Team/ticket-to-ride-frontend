@@ -17,7 +17,7 @@
         <span *ngIf="playerHasWilds">
           and
           <span class="count wild-count">
-            <input type="number" name="regular-count" [(ngModel)]="wildColorCount" step="1" min="0" [max]="segment.length - regularColorCount">
+            <input type="number" name="regular-count" [(ngModel)]="wildColorCount" step="1" min="0" [max]="wildLimit">
           </span>
           wild cards.
         </span>

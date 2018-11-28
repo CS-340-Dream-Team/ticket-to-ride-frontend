@@ -75,8 +75,14 @@ export class ClaimSegmentComponent {
   get numberOfColorInHand():number{
     return getPlayerCardCounts(<BusCard[]>this._player.busCards)[this._busColorToString(this.selectedColor).toLowerCase()]
   }
+  get numberOfWildInHand():number{
+    return getPlayerCardCounts(<BusCard[]>this._player.busCards)['rainbow']
+  }
   get colorLimit(): number{
     return Math.min(this.segment.length-this.wildColorCount, this.numberOfColorInHand)
+  }
+  get wildLimit(): number{
+    return Math.min(this.segment.length-this.wildColorCount, this.numberOfWildInHand)
   }
   get hasCorrectTotal(): boolean {
     return this.segment && this.regularColorCount + this.wildColorCount === this.segment.length;
