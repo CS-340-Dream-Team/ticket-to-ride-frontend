@@ -8,7 +8,7 @@
       <div>
         Use
         <span class="count regular-count">
-          <input type="number" name="regular-count" [(ngModel)]="regularColorCount" step="1" min="0" [max]="segment.length - wildColorCount">
+          <input type="number" name="regular-count" [(ngModel)]="regularColorCount" step="1" min="0" [max]="colorLimit">
         </span>
         <select class="regular-color" name="regular-color" [disabled]="segmentColor !== 'Rainbow'" [(ngModel)]="selectedColorStr">
           <option *ngFor="let color of colorsPlayerHas" [value]="color">{{ color }}</option>
