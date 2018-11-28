@@ -8,7 +8,7 @@
       <div>
         Use
         <span class="count regular-count">
-          <input type="number" name="regular-count" [(ngModel)]="regularColorCount" step="1" min="0" [max]="segment.length - wildColorCount">
+          <input type="number" name="regular-count" [(ngModel)]="regularColorCount" step="1" min="0" [max]="colorLimit">
         </span>
         <select class="regular-color" name="regular-color" [disabled]="segmentColor !== 'Rainbow'" [(ngModel)]="selectedColorStr">
           <option *ngFor="let color of colorsPlayerHas" [value]="color">{{ color }}</option>
@@ -17,7 +17,7 @@
         <span *ngIf="playerHasWilds">
           and
           <span class="count wild-count">
-            <input type="number" name="regular-count" [(ngModel)]="wildColorCount" step="1" min="0" [max]="segment.length - regularColorCount">
+            <input type="number" name="regular-count" [(ngModel)]="wildColorCount" step="1" min="0" [max]="wildLimit">
           </span>
           wild cards.
         </span>
