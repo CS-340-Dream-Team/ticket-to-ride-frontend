@@ -305,9 +305,11 @@ export class GamePlayManagerService {
         break;
         case 'claimSegment':
           if (this.updateLastCommandID(command.id)) {
-            const { segmentId, name } = command.data;
+            const { segmentId } = command.data;
+            const player = this.getPlayerByName(command.player);
+            const cards: BusCard[] = command.privateData.cards;
             const segment: Segment = this._segments.find(s => s.id === segmentId);
-            this.markSegmentClaimed(segment);
+            this.markSegmentClaimed(segment, player);
             this.segmentBeingClaimed = null;
           }
         break;
@@ -334,7 +336,7 @@ export class GamePlayManagerService {
   }
 
   setSegmentOwner(index: number, player: Player) {
-    this._segments[index].owner = player;
+    this._segments[index-1].owner = player;
     this.segmentSubject.next(this._segments);
   }
 
@@ -430,12 +432,8 @@ export class GamePlayManagerService {
     this._turnState.claimSegment(this, segment, cards);
   }
 
-  public markSegmentClaimed(segment: Segment): void {
-    this._segments.forEach( s => {
-      if (s.id === segment.id) {
-        s.owner = this._clientPlayer;
-      }
-    });
+  public markSegmentClaimed(segment: Segment, player: Player): void {
+    this.setSegmentOwner(segment.id, player);
     for (let player of this._allPlayers) {
       if (player.name === segment.owner.name) {
         player.busPieces -= segment.length;
@@ -473,6 +471,14 @@ export class GamePlayManagerService {
 
   public toastError(error: string) {
     this.toastr.error(error);
+  }
+
+  private getPlayerByName(playerName: string) {
+    for (let player of this._allPlayers) {
+      if (player.name == playerName) {
+        return player;
+      }
+    }
   }
 
 }
