@@ -13,6 +13,7 @@ import TurnState, {
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 import { HistoryManagerService } from '../history-manager/history-manager.service';
+import { isNumber } from 'util';
 const pointMapping : { [key:number]:number; } = {
   1: 1,
   2: 2,
@@ -316,6 +317,16 @@ export class GamePlayManagerService {
                 this.removeBusCardFromPlayer(this.clientPlayer, card);
               }
             }
+            else{
+              this._allPlayers.forEach(p => {
+                if(p.name===player.name){
+                  if(isNumber(p.busCards)){
+                    (p.busCards as number)-=segment.length;
+                  }
+                }
+              });
+              this.allPlayersSubject.next(this._allPlayers)
+          }
           }
         break;
         case 'showError':
