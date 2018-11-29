@@ -167,13 +167,6 @@ export class ServerProxyService {
       .then(res => [res.json().command])
   }
 
-  public getMapData(): Promise<{ locations: Array<MapLocation>, segments: Array<Segment> }> {
-    const url = `map`;
-    return this.http.get(`${environment.BASE_URL}/${url}`, this.generateHttpOptions())
-      .toPromise()
-      .then((response: Response) => response.json());
-  }
-
   public getGameData(lastCommandId: number): Promise<any> {
     const url = `play/${lastCommandId}`;
     return new Promise<any>((resolve, reject) => {

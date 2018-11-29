@@ -285,7 +285,6 @@ export class GamePlayManagerService {
               });
             }
           }
-          // FIXME:add routes to player.
           break;
         case 'endGame':
           this._endGame(command.data.stats);
@@ -360,20 +359,6 @@ export class GamePlayManagerService {
     console.log('Starting the game!');
   }
 
-  // public getMapData() {
-  //   this.serverProxy.getMapData()
-  //     .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
-  //       this._locations = locations;
-  //       if (this._segments.length === 0) {
-  //         this.mapSegmentColors(segments);
-  //       } else {
-  //         this.mapSegmentColors(this._segments);
-  //       }
-  //       this.locationSubject.next(this._locations);
-  //       this.segmentSubject.next(this._segments);
-  //     });
-  // }
-
   private mapSegmentColors(segments: Segment[]) {
     return segments.map(s => {
       s.color = busColorStringToEnumMap[s.color];
@@ -395,8 +380,6 @@ export class GamePlayManagerService {
         this.incrementplayerTurn(data.turn);
         this.historyService.addItems(data.history);
         this.lastCommandId = data.id;
-        console.log(data.segments);
-        // this._segments = data.segments;
         this._segments = this.mapSegmentColors(data.segments as Segment[]);
         this._segmentSubject.next(this._segments);
         this._locations = data.locations;

@@ -25,7 +25,6 @@ export class MapComponent implements OnInit {
       })
       gamePlayManager.segmentSubject.subscribe({
         next: (segments) => {
-          console.log(segments);
           this._renderSegments(segments)
         }
       })
@@ -67,11 +66,6 @@ export class MapComponent implements OnInit {
       latLng(end.latLong.lat, end.latLong.long)
     ];
     let toolTip: string = `Length: ${segment.length}`;
-    console.log(segment.color)
-    var color;
-    if (segment.color === BusColor.Rainbow || segment.color === 'any') {
-
-    }
     const options: PolylineOptions = {
       color: segment.color === BusColor.Rainbow ? 'grey' : BusColor[segment.color].toLowerCase(),
       opacity: 1,
@@ -107,7 +101,6 @@ export class MapComponent implements OnInit {
       detectRetina: true,
       maxZoom,
     }).addTo(this._mapController);
-    // this.gamePlayManager.getMapData();
   }
 
   private _renderLocations(locations: MapLocation[]) {
