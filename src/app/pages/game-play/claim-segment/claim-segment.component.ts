@@ -82,7 +82,7 @@ export class ClaimSegmentComponent {
     return Math.min(this.segment.length-this.wildColorCount, this.numberOfColorInHand)
   }
   get wildLimit(): number{
-    return Math.min(this.segment.length-this.wildColorCount, this.numberOfWildInHand)
+    return Math.min(this.segment.length - this.regularColorCount, this.numberOfWildInHand)
   }
   get hasCorrectTotal(): boolean {
     return this.segment && this.regularColorCount + this.wildColorCount === this.segment.length;

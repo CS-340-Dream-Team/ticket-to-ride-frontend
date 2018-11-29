@@ -16,6 +16,7 @@ export class MapComponent implements OnInit {
   _mapEl: ElementRef;
   _markers: any = {};
   _segments: Polyline<LineString | MultiLineString, any>[] = [];
+  _outlines: Polyline<LineString | MultiLineString, any>[] = [];
 
 	constructor(
     private gamePlayManager: GamePlayManagerService,) {
@@ -66,6 +67,11 @@ export class MapComponent implements OnInit {
       latLng(end.latLong.lat, end.latLong.long)
     ];
     let toolTip: string = `Length: ${segment.length}`;
+    console.log(segment.color)
+    var color;
+    if (segment.color === BusColor.Rainbow || segment.color === 'any') {
+
+    }
     const options: PolylineOptions = {
       color: segment.color === BusColor.Rainbow ? 'grey' : BusColor[segment.color].toLowerCase(),
       opacity: 1,
@@ -101,7 +107,7 @@ export class MapComponent implements OnInit {
       detectRetina: true,
       maxZoom,
     }).addTo(this._mapController);
-    this.gamePlayManager.getMapData();
+    // this.gamePlayManager.getMapData();
   }
 
   private _renderLocations(locations: MapLocation[]) {
@@ -131,6 +137,7 @@ export class MapComponent implements OnInit {
       
       this._segments.push(line);
       if (outline) {
+        this._outlines.push(outline);
         if(segment.pair && segment.pair<=index + 1 && outline){
           (<any>outline).setOffset(5);
           outline.addTo(this._mapController)
@@ -155,6 +162,10 @@ export class MapComponent implements OnInit {
     while (this._segments.length > 0) {
       const segment: Polyline<LineString | MultiLineString, any> = this._segments.pop();
       segment.remove();
+    }
+    while (this._outlines.length > 0) {
+      const outline: Polyline<LineString | MultiLineString, any> = this._outlines.pop();
+      outline.remove();
     }
   }
 }

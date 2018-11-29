@@ -360,22 +360,22 @@ export class GamePlayManagerService {
     console.log('Starting the game!');
   }
 
-  public getMapData() {
-    this.serverProxy.getMapData()
-      .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
-        this._locations = locations;
-        if (this._segments.length === 0) {
-          this.mapSegmentColors(segments);
-        } else {
-          this.mapSegmentColors(this._segments);
-        }
-        this.locationSubject.next(this._locations);
-        this.segmentSubject.next(this._segments);
-      });
-  }
+  // public getMapData() {
+  //   this.serverProxy.getMapData()
+  //     .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
+  //       this._locations = locations;
+  //       if (this._segments.length === 0) {
+  //         this.mapSegmentColors(segments);
+  //       } else {
+  //         this.mapSegmentColors(this._segments);
+  //       }
+  //       this.locationSubject.next(this._locations);
+  //       this.segmentSubject.next(this._segments);
+  //     });
+  // }
 
   private mapSegmentColors(segments: Segment[]) {
-    this._segments = segments.map(s => {
+    return segments.map(s => {
       s.color = busColorStringToEnumMap[s.color];
       return s;
     });
@@ -395,7 +395,12 @@ export class GamePlayManagerService {
         this.incrementplayerTurn(data.turn);
         this.historyService.addItems(data.history);
         this.lastCommandId = data.id;
-        this._segments = data.segments as Segment[];
+        console.log(data.segments);
+        // this._segments = data.segments;
+        this._segments = this.mapSegmentColors(data.segments as Segment[]);
+        this._segmentSubject.next(this._segments);
+        this._locations = data.locations;
+        this.locationSubject.next(this._locations);
       });
   }
 
@@ -462,7 +467,6 @@ export class GamePlayManagerService {
         this._allPlayersSubject.next(this._allPlayers);
       }
     }
-    this._segmentSubject.next(this._segments);
   }
 
   private _endGame(stats: GameOverStat[]): void {
