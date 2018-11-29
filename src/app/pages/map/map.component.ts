@@ -23,7 +23,10 @@ export class MapComponent implements OnInit {
         next: (locations) => this._renderLocations(locations)
       })
       gamePlayManager.segmentSubject.subscribe({
-        next: (segments) => this._renderSegments(segments)
+        next: (segments) => {
+          console.log(segments);
+          this._renderSegments(segments)
+        }
       })
       gamePlayManager.getFullGame();
       gamePlayManager.startPolling();
@@ -40,19 +43,21 @@ export class MapComponent implements OnInit {
     this.gamePlayManager.openClaimSegmentModal(segment);
   }
   private _constructOutline(segment: Segment): Polyline<LineString | MultiLineString, any> {
-    const { start, end } : { start: MapLocation, end: MapLocation } = segment;
-    const line: LatLngExpression[] = [
-      latLng(start.latLong.lat, start.latLong.long),
-      latLng(end.latLong.lat, end.latLong.long)
-    ];
-    const options: PolylineOptions = {
-      color: 'black',
-      opacity: 1,
-      stroke: true,
-      weight:3.5,
+    if (!segment.owner) {
+      const { start, end } : { start: MapLocation, end: MapLocation } = segment;
+      const line: LatLngExpression[] = [
+        latLng(start.latLong.lat, start.latLong.long),
+        latLng(end.latLong.lat, end.latLong.long)
+      ];
+      const options: PolylineOptions = {
+        color: 'black',
+        opacity: 1,
+        stroke: true,
+        weight:3.5,
+      }
+      const leafletLine: Polyline<LineString | MultiLineString, any> = polyline(line, options);
+      return leafletLine
     }
-    const leafletLine: Polyline<LineString | MultiLineString, any> = polyline(line, options);
-    return leafletLine
   }
   private _constructLine(segment: Segment): { line: Polyline<LineString | MultiLineString, any>, toolTip: string} {
     const { start, end } : { start: MapLocation, end: MapLocation } = segment;
@@ -125,13 +130,15 @@ export class MapComponent implements OnInit {
       const {line, toolTip} = this._constructLine(segment);
       
       this._segments.push(line);
-      if(segment.pair && segment.pair<=index+1){
-        (<any>outline).setOffset(5);
-        outline.addTo(this._mapController)
-      } else{
-        outline.addTo(this._mapController)
+      if (outline) {
+        if(segment.pair && segment.pair<=index + 1 && outline){
+          (<any>outline).setOffset(5);
+          outline.addTo(this._mapController)
+        } else{
+          outline.addTo(this._mapController)
+        }
       }
-      
+
       line
         .addTo(this._mapController)
         .bindTooltip(toolTip)
