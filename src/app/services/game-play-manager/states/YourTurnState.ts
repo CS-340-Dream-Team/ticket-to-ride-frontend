@@ -11,13 +11,8 @@ export class YourTurnState extends TurnState {
         gamePlayManagerService.drawRoutes();
     }
     public claimSegment(gamePlayManagerService: GamePlayManagerService, segment: Segment, c: BusCard[]) {
-      gamePlayManagerService.serverProxy.claimSegment(segment, c).then((commands: Command[]) => gamePlayManagerService.handleCommands(commands)).then(() => {
-        // subtract the cards from the current player's inventory
-        const player: Player = gamePlayManagerService.clientPlayer;
-        for (const card of c) {
-          gamePlayManagerService.removeBusCardFromPlayer(player, card);
-        }
-      });
+      gamePlayManagerService.serverProxy.claimSegment(segment, c)
+        .then((commands: Command[]) => gamePlayManagerService.handleCommands(commands));
     }
     public openClaimSegmentModal(gamePlayManagerService: GamePlayManagerService, s: Segment): void {
       const segmentColor: BusColor = s.color;
