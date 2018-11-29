@@ -57,7 +57,7 @@ export class ClaimSegmentComponent {
   get colorsPlayerHas(): string[] {
     return Object.keys(getPlayerCardCounts(<BusCard[]>this._player.busCards))
       .filter(color => getPlayerCardCounts(<BusCard[]>this._player.busCards)[color] !== 0 &&
-        color !== this._busColorToString(BusColor.Rainbow))
+        color !== this._busColorToString(BusColor.Rainbow).toLowerCase())
       .map(color => capitalize(color));
   }
 
