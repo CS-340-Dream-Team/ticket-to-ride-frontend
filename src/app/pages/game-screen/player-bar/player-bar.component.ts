@@ -44,7 +44,7 @@ export class PlayerBarComponent {
         this.players = players;
 
         this.playerTurn = this.players[0].name;
-
+        
         const clientPlayerArr = this.players.filter(player => this.isCurrentPlayer(player));
         if (clientPlayerArr.length) {
           const clientPlayer = clientPlayerArr[0];

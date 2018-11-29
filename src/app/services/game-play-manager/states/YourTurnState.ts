@@ -38,7 +38,7 @@ export class YourTurnState extends TurnState {
         const cardCounts = getPlayerCardCounts(playerCards);
         if (!canClaimGray(s.length, cardCounts)) {
           // player doesn't have enough
-          gamePlayManagerService.showInfoToast(`You don't have enough cards for that!`);
+          gamePlayManagerService.toastError(`You don't have enough cards for that!`);
           return;
         }
       } else {
@@ -46,7 +46,7 @@ export class YourTurnState extends TurnState {
         const playerColorCount = playerCards.filter(card => card.color === segmentColor || card.color === BusColor.Rainbow).length;
         if (playerColorCount < s.length) {
           // player doesn't have enough
-          gamePlayManagerService.showInfoToast(`You don't have enough cards for that!`);
+          gamePlayManagerService.toastError(`You don't have enough cards for that!`);
           return;
         }
       }

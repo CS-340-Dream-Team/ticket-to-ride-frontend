@@ -249,9 +249,8 @@ export class GamePlayManagerService {
               if (player.name === command.player) {
                 if (player.name === this.clientPlayer.name) {
                   const newBusCard: BusCard = {color: command.privateData['cardColor']};
-                  (this._clientPlayer.busCards as BusCard[]).push(newBusCard);
-                  this._clientPlayerSubject.next(this._clientPlayer);
                   (this._allPlayers[index].busCards as BusCard[]).push(newBusCard);
+                  this._clientPlayer.busCards = this._allPlayers[index].busCards;
                 } else {
                   (this._allPlayers[index].busCards as number) += 1;
                 }
@@ -307,9 +306,10 @@ export class GamePlayManagerService {
         case 'claimSegment':
           if (this.updateLastCommandID(command.id)) {
             const { segmentId } = command.data;
+            const player = this.getPlayerByName(command.player);
             const cards: BusCard[] = command.privateData.cards;
             const segment: Segment = this._segments.find(s => s.id === segmentId);
-            this.markSegmentClaimed(segment);
+            this.markSegmentClaimed(segment, player);
             this.segmentBeingClaimed = null;
             if (cards) {
               for (const card of cards) {
@@ -341,7 +341,7 @@ export class GamePlayManagerService {
   }
 
   setSegmentOwner(index: number, player: Player) {
-    this._segments[index].owner = player;
+    this._segments[index-1].owner = player;
     this.segmentSubject.next(this._segments);
   }
 
@@ -430,19 +430,20 @@ export class GamePlayManagerService {
   }
 
   public openClaimSegmentModal(s: Segment): void {
-    this._turnState.openClaimSegmentModal(this, s);
+    if (s.owner) {
+      this.toastError("Can't claim. Segment is already owned");
+    }
+    else {
+      this._turnState.openClaimSegmentModal(this, s);
+    }
   }
 
   public claimSegment(segment: Segment, cards: BusCard[]): void {
     this._turnState.claimSegment(this, segment, cards);
   }
 
-  public markSegmentClaimed(segment: Segment): void {
-    this._segments.forEach( s => {
-      if (s.id === segment.id) {
-        s.owner = this._clientPlayer;
-      }
-    });
+  public markSegmentClaimed(segment: Segment, player: Player): void {
+    this.setSegmentOwner(segment.id, player);
     for (let player of this._allPlayers) {
       if (player.name === segment.owner.name) {
         player.busPieces -= segment.length;
@@ -480,6 +481,14 @@ export class GamePlayManagerService {
 
   public toastError(error: string) {
     this.toastr.error(error);
+  }
+
+  private getPlayerByName(playerName: string) {
+    for (let player of this._allPlayers) {
+      if (player.name == playerName) {
+        return player;
+      }
+    }
   }
 
 }
