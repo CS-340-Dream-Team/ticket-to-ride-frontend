@@ -430,7 +430,12 @@ export class GamePlayManagerService {
   }
 
   public openClaimSegmentModal(s: Segment): void {
-    this._turnState.openClaimSegmentModal(this, s);
+    if (s.owner) {
+      this.toastError("Can't claim. Segment is already owned");
+    }
+    else {
+      this._turnState.openClaimSegmentModal(this, s);
+    }
   }
 
   public claimSegment(segment: Segment, cards: BusCard[]): void {
