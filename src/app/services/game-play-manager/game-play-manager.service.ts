@@ -249,9 +249,8 @@ export class GamePlayManagerService {
               if (player.name === command.player) {
                 if (player.name === this.clientPlayer.name) {
                   const newBusCard: BusCard = {color: command.privateData['cardColor']};
-                  (this._clientPlayer.busCards as BusCard[]).push(newBusCard);
-                  this._clientPlayerSubject.next(this._clientPlayer);
                   (this._allPlayers[index].busCards as BusCard[]).push(newBusCard);
+                  this._clientPlayer.busCards = this._allPlayers[index].busCards;
                 } else {
                   (this._allPlayers[index].busCards as number) += 1;
                 }
