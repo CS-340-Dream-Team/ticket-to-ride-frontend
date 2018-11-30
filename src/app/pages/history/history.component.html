@@ -4,7 +4,6 @@
       <ul class="history">
         <li *ngFor="let command of history">
           <app-history-message [historyText]="command.message" [color]="getPlayerColor(command)" class="box"></app-history-message>
-          <!-- TODO: Change above to command.message -->
         </li>
       </ul>
     </div>

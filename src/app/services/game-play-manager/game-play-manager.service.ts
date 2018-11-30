@@ -13,6 +13,7 @@ import TurnState, {
 import { AuthManagerService } from '../auth-manager/auth-manager.service';
 import { GameOverStat } from 'src/app/types/game-over-stat/GameOverStat';
 import { HistoryManagerService } from '../history-manager/history-manager.service';
+import { isNumber } from 'util';
 const pointMapping : { [key:number]:number; } = {
   1: 1,
   2: 2,
@@ -284,7 +285,6 @@ export class GamePlayManagerService {
               });
             }
           }
-          // FIXME:add routes to player.
           break;
         case 'endGame':
           this._endGame(command.data.stats);
@@ -316,6 +316,16 @@ export class GamePlayManagerService {
                 this.removeBusCardFromPlayer(this.clientPlayer, card);
               }
             }
+            else{
+              this._allPlayers.forEach(p => {
+                if(p.name===player.name){
+                  if(isNumber(p.busCards)){
+                    (p.busCards as number)-=segment.length;
+                  }
+                }
+              });
+              this.allPlayersSubject.next(this._allPlayers)
+          }
           }
         break;
         case 'showError':
@@ -349,22 +359,8 @@ export class GamePlayManagerService {
     console.log('Starting the game!');
   }
 
-  public getMapData() {
-    this.serverProxy.getMapData()
-      .then(({ locations, segments }: { locations: MapLocation[], segments: Segment[] }) => {
-        this._locations = locations;
-        if (this._segments.length === 0) {
-          this.mapSegmentColors(segments);
-        } else {
-          this.mapSegmentColors(this._segments);
-        }
-        this.locationSubject.next(this._locations);
-        this.segmentSubject.next(this._segments);
-      });
-  }
-
   private mapSegmentColors(segments: Segment[]) {
-    this._segments = segments.map(s => {
+    return segments.map(s => {
       s.color = busColorStringToEnumMap[s.color];
       return s;
     });
@@ -384,7 +380,10 @@ export class GamePlayManagerService {
         this.incrementplayerTurn(data.turn);
         this.historyService.addItems(data.history);
         this.lastCommandId = data.id;
-        this._segments = data.segments as Segment[];
+        this._segments = this.mapSegmentColors(data.segments as Segment[]);
+        this._segmentSubject.next(this._segments);
+        this._locations = data.locations;
+        this.locationSubject.next(this._locations);
       });
   }
 
@@ -451,7 +450,6 @@ export class GamePlayManagerService {
         this._allPlayersSubject.next(this._allPlayers);
       }
     }
-    this._segmentSubject.next(this._segments);
   }
 
   private _endGame(stats: GameOverStat[]): void {

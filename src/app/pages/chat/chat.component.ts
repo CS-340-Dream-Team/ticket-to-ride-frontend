@@ -60,8 +60,6 @@ export class ChatComponent implements OnInit {
     setTimeout(()=>{
       this.nameField.nativeElement.focus();
     },100);
-    //TODO: scroll to bottom when chat is opened
-    // this.ngxAutoScroll.forceScrollDown();
     this.chatManager.resetMessageNotification();
   }
   
