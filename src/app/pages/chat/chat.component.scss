@@ -1,88 +1,88 @@
 @import "../../../variables.scss";
 
 .background {
-  background-color: gray;
-  background-size: cover;
-  position: fixed;
-  height: 100%;
-  width: 100%;
+	background-color: gray;
+	background-size: cover;
+	position: fixed;
+	height: 100%;
+	width: 100%;
 }
 
 .container {
-  border-radius: 15px;
-  overflow: hidden;
-  position: fixed;
-  bottom: 70px;
-  right: 30px;
-  width: 280px;
-  padding: 5px 5px;
-  background: $color-light-background;
-  @include elevation(3);
+	border-radius: 15px;
+	overflow: hidden;
+	position: fixed;
+	bottom: 70px;
+	right: 30px;
+	width: 280px;
+	padding: 5px 5px;
+	background: $color-light-background;
+	@include elevation(3);
 }
 
 button {
-  outline: none;
+	outline: none;
 }
 
 .chat-button {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  position: fixed;
-  bottom: 18px;
-  right: 85px;
-  background: $color-green;
-  color: $color-light-text;
-  border: none;
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	position: fixed;
+	bottom: 18px;
+	right: 85px;
+	background: $color-green;
+	color: $color-light-text;
+	border: none;
 }
 
 .notification {
-  min-height: 20px;
-  min-width: 20px;
-  border-radius: 50%;
-  position: fixed;
-  bottom: 47px;
-  right: 120px;
-  background: $color-red;
-  color: $color-light-text;
-  text-align: center;
-  border: none;
-  z-index: 1;
+	min-height: 20px;
+	min-width: 20px;
+	border-radius: 50%;
+	position: fixed;
+	bottom: 47px;
+	right: 120px;
+	background: $color-red;
+	color: $color-light-text;
+	text-align: center;
+	border: none;
+	z-index: 1;
 }
 
 .chat-container {
-  height: 300px;
-  width: 400px;
-  overflow: auto;
+	height: 300px;
+	width: 400px;
+	overflow: auto;
 }
 
 .chat-container .message {
-  border-bottom: solid 1px #ccc;
-  padding: 20px;
+	border-bottom: solid 1px #ccc;
+	padding: 20px;
 }
 
 .send-message-form input {
-  width: 100%;
-  border: none;
-  font-size: 16px;
-  padding: 10px;
+	width: 100%;
+	border: none;
+	font-size: 16px;
+	padding: 10px;
 }
 
 .box {
-  display: flex;
-  flex-direction: column;
-  width: 280px;
+	display: flex;
+	flex-direction: column;
+	width: 280px;
 }
 
 .send-message-form button {
-  display: none;
+	display: none;
 }
 
 .messages {
-  list-style-type: none;
-  padding: 0px;
+	list-style-type: none;
+	padding: 0px;
 }
 
 input:focus {
-  outline: none;
+	outline: none;
 }

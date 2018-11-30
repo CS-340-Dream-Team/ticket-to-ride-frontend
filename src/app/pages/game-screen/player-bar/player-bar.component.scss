@@ -1,113 +1,110 @@
 @import "../../../../variables.scss";
 
 .player-row {
-    font-family: 'Hind Madurai', sans-serif;
-    color: $color-dark-text;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 16pt;
-    position: relative;
+	font-family: "Hind Madurai", sans-serif;
+	color: $color-dark-text;
+	width: 100%;
+	box-sizing: border-box;
+	font-size: 16pt;
+	position: relative;
 
-    i {
-        position: relative;
-        bottom: -3px;
+	i {
+		position: relative;
+		bottom: -3px;
 
-        &.star {
-            color: yellow;
-            margin-left: 2px;
-        }
+		&.star {
+			color: yellow;
+			margin-left: 2px;
+		}
 
-        &.pin {
-            color: darkred;
-            margin-left: -4px;
-        }
-    }
+		&.pin {
+			color: darkred;
+			margin-left: -4px;
+		}
+	}
 
+	.name-bar {
+		border-left: 5px solid;
+		margin: 8px 0;
+		padding: 10px 0 10px 5px;
+		background-color: $color-dark-background-accent;
 
-    .name-bar {
-        border-left: 5px solid;
-        margin: 8px 0;
-        padding: 10px 0 10px 5px;
-        background-color: $color-dark-background-accent;
+		.player-name {
+			width: 100px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
-        .player-name {
-            width: 100px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+			&.is-turn {
+				color: white;
+			}
+		}
 
-            &.is-turn {
-                color: white;
-            }
-        }
+		.icon-container {
+			position: absolute;
+			right: 8px;
+			top: 9px;
+			display: flex;
 
-        .icon-container {
-            position: absolute;
-            right: 8px;
-            top: 9px;
-            display: flex;
+			.stat {
+				margin-left: 10px;
+				flex-basis: 1;
 
-            .stat {
-                margin-left: 10px;
-                flex-basis: 1;
+				.wild-card-icon {
+					width: 25px;
+					height: auto;
+					margin-top: 2px;
+				}
+				p {
+					display: inline;
+					position: relative;
+				}
+			}
+		}
+	}
 
-                .wild-card-icon {
-                    width: 25px;
-                    height: auto;
-                    margin-top: 2px;
-                }
-                p {
-                    display: inline;
-                    position: relative;
-                }
-            }
+	.current-player-info {
+		background-color: $color-dark-background;
+		color: $color-light-text;
 
-        }
+		.line-through {
+			text-decoration: line-through;
+		}
 
-    }
+		ul {
+			list-style: none;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			padding-inline-start: 20px;
+		}
 
-    .current-player-info {
-        background-color: $color-dark-background;
-        color: $color-light-text;
+		table {
+			font-size: 12pt;
+			color: $color-light-text;
+			.wild-card-icon {
+				width: 30px;
+				height: auto;
+				margin-top: 2px;
+			}
+		}
+	}
+	.red-left-border {
+		border-color: red !important;
+	}
 
-        .line-through {
-            text-decoration: line-through;
-        }
+	.green-left-border {
+		border-color: green;
+	}
 
-        ul {
-            list-style: none;
-            margin-block-start: 0;
-            margin-block-end: 0;
-            padding-inline-start: 20px;
-        }
+	.blue-left-border {
+		border-color: blue;
+	}
 
-        table {
-            font-size: 12pt;
-            color: $color-light-text;
-            .wild-card-icon {
-                width: 30px;
-                height: auto;
-                margin-top: 2px;
-            }
-        }
-    }
-    .red-left-border {
-        border-color: red !important;
-    }
+	.yellow-left-border {
+		border-color: yellow;
+	}
 
-    .green-left-border {
-        border-color: green;
-    }
-
-    .blue-left-border {
-        border-color: blue;
-    }
-
-    .yellow-left-border {
-        border-color: yellow;
-    }
-
-    .black-left-border {
-        border-color: black;
-    }
+	.black-left-border {
+		border-color: black;
+	}
 }

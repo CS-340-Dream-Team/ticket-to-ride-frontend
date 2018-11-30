@@ -1,80 +1,85 @@
 @import "../../../variables.scss";
 
 .provo-background {
-    background-image: url("../../../assets/images/Downtown_Provo.jpg");
-    background-size: cover;
-    filter: blur(2px);
-    display: block;
-    height: 100vh;
-    z-index: -1;
+	background-image: url("../../../assets/images/Downtown_Provo.jpg");
+	background-size: cover;
+	filter: blur(2px);
+	display: block;
+	height: 100vh;
+	z-index: -1;
 }
 $border-radius: 10px;
- .content {
-    background: rgba(255, 255, 255, 0.60);
-    border-radius: $border-radius;
-    @include elevation(4);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: calc(100vw - 32px);
-    box-sizing: border-box;
-    margin: 16px;
-    height: calc(100vh - 32px);
+.content {
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: $border-radius;
+	@include elevation(4);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: calc(100vw - 32px);
+	box-sizing: border-box;
+	margin: 16px;
+	height: calc(100vh - 32px);
 }
- .game-title {
-    font-family: 'Abril Fatface', cursive;
-    text-align: center;
-    padding-top: 10px;
+.game-title {
+	font-family: "Abril Fatface", cursive;
+	text-align: center;
+	padding-top: 10px;
 }
- .page-title {
-    font-family: 'Hind Madurai', sans-serif;
-    text-align: center;
-    color: $color-light-text;
-    font-size: 32px;
-    padding: 8px;
-    line-height: 0;
+.page-title {
+	font-family: "Hind Madurai", sans-serif;
+	text-align: center;
+	color: $color-light-text;
+	font-size: 32px;
+	padding: 8px;
+	line-height: 0;
 }
- .create-game-container {
-    text-align: center;
-    font-size: 24px;
-    padding: 8px;
-    background-color: $color-light-accent;
-    @include elevation(2);
-    margin: 0px auto 24px;
-    width: 58%;
-    border-radius: $border-radius;
-    line-height: 0em;
-    height: 70px;
-    font-family: 'Hind Madurai', sans-serif;
+.create-game-container {
+	text-align: center;
+	font-size: 24px;
+	padding: 8px;
+	background-color: $color-light-accent;
+	@include elevation(2);
+	margin: 0px auto 24px;
+	width: 58%;
+	border-radius: $border-radius;
+	line-height: 0em;
+	height: 70px;
+	font-family: "Hind Madurai", sans-serif;
 }
 
-.slider, .login-container {
-    margin: 0 auto;
-    width: 450px;
-    height: 350px;
+.slider,
+.login-container {
+	margin: 0 auto;
+	width: 450px;
+	height: 350px;
 }
 
 .login-container {
-    margin-top: 100px;
-    background-color: $color-dark-background;
-    @include elevation(2);
-    border-radius: $border-radius;
-    overflow: hidden;
-    position: relative;
+	margin-top: 100px;
+	background-color: $color-dark-background;
+	@include elevation(2);
+	border-radius: $border-radius;
+	overflow: hidden;
+	position: relative;
 }
 
 @keyframes slide-up {
-    from {margin-top: 0;}
-    to {margin-top: -348px;}
+	from {
+		margin-top: 0;
+	}
+	to {
+		margin-top: -348px;
+	}
 }
 
 .animate-slide-up {
-    animation-name: slide-up;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+	animation-name: slide-up;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
 }
 
 .slider {
-    position: absolute;
-    /* margin-top: -340px; */
+	position: absolute;
+	/* margin-top: -340px; */
 }

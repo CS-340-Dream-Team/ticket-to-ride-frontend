@@ -1,24 +1,24 @@
-<div *ngIf="showHistory" > 
-  <div class="container" >
-    <div ngx-auto-scroll class="history-container">
-      <ul class="history">
-        <li *ngFor="let command of history">
-          <app-history-message [historyText]="command.message" [color]="getPlayerColor(command)" class="box"></app-history-message>
-        </li>
-      </ul>
-    </div>
-  </div>
-  
-  <div (click)="closeHistory()">
-    <button class="history-button">
-      <i class="material-icons">close</i>
-    </button>
-  </div>
-</div> 
+<div *ngIf="showHistory">
+	<div class="container">
+		<div ngx-auto-scroll class="history-container">
+			<ul class="history">
+				<li *ngFor="let command of history">
+					<app-history-message
+						[historyText]="command.message"
+						[color]="getPlayerColor(command)"
+						class="box"
+					></app-history-message>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div (click)="closeHistory()">
+		<button class="history-button"><i class="material-icons">close</i></button>
+	</div>
+</div>
 
 <div *ngIf="!showHistory" (click)="openHistory()">
-  <!-- <div *ngIf="messageNotification > 0" class="notification">{{messageNotification}}</div> -->
-  <button class="history-button">
-    <i class="material-icons">history</i>
-  </button>
+	<!-- <div *ngIf="messageNotification > 0" class="notification">{{messageNotification}}</div> -->
+	<button class="history-button"><i class="material-icons">history</i></button>
 </div>

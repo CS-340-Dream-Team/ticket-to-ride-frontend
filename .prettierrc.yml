@@ -22,11 +22,6 @@ bracketSpacing: true
 #   - "avoid" - Omit parens when possible. Example: x => x
 #   - "always" - Always include arrow parents. Example: (x) => x
 arrowParens: avoid
-# Specify which parse to use.
-# Valid options:
-#   - "flow"
-#   - "babylon"
-parser: typescript
 # Print semi colons
 # Valid options:
 #   - true - add a semicolon at the end of every line

@@ -1,24 +1,37 @@
 <div class="background"></div>
-<div *ngIf="showChat" >
-  <div class="container" >
-    <div ngx-auto-scroll class="chat-container">
-      <ul class="messages">
-        <li *ngFor="let message of messages">
-          <app-message [message]="message" [player]="currentPlayer" [dateString]="convertDate(message.timestamp)" class="box color-4"></app-message>
-        </li>
-      </ul>
-    </div>
-    <form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
-      <input maxlength="150" #input name="messageText" type="text" [(ngModel)]="inputMessage" placeholder="Message" autocomplete="off">
-    </form>
-  </div>
+<div *ngIf="showChat">
+	<div class="container">
+		<div ngx-auto-scroll class="chat-container">
+			<ul class="messages">
+				<li *ngFor="let message of messages">
+					<app-message
+						[message]="message"
+						[player]="currentPlayer"
+						[dateString]="convertDate(message.timestamp)"
+						class="box color-4"
+					></app-message>
+				</li>
+			</ul>
+		</div>
+		<form class="send-message-form" (submit)="addMessage($event); $event.preventDefault()">
+			<input
+				maxlength="150"
+				#input
+				name="messageText"
+				type="text"
+				[(ngModel)]="inputMessage"
+				placeholder="Message"
+				autocomplete="off"
+			/>
+		</form>
+	</div>
 
-  <div (click)="closeChat()">
-    <button class="chat-button"><i class="material-icons">close</i></button>
-  </div>
+	<div (click)="closeChat()">
+		<button class="chat-button"><i class="material-icons">close</i></button>
+	</div>
 </div>
 
 <div *ngIf="!showChat" (click)="openChat()">
-  <div *ngIf="messageNotification > 0" class="notification">{{messageNotification}}</div>
-  <button class="chat-button"><i class="material-icons">message</i></button>
+	<div *ngIf="messageNotification > 0" class="notification">{{ messageNotification }}</div>
+	<button class="chat-button"><i class="material-icons">message</i></button>
 </div>

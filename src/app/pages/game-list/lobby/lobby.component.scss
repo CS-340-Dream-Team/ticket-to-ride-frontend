@@ -1,56 +1,56 @@
 @import "../../../../variables.scss";
 
 .title {
-  font-family: "Abril Fatface", cursive;
-  text-align: center;
+	font-family: "Abril Fatface", cursive;
+	text-align: center;
 }
 
 .players {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 8px 0;
-  width: 100%;
-  background-color: $color-dark-background;
-  border-radius: 10px;
-  font-family: "Hind Madurai", sans-serif;
-  text-align: center;
-  color: white;
-  padding: 8px 0;
-  @include elevation(2);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 8px 0;
+	width: 100%;
+	background-color: $color-dark-background;
+	border-radius: 10px;
+	font-family: "Hind Madurai", sans-serif;
+	text-align: center;
+	color: white;
+	padding: 8px 0;
+	@include elevation(2);
 }
 
 .player + .player {
-  margin: 4px 0;
+	margin: 4px 0;
 }
 
 .player {
-  list-style: none;
-  width: 80%;
-  font-size: 1.2em;
-  margin: 5px auto;
-  border: 2px solid white;
-  border-radius: 3px;
+	list-style: none;
+	width: 80%;
+	font-size: 1.2em;
+	margin: 5px auto;
+	border: 2px solid white;
+	border-radius: 3px;
 }
 
 .player.host {
-  background-color: white;
-  color: black;
+	background-color: white;
+	color: black;
 }
 
 .options {
-  list-style-type: none;
+	list-style-type: none;
 }
 
 .options > button {
-  margin: 0 10px;
+	margin: 0 10px;
 }
 
 .start-game-container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
 }

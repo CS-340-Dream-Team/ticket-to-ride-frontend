@@ -1,41 +1,55 @@
 <div class="provo-background"></div>
 <div class="content">
-  <div class="game-title">
-    <h1>Student ID to Ride: Provo</h1>
-  </div>
-  <div class="login-container animated fadeIn">
-    <div class="slider" [ngClass]="{'animate-slide-up': showRegister}">
-      <div class="login">
-        <div class="page-title">
-          <h3>Login</h3>
-        </div>
-        <div class="padding">
-          <form name="login-form" (submit)="login(loginName.value, loginPassword.value); $event.preventDefault()">
-            <input maxlength="20" type="text" name="username" placeholder="User Name" #loginName>
-            <input maxlength="20" type="password" name="password" placeholder="Password" #loginPassword>
-            <input type="submit">
-          </form>
-          <p class="center-text">
-            <a (click)="showRegister = true">Create new account...</a>
-          </p>
-        </div>
-      </div>
+	<div class="game-title"><h1>Student ID to Ride: Provo</h1></div>
+	<div class="login-container animated fadeIn">
+		<div class="slider" [ngClass]="{ 'animate-slide-up': showRegister }">
+			<div class="login">
+				<div class="page-title"><h3>Login</h3></div>
+				<div class="padding">
+					<form
+						name="login-form"
+						(submit)="login(loginName.value, loginPassword.value); $event.preventDefault()"
+					>
+						<input maxlength="20" type="text" name="username" placeholder="User Name" #loginName />
+						<input
+							maxlength="20"
+							type="password"
+							name="password"
+							placeholder="Password"
+							#loginPassword
+						/>
+						<input type="submit" />
+					</form>
+					<p class="center-text"><a (click)="showRegister = true">Create new account...</a></p>
+				</div>
+			</div>
 
-      <div class="register">
-        <div class="page-title">
-          <h3>Register</h3>
-        </div>
-        <div class="padding">
-          <form name="login-form" (submit)="register(registerName.value, registerPassword.value); $event.preventDefault()">
-            <input maxlength="20" type="text" name="username" placeholder="User Name" #registerName>
-            <input maxlength="20" type="password" name="password" placeholder="Password" #registerPassword>
-            <input type="submit">
-          </form>
-          <p class="center-text">
-            <a (click)="showRegister = false">Back to login...</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="register">
+				<div class="page-title"><h3>Register</h3></div>
+				<div class="padding">
+					<form
+						name="login-form"
+						(submit)="register(registerName.value, registerPassword.value); $event.preventDefault()"
+					>
+						<input
+							maxlength="20"
+							type="text"
+							name="username"
+							placeholder="User Name"
+							#registerName
+						/>
+						<input
+							maxlength="20"
+							type="password"
+							name="password"
+							placeholder="Password"
+							#registerPassword
+						/>
+						<input type="submit" />
+					</form>
+					<p class="center-text"><a (click)="showRegister = false">Back to login...</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -1,42 +1,42 @@
 .listed-game-container {
-    font-family: 'Hind Madurai', sans-serif;
-    color: white;
-    line-height: 0;
-    display: flex;
-    flex-direction: row;
+	font-family: "Hind Madurai", sans-serif;
+	color: white;
+	line-height: 0;
+	display: flex;
+	flex-direction: row;
 }
 
 .title {
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+	align-self: center;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
 }
 
 h5 {
-    font-size: 18px;
-    align-self: center;
-    margin: 16px;
+	font-size: 18px;
+	align-self: center;
+	margin: 16px;
 }
 
 p {
-    font-size: 12px;
-    align-self: center;
+	font-size: 12px;
+	align-self: center;
 }
 
 .spots-remaining {
-    align-self: center;
-    text-align: right;
-    flex-grow: 1;
-    margin-right: 15px;
+	align-self: center;
+	text-align: right;
+	flex-grow: 1;
+	margin-right: 15px;
 }
 
 .join-button {
-    align-self: center;
-    flex-grow: 1;
-    margin-left: 15px;
+	align-self: center;
+	flex-grow: 1;
+	margin-left: 15px;
 }
 
 button:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
