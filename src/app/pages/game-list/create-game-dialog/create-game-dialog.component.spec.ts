@@ -1,25 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CreateGameDialogComponent } from './create-game-dialog.component';
+import { CreateGameDialogComponent } from "./create-game-dialog.component";
 
-describe('CreateGameDialogComponent', () => {
-  let component: CreateGameDialogComponent;
-  let fixture: ComponentFixture<CreateGameDialogComponent>;
+describe("CreateGameDialogComponent", () => {
+	let component: CreateGameDialogComponent;
+	let fixture: ComponentFixture<CreateGameDialogComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CreateGameDialogComponent ]
-    })
-    .compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [CreateGameDialogComponent],
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateGameDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(CreateGameDialogComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it("should create", () => {
+		expect(component).toBeTruthy();
+	});
 });

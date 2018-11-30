@@ -26,7 +26,7 @@ arrowParens: avoid
 # Valid options:
 #   - "flow"
 #   - "babylon"
-parser: babylon
+parser: typescript
 # Print semi colons
 # Valid options:
 #   - true - add a semicolon at the end of every line

@@ -1,9 +1,9 @@
-import { Location } from '../location/location.type';
+import { Location } from "../location/location.type";
 
 export interface Route {
-    name: string;
-    start: Location;
-    end: Location;
-    points: number;
-    complete?:boolean;
+	name: string;
+	start: Location;
+	end: Location;
+	points: number;
+	complete?: boolean;
 }
