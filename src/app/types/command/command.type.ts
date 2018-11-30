@@ -14,7 +14,8 @@ export interface Command {
 		| "drawTen"
 		| "showError"
 		| "lastRound"
-		| "claimSegment";
+		| "claimSegment"
+		| "routesCompleted";
 	data: any;
 	privateData?: any;
 	player?: string;

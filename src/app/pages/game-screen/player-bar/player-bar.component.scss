@@ -70,6 +70,10 @@
         background-color: $color-dark-background;
         color: $color-light-text;
 
+        .line-through {
+            text-decoration: line-through;
+        }
+
         ul {
             list-style: none;
             margin-block-start: 0;

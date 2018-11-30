@@ -36,6 +36,8 @@ export class PlayerBarComponent {
 
   public routeCards: Route[];
 
+  public routesCompleted: Route[] = [];
+
   constructor(
     private gamePlayManager: GamePlayManagerService
   ) {
@@ -44,7 +46,7 @@ export class PlayerBarComponent {
         this.players = players;
 
         this.playerTurn = this.players[0].name;
-        
+
         const clientPlayerArr = this.players.filter(player => this.isCurrentPlayer(player));
         if (clientPlayerArr.length) {
           const clientPlayer = clientPlayerArr[0];
@@ -56,6 +58,7 @@ export class PlayerBarComponent {
 
     this.gamePlayManager.clientPlayerSubject.subscribe({
       next: clientPlayer => {
+        this.routesCompleted = clientPlayer.routesCompleted;
         this.players.forEach((player, index, array) => {
           if (player.name === clientPlayer.name) {
             array[index] = clientPlayer;
@@ -79,6 +82,15 @@ export class PlayerBarComponent {
 
   public isCurrentPlayer(player) {
     return player.name === this.gamePlayManager.clientPlayer.name;
+  }
+
+  public isCompletedRoute(route: Route) {
+    for (const completed of this.routesCompleted) {
+      if (completed.name === route.name) {
+        return true;
+      }
+    }
+    return false;
   }
 
   isTurn(player: Player) {
