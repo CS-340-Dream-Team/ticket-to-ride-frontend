@@ -332,6 +332,7 @@ export class GamePlayManagerService {
           if (this.updateLastCommandID(command.id)) {
             if (command.player === this.clientPlayer.name) {
               const completedRoutes = <Route[]>command.privateData.completedRoutes;
+              this.clientPlayer = this.getPlayerByName(this.clientPlayer.name);
               this.clientPlayer.routesCompleted = completedRoutes;
               this.clientPlayerSubject.next(this.clientPlayer);
             }
