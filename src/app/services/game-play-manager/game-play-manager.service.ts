@@ -328,6 +328,15 @@ export class GamePlayManagerService {
           }
           }
         break;
+        case 'routesCompleted':
+          if (this.updateLastCommandID(command.id)) {
+            if (command.player === this.clientPlayer.name) {
+              const completedRoutes = <Route[]>command.privateData.completedRoutes;
+              this.clientPlayer.routesCompleted = completedRoutes;
+              this.clientPlayerSubject.next(this.clientPlayer);
+            }
+          }
+        break;
         case 'showError':
           this.toastError(command.data.message);
         break;

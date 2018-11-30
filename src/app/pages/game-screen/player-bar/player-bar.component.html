@@ -66,7 +66,7 @@
 
     <div *ngIf="isCurrentPlayer(player)" class="current-player-info">
       <ul class="no-style">
-        <li *ngFor="let route of routeCards">
+        <li *ngFor="let route of routeCards" [ngClass]="{'line-through': isCompletedRoute(route)}">
           {{route.points}} <i class="material-icons pin">place</i>{{route.start.name}}&mdash;{{route.end.name}}
         </li>
       </ul>
