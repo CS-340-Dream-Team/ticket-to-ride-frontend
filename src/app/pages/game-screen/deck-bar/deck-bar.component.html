@@ -1,15 +1,28 @@
 <div class="deck-bar">
-  <div class="face-up">
-    <div *ngFor="let card of spread; let i = index">
-      <div class="card {{getColorClass(card)}}" [ngClass]="{clickable: isPlayerTurn()}" (click)="selectBusCard(i)"></div>
-    </div>
-  </div>
-  <div class="face-down">
-    <div class="card face-down" [ngClass]="{clickable: isPlayerTurn()}" (click)="selectBusCard(5)">
-      <p>?</p>
-    </div>
-    <p class="card-label">{{numBuses}}</p>
-    <i class="material-icons routes-icon" [ngClass]="{clickable: isPlayerTurn()}" (click)="selectRouteCards()">place</i>
-    <p class="card-label">{{numRoutes}}</p>
-  </div>
+	<div class="face-up">
+		<div *ngFor="let card of spread; let i = index">
+			<div
+				class="card {{ getColorClass(card) }}"
+				[ngClass]="{ clickable: isPlayerTurn() }"
+				(click)="selectBusCard(i)"
+			></div>
+		</div>
+	</div>
+	<div class="face-down">
+		<div
+			class="card face-down"
+			[ngClass]="{ clickable: isPlayerTurn() }"
+			(click)="selectBusCard(5)"
+		>
+			<p>?</p>
+		</div>
+		<p class="card-label">{{ numBuses }}</p>
+		<i
+			class="material-icons routes-icon"
+			[ngClass]="{ clickable: isPlayerTurn() }"
+			(click)="selectRouteCards()"
+			>place</i
+		>
+		<p class="card-label">{{ numRoutes }}</p>
+	</div>
 </div>

@@ -1,4 +1,7 @@
-<div class="container {{'color-'+message.sender.color}}" [ngClass]="{'right': isSender(), 'left': !isSender()}">
-  <p>{{message.messageText}}</p>
-  <span class="signature">{{message.sender.name}} - {{dateString}}</span>
+<div
+	class="container {{ 'color-' + message.sender.color }}"
+	[ngClass]="{ right: isSender(), left: !isSender() }"
+>
+	<p>{{ message.messageText }}</p>
+	<span class="signature">{{ message.sender.name }} - {{ dateString }}</span>
 </div>

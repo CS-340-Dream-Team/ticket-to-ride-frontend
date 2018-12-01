@@ -1,5 +1,5 @@
 .dimmer {
-  background: #000;
+	background: #000;
 	opacity: 0.9;
 	position: fixed;
 	top: 0;
@@ -10,51 +10,51 @@
 }
 
 .dialog-container {
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    top: calc(20vh);
-    left: calc(50vw - 200px);
-    z-index: 2;
+	display: flex;
+	justify-content: center;
+	position: fixed;
+	top: calc(20vh);
+	left: calc(50vw - 200px);
+	z-index: 2;
 }
 
 .dialog {
-    background-color: lightgray;
-    width: 400px;
-    min-height: 235px;
-    border-radius: 10px;
-    z-index:2;
-    margin-top: 115px;
+	background-color: lightgray;
+	width: 400px;
+	min-height: 235px;
+	border-radius: 10px;
+	z-index: 2;
+	margin-top: 115px;
 }
 
 .dialog-title {
-    font-size: 24px;
-    text-align: center;
-    margin: 1em 0;
-    font-family: 'Hind Madurai', sans-serif;
+	font-size: 24px;
+	text-align: center;
+	margin: 1em 0;
+	font-family: "Hind Madurai", sans-serif;
 }
 
 .name-input {
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    font-family: 'Hind Madurai', sans-serif;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	font-family: "Hind Madurai", sans-serif;
 }
 
 .submit-button {
-    display: block;
-    margin: 10px auto;
+	display: block;
+	margin: 10px auto;
 }
 
 .submit-button:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 .close-button-container {
-  width: 100%;
-  display: flex;
-  > * {
-    padding: 8px 8px 0 0;
-    margin-left: auto;
-    cursor: pointer;
-  }
+	width: 100%;
+	display: flex;
+	> * {
+		padding: 8px 8px 0 0;
+		margin-left: auto;
+		cursor: pointer;
+	}
 }

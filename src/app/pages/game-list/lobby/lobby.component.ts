@@ -1,59 +1,59 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Game, Player } from '../../../types';
-import { GameListManagerService, AuthManagerService } from '../../../services';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Game, Player } from "../../../types";
+import { GameListManagerService, AuthManagerService } from "../../../services";
 
 @Component({
-  selector: 'app-lobby',
-  templateUrl: './lobby.component.html',
-  styleUrls: ['./lobby.component.scss']
+	selector: "app-lobby",
+	templateUrl: "./lobby.component.html",
+	styleUrls: ["./lobby.component.scss"],
 })
 export class LobbyComponent implements OnInit {
-  constructor(
-    private gameListManager: GameListManagerService,
-    private authManagerService: AuthManagerService
-  ) { }
+	constructor(
+		private gameListManager: GameListManagerService,
+		private authManagerService: AuthManagerService
+	) {}
 
-  @Input()
-  game: Game = null;
-  @Output()
-  closeEvent: EventEmitter<any> = new EventEmitter<any>();
+	@Input()
+	game: Game = null;
+	@Output()
+	closeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  ngOnInit() { }
+	ngOnInit() {}
 
-  getNonHostPlayers(): Player[] {
-    const players = [];
-    this.game.playersJoined.forEach(player => {
-      if (player.name !== this.game.host.name) {
-        players.push(player);
-      }
-    });
-    return players;
-  }
+	getNonHostPlayers(): Player[] {
+		const players = [];
+		this.game.playersJoined.forEach(player => {
+			if (player.name !== this.game.host.name) {
+				players.push(player);
+			}
+		});
+		return players;
+	}
 
-  canStartGame() {
-    return (
-      2 <= this.game.playersJoined.length &&
-      this.game.playersJoined.length <= 5 &&
-      this.game.host.name === this.authManagerService.currentUser.name
-    );
-  }
+	canStartGame() {
+		return (
+			2 <= this.game.playersJoined.length &&
+			this.game.playersJoined.length <= 5 &&
+			this.game.host.name === this.authManagerService.currentUser.name
+		);
+	}
 
-  closeLobby() {
-    this.closeEvent.emit();
-  }
+	closeLobby() {
+		this.closeEvent.emit();
+	}
 
-  joinGame() {
-    this.gameListManager.joinGame(this.game);
-  }
+	joinGame() {
+		this.gameListManager.joinGame(this.game);
+	}
 
-  gameFull() {
-    return this.game.playersJoined.length >= 5;
-  }
+	gameFull() {
+		return this.game.playersJoined.length >= 5;
+	}
 
-  startGame() {
-    if (!this.canStartGame()) {
-      throw Error('User is not permitted to start the game');
-    }
-    this.gameListManager.startGame(this.game);
-  }
+	startGame() {
+		if (!this.canStartGame()) {
+			throw Error("User is not permitted to start the game");
+		}
+		this.gameListManager.startGame(this.game);
+	}
 }
