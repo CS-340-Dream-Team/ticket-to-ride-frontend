@@ -8,12 +8,15 @@ services:
     restart: unless-stopped
   ttr-backend:
     build:
+      # This must be the path to your backend directory
       context: ../ticket-to-ride-backend
     container_name: ttr-backend
+    depends_on:
+      - db
+      - nosql-db
     ports:
       - 4040:4040
     restart: unless-stopped
-  db:
   db:
     image: mariadb:10.3
     container_name: db
@@ -38,4 +41,3 @@ services:
 volumes:
   db_data:
   nosql-db-data:
-
