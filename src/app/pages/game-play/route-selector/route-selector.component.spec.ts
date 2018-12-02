@@ -1,25 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RouteSelectorComponent } from './route-selector.component';
+import { RouteSelectorComponent } from "./route-selector.component";
 
-describe('DestinationSelectorComponent', () => {
-  let component: RouteSelectorComponent;
-  let fixture: ComponentFixture<RouteSelectorComponent>;
+describe("DestinationSelectorComponent", () => {
+	let component: RouteSelectorComponent;
+	let fixture: ComponentFixture<RouteSelectorComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ RouteSelectorComponent ]
-    })
-    .compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [RouteSelectorComponent],
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RouteSelectorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(RouteSelectorComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it("should create", () => {
+		expect(component).toBeTruthy();
+	});
 });

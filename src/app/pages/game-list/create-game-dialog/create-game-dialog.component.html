@@ -1,11 +1,15 @@
 <div class="dimmer"></div>
 <div class="dialog-container">
-  <div class="dialog">
-    <div class="close-button-container" (click)="close()"><i class="material-icons">close</i></div>
-    <h6 class="dialog-title">Create Game</h6>
-    <input maxlength="20" #gameName class="name-input" placeholder="Game Name">
-    <button class="submit-button" 
-      (click)="submit(gameName.value)"
-      [disabled]="gameName.value.length == 0">Ready!</button>
-  </div>
+	<div class="dialog">
+		<div class="close-button-container" (click)="close()"><i class="material-icons">close</i></div>
+		<h6 class="dialog-title">Create Game</h6>
+		<input maxlength="20" #gameName class="name-input" placeholder="Game Name" />
+		<button
+			class="submit-button"
+			(click)="submit(gameName.value)"
+			[disabled]="gameName.value.length == 0"
+		>
+			Ready!
+		</button>
+	</div>
 </div>

@@ -1,6 +1,6 @@
-import {User} from '../user/user.type';
+import { User } from "../user/user.type";
 
 export interface AuthToken {
-    token: string;
-    player: User;
+	token: string;
+	player: User;
 }

@@ -1,83 +1,90 @@
 @import "../../../../variables.scss";
 
 .deck-bar {
-    display: flex;
+	display: flex;
 
-    .face-up {
-        display: flex;
-        margin-top: 20px;
-        margin-left: 75px;
+	.face-up {
+		display: flex;
+		margin-top: 20px;
+		margin-left: 75px;
 
-        .card {
-            width: 60px;
-            height: 60px;
-            border-radius: 100px;
-            margin: 0 10px;
+		.card {
+			width: 60px;
+			height: 60px;
+			border-radius: 100px;
+			margin: 0 10px;
 
-            &.card-color-blue {
-                background-color: $color-blue;
-            }
-            &.card-color-white {
-                background-color: $color-white;
-            }
-            &.card-color-yellow {
-                background-color: $color-yellow;
-            }
-            &.card-color-green {
-                background-color: $color-green;
-            }
-            &.card-color-red {
-                background-color: $color-red;
-            }
-            &.card-color-orange {
-                background-color: $color-orange;
-            }
-            &.card-color-black {
-                background-color: $color-black;
-            }
-            &.card-color-purple {
-                background-color: $color-purple;
-            }
-            &.card-color-rainbow {
-                background-image: linear-gradient(to right,$color-red, $color-orange, $color-yellow, $color-green, $color-blue, $color-purple);
-            }
-        }
-    }
+			&.card-color-blue {
+				background-color: $color-blue;
+			}
+			&.card-color-white {
+				background-color: $color-white;
+			}
+			&.card-color-yellow {
+				background-color: $color-yellow;
+			}
+			&.card-color-green {
+				background-color: $color-green;
+			}
+			&.card-color-red {
+				background-color: $color-red;
+			}
+			&.card-color-orange {
+				background-color: $color-orange;
+			}
+			&.card-color-black {
+				background-color: $color-black;
+			}
+			&.card-color-purple {
+				background-color: $color-purple;
+			}
+			&.card-color-rainbow {
+				background-image: linear-gradient(
+					to right,
+					$color-red,
+					$color-orange,
+					$color-yellow,
+					$color-green,
+					$color-blue,
+					$color-purple
+				);
+			}
+		}
+	}
 
+	.face-down {
+		margin-top: 20px;
+		display: flex;
 
-    .face-down {
-        margin-top: 20px;
-        display: flex;
-
-        .card-label {
-            font-size: 22px;
-            line-height: 0px;
-            margin-top: 30px;
-            margin-left: -4px;
-            margin-right: 0px;
-        }
-        .routes-icon {
-            margin: 4px 12px;
-            overflow: hidden;
-            font-size: 50px;
-        }
-        .card {
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
-            margin: 0 12px;
-            background-color: $color-dark-background-accent;
-            overflow: hidden;
-            p {
-                margin-left: 22px;
-                margin-top: 14px;
-                font-size: 32px;
-            }
-        }
-    }
+		.card-label {
+			font-size: 22px;
+			line-height: 0px;
+			margin-top: 30px;
+			margin-left: -4px;
+			margin-right: 0px;
+		}
+		.routes-icon {
+			margin: 4px 12px;
+			overflow: hidden;
+			font-size: 50px;
+		}
+		.card {
+			width: 60px;
+			height: 60px;
+			border-radius: 20px;
+			margin: 0 12px;
+			background-color: $color-dark-background-accent;
+			overflow: hidden;
+			p {
+				margin-left: 22px;
+				margin-top: 14px;
+				font-size: 32px;
+			}
+		}
+	}
 }
 
 .clickable:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 5px #fff;
+	cursor: pointer;
+	box-shadow: 0px 0px 5px #fff;
 }

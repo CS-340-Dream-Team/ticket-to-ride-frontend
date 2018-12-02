@@ -1,31 +1,31 @@
 @import "../../../variables.scss";
 
 .game-screen {
-    display: grid;
-    height: 100vh;
-    grid-template-rows: 100px repeat(2, 1fr);
-    grid-template-columns: 300px repeat(4, 1fr);
-    grid-template-areas: 
-        "side spread spread spread spread"
-        "side map map map map"
-        "side map map map map"
+	display: grid;
+	height: 100vh;
+	grid-template-rows: 100px repeat(2, 1fr);
+	grid-template-columns: 300px repeat(4, 1fr);
+	grid-template-areas:
+		"side spread spread spread spread"
+		"side map map map map"
+		"side map map map map";
 }
 
 .spread {
-    background-color: $color-dark-background;
-    grid-area: spread;
+	background-color: $color-dark-background;
+	grid-area: spread;
 }
 .side-bar {
-    background-color: $color-dark-background;
-    grid-area: side;
+	background-color: $color-dark-background;
+	grid-area: side;
 }
 .map {
-    background-color: $color-light-background;
-    grid-area: map;
+	background-color: $color-light-background;
+	grid-area: map;
 }
 .chat {
-    z-index: 1000;
+	z-index: 1000;
 }
 .history {
-    z-index: 950;
+	z-index: 950;
 }

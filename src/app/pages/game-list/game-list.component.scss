@@ -1,96 +1,96 @@
 @import "../../../variables.scss";
 
 .provo-background {
-  background-image: url("../../../assets/images/Downtown_Provo.jpg");
-  background-size: cover;
-  filter: blur(2px);
-  display: block;
-  height: 100vh;
-  z-index: -1;
+	background-image: url("../../../assets/images/Downtown_Provo.jpg");
+	background-size: cover;
+	filter: blur(2px);
+	display: block;
+	height: 100vh;
+	z-index: -1;
 }
 
 $border-radius: 10px;
 
 .list-lobby-container {
-    display: flex;
-    flex-direction: row;
+	display: flex;
+	flex-direction: row;
 
-    background: rgba(255, 255, 255, 0.60);
-    border-radius: $border-radius;
-    @include elevation(4);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: calc(100vw - 32px);
-    box-sizing: border-box;
-    margin: 16px;
-    height: calc(100vh - 32px);
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: $border-radius;
+	@include elevation(4);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: calc(100vw - 32px);
+	box-sizing: border-box;
+	margin: 16px;
+	height: calc(100vh - 32px);
 }
 
 .game-list-content {
-    flex-grow: 1;
-    margin: 0 16px;
+	flex-grow: 1;
+	margin: 0 16px;
 }
 
 .lobby-container {
-    flex-grow: 1;
-    padding-top: 10px;
-    margin: 0 16px;
+	flex-grow: 1;
+	padding-top: 10px;
+	margin: 0 16px;
 }
 
 .game-title {
-    font-family: 'Abril Fatface', cursive;
-    text-align: center;
-    padding-top: 10px;
+	font-family: "Abril Fatface", cursive;
+	text-align: center;
+	padding-top: 10px;
 }
 
 .page-title {
-    font-family: 'Hind Madurai', sans-serif;
-    text-align: center;
-    color: white;
-    font-size: 32px;
-    padding: 8px;
-    line-height: 0;
+	font-family: "Hind Madurai", sans-serif;
+	text-align: center;
+	color: white;
+	font-size: 32px;
+	padding: 8px;
+	line-height: 0;
 }
 
 .create-game-container {
-    text-align: center;
-    font-size: 24px;
-    padding: 8px;
-    background-color: $color-light-accent;
-    @include elevation(2);
-    margin: 0px auto 24px;
-    width: 58%;
-    border-radius: $border-radius;
-    line-height: 0em;
-    height: 70px;
-    transition: font-size 0.1s;
-    font-family: 'Hind Madurai', sans-serif;
+	text-align: center;
+	font-size: 24px;
+	padding: 8px;
+	background-color: $color-light-accent;
+	@include elevation(2);
+	margin: 0px auto 24px;
+	width: 58%;
+	border-radius: $border-radius;
+	line-height: 0em;
+	height: 70px;
+	transition: font-size 0.1s;
+	font-family: "Hind Madurai", sans-serif;
 }
 
 .create-game-container:hover {
-    font-size: 28px;
-    cursor: pointer;
+	font-size: 28px;
+	cursor: pointer;
 }
 
 .game-list-container {
-    margin: 0 auto;
-    width: 70%;
-    height: 60%;
-    background-color: $color-dark-background;
-    border-radius: $border-radius;
-    @include elevation(2);
+	margin: 0 auto;
+	width: 70%;
+	height: 60%;
+	background-color: $color-dark-background;
+	border-radius: $border-radius;
+	@include elevation(2);
 }
 
 .game-list-container > p {
-    font-family: 'Hind Madurai', sans-serif;
-    text-align: center;
-    color: $color-light-text;
+	font-family: "Hind Madurai", sans-serif;
+	text-align: center;
+	color: $color-light-text;
 }
 
 .list-item {
-    width: 80%;
-    margin: 5px auto;
-    border: 2px solid white;
-    border-radius: 3px;
+	width: 80%;
+	margin: 5px auto;
+	border: 2px solid white;
+	border-radius: 3px;
 }

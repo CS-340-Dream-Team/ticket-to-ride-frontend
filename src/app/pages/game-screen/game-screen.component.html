@@ -1,14 +1,9 @@
 <div class="game-screen">
-  <div class="spread">
-    <app-deck-bar></app-deck-bar>
-  </div>
-  <div class="side-bar">
-    <app-player-bar>
-    </app-player-bar>
-  </div>
-  <app-map class="map"></app-map>
-  <app-chat class="chat"></app-chat>
-  <app-history class="history"></app-history>
+	<div class="spread"><app-deck-bar></app-deck-bar></div>
+	<div class="side-bar"><app-player-bar> </app-player-bar></div>
+	<app-map class="map"></app-map>
+	<app-chat class="chat"></app-chat>
+	<app-history class="history"></app-history>
 </div>
 <app-route-selector [hidden]="!selectingRoutes"></app-route-selector>
 <app-game-over [hidden]="!gameOver"></app-game-over>

@@ -1,102 +1,101 @@
 @import "../../../../variables.scss";
 
 .dimmer {
-  background: #000;
-  opacity: 0.9;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
+	background: #000;
+	opacity: 0.9;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
 }
 
 .dialog-container {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 .dialog {
-  background-color: $color-light-accent;
-  font-family: 'Hind Madurai', sans-serif;
-  width: 900px;
-  border-radius: 10px;
-  z-index: 2000;
-  position: fixed;
-  padding-bottom: 16px;
-  top: calc(50% - 165px);
-  left: calc(50% - 350px);
+	background-color: $color-light-accent;
+	font-family: "Hind Madurai", sans-serif;
+	width: 900px;
+	border-radius: 10px;
+	z-index: 2000;
+	position: fixed;
+	padding-bottom: 16px;
+	top: calc(50% - 165px);
+	left: calc(50% - 350px);
 }
 
 .dialog-title {
-  font-size: 24px;
-  text-align: center;
-  line-height: 0;
-  margin: 30px;
+	font-size: 24px;
+	text-align: center;
+	line-height: 0;
+	margin: 30px;
 }
 
 .dialog-subtitle {
-  font-size: 20px;
-  text-align: center;
-  line-height: 0;
-  margin: 30px;
+	font-size: 20px;
+	text-align: center;
+	line-height: 0;
+	margin: 30px;
 }
 
 .main {
-  width: 75%;
-  margin: 0 auto;
-  font-size: 1.3em;
-  text-align: center;
+	width: 75%;
+	margin: 0 auto;
+	font-size: 1.3em;
+	text-align: center;
 }
 
 .regular-color {
-  display: inline-block;
-  width: 80px;
-  padding: 2px 4px;
-  margin-left: 1ch;
+	display: inline-block;
+	width: 80px;
+	padding: 2px 4px;
+	margin-left: 1ch;
 }
 
 .validation-warning {
-  transition: opacity 0.2s;
-  font-weight: bold;
-  min-height: 1.4em;
+	transition: opacity 0.2s;
+	font-weight: bold;
+	min-height: 1.4em;
 }
 
 .footer {
-  display: flex;
-  justify-content: center;
-  margin-top: 8px;
+	display: flex;
+	justify-content: center;
+	margin-top: 8px;
 
-  .link {
-    display: block;
-    color: black;
-    background-color: $color-light-accent;
-    text-decoration: none;
-    transition: background-color 0.25s, border 0.25s, color 0.25s;
-    border: 2px solid black;
-    border-radius: 5px;
-    padding: 3px 9px;
-    font-size: 1.1em;
-    text-transform: uppercase;
-    cursor: pointer;
+	.link {
+		display: block;
+		color: black;
+		background-color: $color-light-accent;
+		text-decoration: none;
+		transition: background-color 0.25s, border 0.25s, color 0.25s;
+		border: 2px solid black;
+		border-radius: 5px;
+		padding: 3px 9px;
+		font-size: 1.1em;
+		text-transform: uppercase;
+		cursor: pointer;
 
-    &[disabled] {
-      cursor: not-allowed;
-    }
+		&[disabled] {
+			cursor: not-allowed;
+		}
 
-    &.primary-link:hover:enabled:not([disabled]) {
-      background-color: darken($color-green, 5%);
-      color: $color-light-text;
-      border-color: darken($color-green, 5%);
-    }
-    &:not(.primary-link):hover:enabled:not([disabled]) {
-      background-color: darken($color-white, 5%);
-      color: $color-light-accent;
-      border-color: darken($color-white, 5%);
-    }
-  }
-  .link + .link {
-    margin-left: 8px;
-  }
+		&.primary-link:hover:enabled:not([disabled]) {
+			background-color: darken($color-green, 5%);
+			color: $color-light-text;
+			border-color: darken($color-green, 5%);
+		}
+		&:not(.primary-link):hover:enabled:not([disabled]) {
+			background-color: darken($color-white, 5%);
+			color: $color-light-accent;
+			border-color: darken($color-white, 5%);
+		}
+	}
+	.link + .link {
+		margin-left: 8px;
+	}
 }
-
