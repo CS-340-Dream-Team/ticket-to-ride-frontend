@@ -35,7 +35,10 @@ export class MapComponent implements OnInit {
 	_segments: Polyline<LineString | MultiLineString, any>[] = [];
 	_outlines: Polyline<LineString | MultiLineString, any>[] = [];
 
-	constructor(private gamePlayManager: GamePlayManagerService, private chatManager: ChatManagerService) {
+	constructor(
+		private gamePlayManager: GamePlayManagerService,
+		private chatManager: ChatManagerService
+	) {
 		gamePlayManager.locationSubject.subscribe({
 			next: locations => this._renderLocations(locations),
 		});
