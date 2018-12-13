@@ -20,6 +20,7 @@ import { GamePlayManagerService } from "src/app/services";
 import { Segment, Location as MapLocation, BusColor, PlayerColor } from "src/app/types";
 import { LineString, MultiLineString } from "geojson";
 import "leaflet-polylineoffset";
+import { ChatManagerService } from "src/app/services/chat-manager/chat-manager.service";
 
 @Component({
 	selector: "app-map",
@@ -34,7 +35,10 @@ export class MapComponent implements OnInit {
 	_segments: Polyline<LineString | MultiLineString, any>[] = [];
 	_outlines: Polyline<LineString | MultiLineString, any>[] = [];
 
-	constructor(private gamePlayManager: GamePlayManagerService) {
+	constructor(
+		private gamePlayManager: GamePlayManagerService,
+		private chatManager: ChatManagerService
+	) {
 		gamePlayManager.locationSubject.subscribe({
 			next: locations => this._renderLocations(locations),
 		});
@@ -45,6 +49,7 @@ export class MapComponent implements OnInit {
 		});
 		gamePlayManager.getFullGame();
 		gamePlayManager.startPolling();
+		chatManager.startPolling();
 	}
 
 	ngOnInit() {}
